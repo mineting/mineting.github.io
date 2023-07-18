@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-e7d559c8","path":"/Java/Maven-Gradle.html","title":"Maven-Gradle","lang":"zh-CN","frontmatter":{"title":"Maven-Gradle","date":"2023-02-16T00:00:00.000Z"},"headers":[],"git":{},"readingTime":{"minutes":0.08,"words":23},"filePathRelative":"Java/Maven-Gradle.md","localizedDate":"2023年2月16日"}');export{e as data};
