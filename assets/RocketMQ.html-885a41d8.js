@@ -1,1 +1,0 @@
-const t=JSON.parse('{"key":"v-20710426","path":"/Java/RocketMQ.html","title":"RocketMQ","lang":"zh-CN","frontmatter":{"title":"RocketMQ","date":"2023-03-22T00:00:00.000Z"},"headers":[],"git":{},"readingTime":{"minutes":0.07,"words":20},"filePathRelative":"Java/RocketMQ.md","localizedDate":"2023年3月22日"}');export{t as data};

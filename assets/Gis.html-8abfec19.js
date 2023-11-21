@@ -1,0 +1,1 @@
+import{_ as o}from"./plugin-vue_export-helper-c27b6911.js";import{r as n,o as s,c,d as e,b as _,w as r}from"./app-ae2ce5af.js";const a={},i={align:"center"},l=e("b",null,"GIS",-1);function d(f,m){const t=n("font");return s(),c("div",null,[e("div",i,[_(t,{size:"70"},{default:r(()=>[l]),_:1})])])}const h=o(a,[["render",d],["__file","Gis.html.vue"]]);export{h as default};

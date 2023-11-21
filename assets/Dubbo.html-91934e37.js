@@ -1,1 +1,0 @@
-import{_ as t}from"./plugin-vue_export-helper-c27b6911.js";import{r as n,o as s,c,b as e,e as _,w as r}from"./app-50124fd5.js";const a={},l={align:"center"},i=e("b",null,"Dubbo",-1);function f(d,m){const o=n("font");return s(),c("div",null,[e("div",l,[_(o,{size:"70"},{default:r(()=>[i]),_:1})])])}const p=t(a,[["render",f],["__file","Dubbo.html.vue"]]);export{p as default};
