@@ -1,1 +1,0 @@
-const t=JSON.parse('{"key":"v-31bfb0dd","path":"/Java/Http.html","title":"Http","lang":"zh-CN","frontmatter":{"title":"Http","date":"2023-03-22T00:00:00.000Z"},"headers":[],"git":{},"readingTime":{"minutes":0.56,"words":169},"filePathRelative":"Java/Http.md","localizedDate":"2023年3月22日"}');export{t as data};

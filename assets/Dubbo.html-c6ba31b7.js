@@ -1,1 +1,0 @@
-const t=JSON.parse('{"key":"v-029d038f","path":"/Java/Dubbo.html","title":"Dubbo","lang":"zh-CN","frontmatter":{"title":"Dubbo","date":"2023-03-10T00:00:00.000Z"},"headers":[],"git":{},"readingTime":{"minutes":0.07,"words":20},"filePathRelative":"Java/Dubbo.md","localizedDate":"2023年3月10日"}');export{t as data};
