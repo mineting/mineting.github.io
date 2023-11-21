@@ -1,0 +1,1 @@
+const t=JSON.parse('{"key":"v-526215aa","path":"/DataBase/PostgreSQL.html","title":"PostgreSQL","lang":"zh-CN","frontmatter":{"title":"PostgreSQL","date":"2023-02-27T00:00:00.000Z"},"headers":[],"git":{},"readingTime":{"minutes":0.08,"words":23},"filePathRelative":"DataBase/PostgreSQL.md","localizedDate":"2023年2月27日"}');export{t as data};

@@ -1,0 +1,1 @@
+import{_ as t}from"./plugin-vue_export-helper-c27b6911.js";import{r as n,o as r,c as s,b as e,d as c,w as _}from"./app-a5b9b664.js";const a={},i={align:"center"},l=e("b",null,"Shiro",-1);function d(f,m){const o=n("font");return r(),s("div",null,[e("div",i,[c(o,{size:"70"},{default:_(()=>[l]),_:1})])])}const u=t(a,[["render",d],["__file","Shiro.html.vue"]]);export{u as default};
