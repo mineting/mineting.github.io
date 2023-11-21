@@ -1,0 +1,4123 @@
+<template><div><div align='center'><font size='70'><b>Redis</b></font></div>
+<h1 id="nosql-概述" tabindex="-1"><a class="header-anchor" href="#nosql-概述" aria-hidden="true">#</a> NOSQL 概述</h1>
+<h2 id="技术发展" tabindex="-1"><a class="header-anchor" href="#技术发展" aria-hidden="true">#</a> 技术发展</h2>
+<p>技术的分类：</p>
+<ol>
+<li>
+<p>解决功能性的问题：Java、Jsp、RDBMS、Tomcat、HTML、Linux、JDBC、SVN 等</p>
+</li>
+<li>
+<p>解决扩展性的问题：Struts、Spring、SpringMVC、Hibernate、Mybatis 等</p>
+</li>
+<li>
+<p>解决性能的问题：NOSQL、Thread、Hadoop、Nginx、MQ、ElasticSearchs 等</p>
+</li>
+</ol>
+<h3 id="web1-0-时代" tabindex="-1"><a class="header-anchor" href="#web1-0-时代" aria-hidden="true">#</a> Web1.0 时代</h3>
+<p>Web1.0 的时代，数据访问量很有限，用一夫当关的高性能的单点服务器可以解决大部分问题。</p>
+<h3 id="web2-0-时代" tabindex="-1"><a class="header-anchor" href="#web2-0-时代" aria-hidden="true">#</a> Web2.0 时代</h3>
+<p>随着 Web2.0 的时代的到来，用户访问量大幅度提升，同时产生了大量的用户数据。加上后来的智能移动设备的普及，所有的互联网平台都面临了巨大的性能挑战。</p>
+<h3 id="解决-cpu-及内存压力" tabindex="-1"><a class="header-anchor" href="#解决-cpu-及内存压力" aria-hidden="true">#</a> 解决 CPU 及内存压力</h3>
+<img src="@source/DataBase/Redis/解决CPU和内存压力.png" alt="解决CPU和内存压力" style="zoom:80%;" />
+<h3 id="解决-io-压力" tabindex="-1"><a class="header-anchor" href="#解决-io-压力" aria-hidden="true">#</a> 解决 IO 压力</h3>
+<img src="@source/DataBase/Redis/解决IO压力.png" alt="解决IO压力" style="zoom:80%;" />
+<h2 id="nosql-数据库" tabindex="-1"><a class="header-anchor" href="#nosql-数据库" aria-hidden="true">#</a> NoSQL 数据库</h2>
+<p>NoSQL（NoSQL = <strong>Not Only SQL</strong> ），意即 &quot;不仅仅是SQL&quot;，泛指<strong>非关系型的数据库</strong>。</p>
+<p>NoSQL 不依赖业务逻辑方式存储，而以简单的 key-value 模式存储。因此大大的增加了数据库的扩展能力。</p>
+<ul>
+<li>不遵循 SQL 标准</li>
+<li>不支持 ACID</li>
+<li>远超于 SQL 的性能</li>
+</ul>
+<h3 id="nosql-适用场景" tabindex="-1"><a class="header-anchor" href="#nosql-适用场景" aria-hidden="true">#</a> NoSQL 适用场景</h3>
+<ul>
+<li>对数据高并发的读写</li>
+<li>海量数据的读写</li>
+<li>对数据高可扩展性的</li>
+</ul>
+<h3 id="nosql-不适用场景" tabindex="-1"><a class="header-anchor" href="#nosql-不适用场景" aria-hidden="true">#</a> NoSQL 不适用场景</h3>
+<ul>
+<li>需要事务支持</li>
+<li>基于 SQL 的结构化查询存储，处理复杂的关系，需要即席查询（用或者不用 SQL 都不行的情况，请考虑用 NoSql）</li>
+</ul>
+<h3 id="memcache" tabindex="-1"><a class="header-anchor" href="#memcache" aria-hidden="true">#</a> Memcache</h3>
+<ol>
+<li>数据都在内存中，一般不持久化</li>
+<li>支持简单的 key-value 模式，支持类型单一</li>
+<li>一般是作为缓存数据库辅助持久化的数据库</li>
+</ol>
+<h3 id="redis" tabindex="-1"><a class="header-anchor" href="#redis" aria-hidden="true">#</a> Redis</h3>
+<ol>
+<li>几乎覆盖了 Memcached 的绝大部分功能</li>
+<li>数据都在内存中，支持持久化，主要用作备份恢复</li>
+<li>除了支持简单的 key-value 模式，还支持多种数据结构的存储，比如 list、set、hash、zset等。</li>
+<li>一般是作为缓存数据库辅助持久化的数据库</li>
+</ol>
+<h3 id="mongodb" tabindex="-1"><a class="header-anchor" href="#mongodb" aria-hidden="true">#</a> MongoDB</h3>
+<ol>
+<li>高性能、开源、模式自由（schema free）的<strong>文档型数据库</strong></li>
+<li>数据都在内存中， 如果内存不足，把不常用的数据保存到硬盘</li>
+<li>虽然是 key-value 模式，但是对 value（尤其是 <strong>json</strong>）提供了丰富的查询功能</li>
+<li>支持二进制数据及大型对象</li>
+<li>可以根据数据的特点<strong>替代 RDBMS</strong> ，成为独立的数据库。或者配合 RDBMS，存储特定的数据。</li>
+</ol>
+<h2 id="行列存储数据库" tabindex="-1"><a class="header-anchor" href="#行列存储数据库" aria-hidden="true">#</a> 行列存储数据库</h2>
+<p><strong>行式数据库</strong></p>
+<img src="@source/DataBase/Redis/行式数据库.png" alt="行式数据库" style="zoom:80%;" />
+<p><strong>列式数据库</strong></p>
+<img src="@source/DataBase/Redis/列式数据库.png" alt="列式数据库" style="zoom:80%;" />
+<p><strong>Hbase</strong></p>
+<p>HBase 是 <strong>Hadoop</strong> 项目中的数据库。它用于需要对大量的数据进行随机、实时的读写操作的场景中。</p>
+<p>HBase 的目标就是处理数据量非常庞大的表，可以用普通的计算机处理超过 10 亿行数据，还可处理有数百万列元素的数据表。</p>
+<h2 id="图关系型数据库" tabindex="-1"><a class="header-anchor" href="#图关系型数据库" aria-hidden="true">#</a> 图关系型数据库</h2>
+<p>主要应用：社会关系，公共交通网络，地图及网络拓谱 (n*(n-1)/2)</p>
+<h2 id="db-engines-数据库排名" tabindex="-1"><a class="header-anchor" href="#db-engines-数据库排名" aria-hidden="true">#</a> DB-Engines 数据库排名</h2>
+<blockquote>
+<p><a href="http://db-engines.com/en/ranking" target="_blank" rel="noopener noreferrer"><strong>http://db-engines.com/en/ranking</strong><ExternalLinkIcon/></a></p>
+</blockquote>
+<h1 id="redis-概述" tabindex="-1"><a class="header-anchor" href="#redis-概述" aria-hidden="true">#</a> Redis 概述</h1>
+<p>官网地址：<a href="http://redis.io" target="_blank" rel="noopener noreferrer">http://redis.io<ExternalLinkIcon/></a></p>
+<p>中文地址：<a href="http://redis.cn/" target="_blank" rel="noopener noreferrer">http://redis.cn/<ExternalLinkIcon/></a></p>
+<h2 id="应用场景" tabindex="-1"><a class="header-anchor" href="#应用场景" aria-hidden="true">#</a> 应用场景</h2>
+<ol>
+<li>
+<p><strong>配合关系型数据库做高速缓存</strong></p>
+<p>高频次，热门访问的数据，降低数据库 IO</p>
+<p>分布式架构，做 session 共享</p>
+</li>
+<li>
+<p><strong>多样的数据结构存储持久化数据</strong></p>
+<p>最新 N 个数据：通过 List 实现按自然时间排序的数据</p>
+<p>排行榜，TopN：利用 zset 有序集合</p>
+<p>时效性的数据，如：手机验证码：Expire 过期</p>
+<p>计数器，秒杀：原子性，自增方法 INCRE、DECRE</p>
+<p>取出大量数据中的重复数据：利用 Set 集合</p>
+<p>构建队列：利用 List 集合</p>
+<p>发布订阅系统：pub/sub 模式</p>
+</li>
+</ol>
+<h2 id="安装" tabindex="-1"><a class="header-anchor" href="#安装" aria-hidden="true">#</a> 安装</h2>
+<p>安装地址：<a href="https://redis.io/docs/getting-started/installation/" target="_blank" rel="noopener noreferrer">https://redis.io/docs/getting-started/installation/<ExternalLinkIcon/></a></p>
+<figure><img src="@source/DataBase/Redis/image-20220513090502331.png" alt="image-20220513090502331" tabindex="0" loading="lazy"><figcaption>image-20220513090502331</figcaption></figure>
+<p>此处以 CentOS7 系统为例（超过 95% 的 Redis 都安装在 Linux 上），安装版本：<code v-pre>redis-6.2.1.tar.gz</code></p>
+<h3 id="安装步骤" tabindex="-1"><a class="header-anchor" href="#安装步骤" aria-hidden="true">#</a> 安装步骤</h3>
+<ol>
+<li>
+<p>安装 gcc 编译器</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost /<span class="token punctuation">]</span><span class="token comment"># yum install -y centos-release-scl scl-utils-build</span>
+<span class="token punctuation">[</span>root@localhost /<span class="token punctuation">]</span><span class="token comment"># yum install -y devtoolset-8-toolchain</span>
+<span class="token punctuation">[</span>root@localhost /<span class="token punctuation">]</span><span class="token comment"># scl enable devtoolset-8 bash</span>
+<span class="token punctuation">[</span>root@localhost /<span class="token punctuation">]</span><span class="token comment"># gcc --version</span>
+<span class="token comment"># [root@localhost /]# gcc -v</span>
+gcc <span class="token punctuation">(</span>GCC<span class="token punctuation">)</span> <span class="token number">8.3</span>.1 <span class="token number">20190311</span> <span class="token punctuation">(</span>Red Hat <span class="token number">8.3</span>.1-3<span class="token punctuation">)</span>
+Copyright <span class="token punctuation">(</span>C<span class="token punctuation">)</span> <span class="token number">2018</span> Free Software Foundation, Inc.
+This is <span class="token function">free</span> software<span class="token punctuation">;</span> see the <span class="token builtin class-name">source</span> <span class="token keyword">for</span> copying conditions.  There is NO
+warranty<span class="token punctuation">;</span> not even <span class="token keyword">for</span> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p>下载 <code v-pre>redis-6.2.1.tar.gz</code> 放在 /opt 目录并解压</p>
+</li>
+<li>
+<p>在 /usr/local/bin 下新建 redis 目录，用于存放编译好的程序，拷贝解压好的文件夹至该目录中</p>
+</li>
+<li>
+<p>进入 **redis-6.2.1 **目录使用 make 编译</p>
+</li>
+<li>
+<p><strong>跳过 make test 继续执行: make install，可以指定前缀为 redis：make PREFIX=/usr/local/redis install</strong></p>
+<p>编译完成后可以在 src 下新增的命令移动至 /usr/local/bin 下</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># cd /opt/redis</span>
+<span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># tar -zxvf redis-6.2.1.tar.gz</span>
+<span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># ls</span>
+redis-6.2.1  redis-6.2.1.tar.gz
+<span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># cd redis-6.2.1</span>
+<span class="token punctuation">[</span>root@localhost redis-6.2.1<span class="token punctuation">]</span><span class="token comment"># make &amp;&amp; make install</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p>注意事项：</p>
+<p>如果报错：<strong>如果没有准备好 C 语言编译环境，make 会报错 Jemalloc/jemalloc.h：没有那个文件</strong></p>
+<p>解决方案：<strong>运行 make distclean</strong>，<strong>再次执行 make 命令</strong></p>
+<p>如果报错：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>server.c:1062:32: 错误：‘struct redisServer’没有名为‘masterhost’的成员
+             role_char <span class="token operator">=</span> <span class="token punctuation">(</span>server.masterhost ? <span class="token string">'S'</span><span class="token builtin class-name">:</span><span class="token string">'M'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> /* Slave or Master. */
+                                ^
+server.c:1070:15: 错误：‘struct redisServer’没有名为‘syslog_enabled’的成员
+     <span class="token keyword">if</span> <span class="token punctuation">(</span>server.syslog_enabled<span class="token punctuation">)</span> syslog<span class="token punctuation">(</span>syslogLevelMap<span class="token punctuation">[</span>level<span class="token punctuation">]</span>, <span class="token string">"%s"</span>, msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+               ^
+server.c: 在函数‘serverLog’中:
+server.c:1080:30: 错误：‘struct redisServer’没有名为‘verbosity’的成员
+     <span class="token keyword">if</span> <span class="token punctuation">((</span>level<span class="token operator">&amp;</span>0xff<span class="token punctuation">)</span> <span class="token operator">&lt;</span> server.verbosity<span class="token punctuation">)</span> <span class="token builtin class-name">return</span><span class="token punctuation">;</span>
+                              ^
+server.c: 在函数‘serverLogFromHandler’中:
+server.c:1097:31: 错误：‘struct redisServer’没有名为‘logfile’的成员
+     int log_to_stdout <span class="token operator">=</span> server.logfile<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'\0'</span><span class="token punctuation">;</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>问题原因：</p>
+<p>自 redis 6.0.0 之后，编译 redis 需要支持 C11 特性，C11 特性在 4.9 中被引入。</p>
+<p>Redis 默认编译环境需要：yum install gcc-c++</p>
+<p>Centos7 默认 gcc 版本为 4.8.5，所以需要升级 gcc 版本</p>
+<p>升级 GCC 版本</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token comment"># 查看 gcc 版本</span>
+gcc <span class="token parameter variable">-v</span>
+<span class="token comment"># 1. 安装gcc套装：依次执行以下命令</span>
+yum <span class="token function">install</span> cpp
+yum <span class="token function">install</span> binutils
+yum <span class="token function">install</span> glibc
+yum <span class="token function">install</span> glibc-kernheaders
+yum <span class="token function">install</span> glibc-common
+yum <span class="token function">install</span> glibc-devel
+yum <span class="token function">install</span> gcc
+yum <span class="token function">install</span> <span class="token function">make</span>
+
+<span class="token comment"># 2. 升级gcc</span>
+yum <span class="token parameter variable">-y</span> <span class="token function">install</span> centos-release-scl
+yum <span class="token parameter variable">-y</span> <span class="token function">install</span> devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils
+scl <span class="token builtin class-name">enable</span> devtoolset-9 <span class="token function">bash</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ol>
+<h3 id="安装目录-usr-local-bin" tabindex="-1"><a class="header-anchor" href="#安装目录-usr-local-bin" aria-hidden="true">#</a> 安装目录：/usr/local/bin</h3>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redis-6.2.1<span class="token punctuation">]</span><span class="token comment"># ll /usr/local/bin</span>
+总用量 <span class="token number">19136</span>
+-rwxr-xr-x. <span class="token number">1</span> root root <span class="token number">4833352</span> <span class="token number">5</span>月  <span class="token number">13</span> 09:20 redis-benchmark
+lrwxrwxrwx. <span class="token number">1</span> root root      <span class="token number">12</span> <span class="token number">5</span>月  <span class="token number">13</span> 09:20 redis-check-aof -<span class="token operator">></span> redis-server
+lrwxrwxrwx. <span class="token number">1</span> root root      <span class="token number">12</span> <span class="token number">5</span>月  <span class="token number">13</span> 09:20 redis-check-rdb -<span class="token operator">></span> redis-server
+-rwxr-xr-x. <span class="token number">1</span> root root <span class="token number">5003368</span> <span class="token number">5</span>月  <span class="token number">13</span> 09:20 redis-cli
+lrwxrwxrwx. <span class="token number">1</span> root root      <span class="token number">12</span> <span class="token number">5</span>月  <span class="token number">13</span> 09:20 redis-sentinel -<span class="token operator">></span> redis-server
+-rwxr-xr-x. <span class="token number">1</span> root root <span class="token number">9450208</span> <span class="token number">5</span>月  <span class="token number">13</span> 09:20 redis-server
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>查看默认安装目录：</p>
+<ol>
+<li>redis-benchmark：性能测试工具</li>
+<li>redis-check-aof：修复有问题的 AOF 文件</li>
+<li>redis-check-dump：修复有问题的 dump.rdb 文件</li>
+<li>redis-sentinel：Redis 集群使用</li>
+<li>redis-server：Redis 服务器启动命令</li>
+<li>redis-cli：客户端工具</li>
+</ol>
+<h3 id="配置-redis-环境变量" tabindex="-1"><a class="header-anchor" href="#配置-redis-环境变量" aria-hidden="true">#</a> 配置 Redis 环境变量</h3>
+<p><strong>对于 /usr/local/bin 目录说明：</strong></p>
+<p><strong>该目录下的可执行命令已经作为环境变量而存在，可以直接使用。</strong></p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost nginx<span class="token punctuation">]</span><span class="token comment"># echo $PATH</span>
+/usr/local/nginx/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="前台启动" tabindex="-1"><a class="header-anchor" href="#前台启动" aria-hidden="true">#</a> 前台启动</h3>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redis-6.2.1<span class="token punctuation">]</span><span class="token comment"># cd /usr/local/bin</span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># ./redis-server</span>
+<span class="token number">97713</span>:C <span class="token number">13</span> May <span class="token number">2022</span> 09:22:05.617 <span class="token comment"># oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo</span>
+<span class="token number">97713</span>:C <span class="token number">13</span> May <span class="token number">2022</span> 09:22:05.617 <span class="token comment"># Redis version=6.2.1, bits=64, commit=00000000, modified=0, pid=97713, just started</span>
+<span class="token number">97713</span>:C <span class="token number">13</span> May <span class="token number">2022</span> 09:22:05.617 <span class="token comment"># Warning: no config file specified, using the default config. In order to specify a config file use ./redis-server /path/to/redis.conf</span>
+<span class="token number">97713</span>:M <span class="token number">13</span> May <span class="token number">2022</span> 09:22:05.618 * Increased maximum number of <span class="token function">open</span> files to <span class="token number">10032</span> <span class="token punctuation">(</span>it was originally <span class="token builtin class-name">set</span> to <span class="token number">1024</span><span class="token punctuation">)</span>.
+<span class="token number">97713</span>:M <span class="token number">13</span> May <span class="token number">2022</span> 09:22:05.618 * monotonic clock: POSIX clock_gettime
+                _._
+           _.-`<span class="token variable"><span class="token variable">`</span>__ <span class="token string">''</span>-._
+      _.-<span class="token variable">`</span></span><span class="token variable"><span class="token variable">`</span>    <span class="token variable">`</span></span><span class="token builtin class-name">.</span>  <span class="token variable"><span class="token variable">`</span>_.  <span class="token string">''</span>-._           Redis <span class="token number">6.2</span>.1 <span class="token punctuation">(</span>00000000/0<span class="token punctuation">)</span> <span class="token number">64</span> bit
+  .-<span class="token variable">`</span></span><span class="token variable"><span class="token variable">`</span> .-<span class="token variable">`</span></span>`<span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">.</span>  <span class="token variable">`</span></span>`<span class="token variable"><span class="token variable">`</span><span class="token punctuation">\</span>/    _.,_ <span class="token string">''</span>-._
+ <span class="token punctuation">(</span>    '      ,       .-<span class="token variable">`</span></span>  <span class="token operator">|</span> <span class="token variable"><span class="token variable">`</span>,    <span class="token punctuation">)</span>     Running <span class="token keyword">in</span> standalone mode
+ <span class="token operator">|</span><span class="token variable">`</span></span>-._<span class="token variable"><span class="token variable">`</span>-<span class="token punctuation">..</span>.-<span class="token variable">`</span></span> __<span class="token punctuation">..</span>.-.`<span class="token variable"><span class="token variable">`</span>-._<span class="token operator">|</span>'<span class="token variable">`</span></span> _.-<span class="token string">'|     Port: 6379
+ |    `-._   `._    /     _.-'</span>    <span class="token operator">|</span>     PID: <span class="token number">97713</span>
+  <span class="token variable"><span class="token variable">`</span>-._    <span class="token variable">`</span></span>-._  <span class="token variable"><span class="token variable">`</span>-./  _.-<span class="token string">'    _.-'</span>
+ <span class="token operator">|</span><span class="token variable">`</span></span>-._<span class="token variable"><span class="token variable">`</span>-._    <span class="token variable">`</span></span>-.__.-<span class="token string">'    _.-'</span>_.-<span class="token string">'|
+ |    `-._`-._        _.-'</span>_.-<span class="token string">'    |           http://redis.io
+  `-._    `-._`-.__.-'</span>_.-<span class="token string">'    _.-'</span>
+ <span class="token operator">|</span><span class="token variable"><span class="token variable">`</span>-._<span class="token variable">`</span></span>-._    <span class="token variable"><span class="token variable">`</span>-.__.-<span class="token string">'    _.-'</span>_.-'<span class="token operator">|</span>
+ <span class="token operator">|</span>    <span class="token variable">`</span></span>-._<span class="token variable"><span class="token variable">`</span>-._        _.-<span class="token string">'_.-'</span>    <span class="token operator">|</span>
+  <span class="token variable">`</span></span>-._    <span class="token variable"><span class="token variable">`</span>-._<span class="token variable">`</span></span>-.__.-<span class="token string">'_.-'</span>    _.-<span class="token string">'
+      `-._    `-.__.-'</span>    _.-<span class="token string">'
+          `-._        _.-'</span>
+              `-.__.-<span class="token string">'
+
+97713:M 13 May 2022 09:22:05.621 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+97713:M 13 May 2022 09:22:05.621 # Server initialized
+97713:M 13 May 2022 09:22:05.621 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add '</span>vm.overcommit_memory <span class="token operator">=</span> <span class="token number">1</span><span class="token string">' to /etc/sysctl.conf and then reboot or run the command '</span><span class="token function">sysctl</span> <span class="token assign-left variable">vm.overcommit_memory</span><span class="token operator">=</span><span class="token number">1</span>' <span class="token keyword">for</span> this to take effect.
+<span class="token number">97713</span>:M <span class="token number">13</span> May <span class="token number">2022</span> 09:22:05.621 * Ready to accept connections
+^C97713:signal-handler <span class="token punctuation">(</span><span class="token number">1652404933</span><span class="token punctuation">)</span> Received SIGINT scheduling shutdown<span class="token punctuation">..</span>.
+<span class="token number">97713</span>:M <span class="token number">13</span> May <span class="token number">2022</span> 09:22:13.266 <span class="token comment"># User requested shutdown...</span>
+<span class="token number">97713</span>:M <span class="token number">13</span> May <span class="token number">2022</span> 09:22:13.266 * Saving the final RDB snapshot before exiting.
+<span class="token number">97713</span>:M <span class="token number">13</span> May <span class="token number">2022</span> 09:22:13.271 * DB saved on disk
+<span class="token number">97713</span>:M <span class="token number">13</span> May <span class="token number">2022</span> 09:22:13.271 <span class="token comment"># Redis is now ready to exit, bye bye...</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="后台启动" tabindex="-1"><a class="header-anchor" href="#后台启动" aria-hidden="true">#</a> 后台启动</h3>
+<p>备份 redis.conf，或者拷贝到 /etc 等其他目录中。</p>
+<p><strong>后台启动设置 daemonize no 改成 yes</strong></p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># cp /opt/redis-6.2.1/redis.conf /etc</span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># vim /etc/redis.conf</span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># redis-server /etc/redis.conf</span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># ps -ef |grep redis</span>
+root      <span class="token number">97843</span>      <span class="token number">1</span>  <span class="token number">0</span> 09:30 ?        00:00:00 redis-server <span class="token number">127.0</span>.0.1:6379
+root      <span class="token number">97849</span>  <span class="token number">93182</span>  <span class="token number">0</span> 09:30 pts/1    00:00:00 <span class="token function">grep</span> <span class="token parameter variable">--color</span><span class="token operator">=</span>auto redis
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># ps -aux|grep redis|grep -v grep</span>
+root      <span class="token number">18370</span>  <span class="token number">0.4</span>  <span class="token number">0.2</span> <span class="token number">162540</span>  <span class="token number">2644</span> ?        Ssl  <span class="token number">12</span>:26   <span class="token number">0</span>:00 redis-server <span class="token number">127.0</span>.0.1:6379
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>多个端口启动可以：<code v-pre>redis-cli -p 6379</code></p>
+<p>注意：此处的 127.0.0.1:6379 仅仅支持本地连接，远程连接：<code v-pre>redis-cli -h 192.168.100.100 -p 6379</code></p>
+<h3 id="客户端远程连接" tabindex="-1"><a class="header-anchor" href="#客户端远程连接" aria-hidden="true">#</a> 客户端远程连接</h3>
+<p>禁用 Linux 的防火墙：Linux（CentOS7） 里执行命令</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>systemctl stop/disable firewalld.service
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><p>或者开放端口 6379</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token comment"># 查看开放的端口号</span>
+firewall-cmd --list-all
+<span class="token comment"># 设置开放的端口号</span>
+firewall-cmd --add-service<span class="token operator">=</span>redis <span class="token parameter variable">--permanent</span>
+firewall-cmd --add-port<span class="token operator">=</span><span class="token number">6379</span>/tcp <span class="token parameter variable">--permanent</span>
+<span class="token comment"># 重启防火墙</span>
+firewall-cmd <span class="token parameter variable">--reload</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>redis.conf 中注释掉 bind 127.0.0.1，并且设置： protected-mode no</strong></p>
+<p>【<strong>改配置前必须关掉 redis，否则不生效</strong>】</p>
+<div class="language-tex line-numbers-mode" data-ext="tex"><pre v-pre class="language-tex"><code>-DENIED Redis is running in protected mode because protected mode is enabled, no bind address was specified, no authentication password is requested to clients. In this mode connections are only accepted from the loopback interface. If you want to connect from external computers to Redis you may adopt one of the following solutions: 
+1) Just disable protected mode sending the command 'CONFIG SET protected-mode no' from the loopback interface by connecting to Redis from the same host the server is running, however MAKE SURE Redis is not publicly accessible from internet if you do so. Use CONFIG REWRITE to make this change permanent. 
+2) Alternatively you can just disable the protected mode by editing the Redis configuration file, and setting the protected mode option to 'no', and then restarting the server. 
+3) If you started the server manually just for testing, restart it with the '--protected-mode no' option. 
+4) Setup a bind address or an authentication password. 
+NOTE: You only need to do one of the above things in order for the server to start accepting connections from the outside. 
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>使用客户端工具 redis-cli 访问</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># redis-cli</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token function">ping</span>
+PONG
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="关闭连接" tabindex="-1"><a class="header-anchor" href="#关闭连接" aria-hidden="true">#</a> 关闭连接</h3>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token comment"># 方式一：</span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># redis-cli</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token function">shutdown</span>
+not connected<span class="token operator">></span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># ps -ef |grep redis|grep -v grep</span>
+root      <span class="token number">97843</span>      <span class="token number">1</span>  <span class="token number">0</span> 09:30 ?        00:00:00 redis-server <span class="token number">127.0</span>.0.1:6379
+
+<span class="token comment"># 方式二： redis-cli shutdown</span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># redis-cli shutdown</span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># ps -ef |grep redis</span>
+root      <span class="token number">97884</span>  <span class="token number">93182</span>  <span class="token number">0</span> 09:33 pts/1    00:00:00 <span class="token function">grep</span> <span class="token parameter variable">--color</span><span class="token operator">=</span>auto redis
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="卸载" tabindex="-1"><a class="header-anchor" href="#卸载" aria-hidden="true">#</a> 卸载</h2>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code> <span class="token comment"># 如果安装时未指定前缀路径，则默认安装在 /usr/local/bin 下</span>
+<span class="token function">rm</span> <span class="token parameter variable">-f</span> /usr/local/redis/*
+<span class="token comment"># 删除命令</span>
+<span class="token function">rm</span> <span class="token parameter variable">-f</span> /usr/local/bin/redis-*
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="redis-基础知识" tabindex="-1"><a class="header-anchor" href="#redis-基础知识" aria-hidden="true">#</a> Redis 基础知识</h2>
+<p>端口 6379：Alessia  Merz</p>
+<ol>
+<li>默认 16 个数据库，类似数组下标从 0 开始，初始默认使用 0 号库</li>
+<li>使用命令 select  &lt;dbid&gt;来切换数据库。如：select 8</li>
+<li>统一密码管理，所有库同样密码。</li>
+<li>dbsize ：查看当前数据库的 key 的数量</li>
+<li>flushdb ： 清空当前库</li>
+<li>flushall ：通杀全部库</li>
+</ol>
+<p><strong>Redis 是单线程 + 多路 IO 复用技术</strong></p>
+<blockquote>
+<p>​		多路复用是指使用一个线程来检查多个文件描述符（Socket）的就绪状态，比如调用 select 和 poll 函数，传入多个文件描述符，如果有一个文件描述符就绪，</p>
+<p>则返回，否则阻塞直到超时。得到就绪状态后进行真正的操作可以在同一个线程里执行，也可以启动线程执行（比如使用线程池）</p>
+<p>串行  vs  多线程 + 锁（memcached） vs  单线程 + 多路 IO 复用（Redis）</p>
+<p>（与 Memcache 三点不同：支持多数据类型，支持持久化，单线程 + 多路 IO 复用）</p>
+</blockquote>
+<h1 id="常用五大数据类型" tabindex="-1"><a class="header-anchor" href="#常用五大数据类型" aria-hidden="true">#</a> 常用五大数据类型</h1>
+<p>Redis 常见数据类型操作命令：<a href="http://www.redis.cn/commands.html" target="_blank" rel="noopener noreferrer">http://www.redis.cn/commands.html<ExternalLinkIcon/></a></p>
+<h2 id="redis-键-key" tabindex="-1"><a class="header-anchor" href="#redis-键-key" aria-hidden="true">#</a> Redis 键（key）</h2>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>keys *</td>
+<td>查看当前库所有 key（匹配：<code v-pre>keys *1</code> 得到 'k1'），作为通配符存在，* 代表一个或多个</td>
+</tr>
+<tr>
+<td>exists key</td>
+<td>判断某个 key 是否存在</td>
+</tr>
+<tr>
+<td>type key</td>
+<td>查看 key 的类型</td>
+</tr>
+<tr>
+<td>del key</td>
+<td>删除指定的 key 数据</td>
+</tr>
+<tr>
+<td>unlink key</td>
+<td>根据 value 选择非阻塞删除，仅将 keys 从 keyspace 元数据中删除，真正的删除会在后续异步操作</td>
+</tr>
+<tr>
+<td>expire key 10</td>
+<td>为给定的 key 设置过期时间，10 秒</td>
+</tr>
+<tr>
+<td>ttl key</td>
+<td>查看还有多少秒过期，-1 表示永不过期，-2 表示已过期</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> k1
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> ERR wrong number of arguments <span class="token keyword">for</span> <span class="token string">'set'</span> <span class="token builtin class-name">command</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> k1 v1
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> k2 v2
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> k3 v3
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> keys *
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"k3"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"k2"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"k1"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> dbsize
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> exists k2
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">type</span> k1
+string
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> expire k3 <span class="token number">10</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> ttl k3
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">7</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> ttl k3
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">4</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> ttl k3
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token parameter variable">-2</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> keys *
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"k2"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"k1"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> del k2
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> keys *
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"k1"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="redis-字符串-string" tabindex="-1"><a class="header-anchor" href="#redis-字符串-string" aria-hidden="true">#</a> Redis 字符串（String）</h2>
+<h3 id="简介" tabindex="-1"><a class="header-anchor" href="#简介" aria-hidden="true">#</a> 简介</h3>
+<ul>
+<li>
+<p>String 是 Redis 最基本的类型，可以理解成与 Memcached 一模一样的类型，一个 key 对应一个 value。</p>
+</li>
+<li>
+<p>String 类型是二进制安全的。意味着 Redis 的 String 可以包含任何数据。比如 jpg 图片或者序列化的对象。</p>
+</li>
+<li>
+<p>String 类型是 Redis 最基本的数据类型，一个 Redis 中字符串 value 最多可以是 512M</p>
+</li>
+</ul>
+<h3 id="常用命令" tabindex="-1"><a class="header-anchor" href="#常用命令" aria-hidden="true">#</a> 常用命令</h3>
+<ol>
+<li><code v-pre>set &lt;key&gt;&lt;value&gt; 添加键值对</code></li>
+</ol>
+<ul>
+<li>
+<p>*<strong>NX：当数据库中 key 不存在时，可以将 key-value 添加数据库</strong></p>
+</li>
+<li>
+<p>*XX：当数据库中 key 存在时，可以将 key-value 添加数据库，与 NX 参数互斥</p>
+</li>
+<li>
+<p>*<strong>EX：key 的超时秒数，setex k2 10 v2</strong></p>
+</li>
+<li>
+<p>*PX：key 的超时毫秒数，与 EX 互斥</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> <span class="token keyword">set</span> k1 v1
+OK
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> setnx k1 v11
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> setex k2 <span class="token number">10</span> v2
+OK
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> ttl k2
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">7</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> ttl k2
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ul>
+<ol start="2">
+<li>
+<p><code v-pre>get  &lt;key&gt;查询对应键值</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> get k1
+<span class="token string">"v1"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> get k2
+<span class="token punctuation">(</span>nil<span class="token punctuation">)</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>append &lt;key&gt;&lt;value&gt;将给定的&lt;value&gt; 追加到原值的末尾</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> append k1 v1v1
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">6</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> get k1
+<span class="token string">"v1v1v1"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>strlen &lt;key&gt;获得值的长度</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> strlen k1
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">6</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>setnx &lt;key&gt;&lt;value&gt;</code>只有在 key 不存在时  设置 key 的值</p>
+</li>
+<li>
+<p><code v-pre>incr &lt;key&gt; </code> 将 key 中储存的数字值增 1，只能对数字值操作，如果为空，新增值为 1</p>
+</li>
+<li>
+<p><code v-pre>decr &lt;key&gt;</code> 将 key 中储存的数字值减1，只能对数字值操作，如果为空，新增值为 -1</p>
+</li>
+<li>
+<p><code v-pre>incrby / decrby &lt;key&gt;&lt;步长&gt;</code> 将 key 中储存的数字值增减。自定义步长。【原子操作】</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> get k1
+v1
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> incr k1
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> ERR <span class="token keyword">value</span> <span class="token operator">is</span> <span class="token operator">not</span> an <span class="token keyword">integer</span> <span class="token operator">or</span> <span class="token keyword">out</span> <span class="token keyword">of</span> range
+
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> <span class="token keyword">set</span> k2 <span class="token number">2</span>
+OK
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> incr k2
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> incr k2
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">4</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> get k2
+<span class="token string">"4"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> decr k2
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> incrby k2 <span class="token number">3</span>
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">6</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> incrby k2 <span class="token number">3</span>
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">9</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> decrby k2 <span class="token number">1</span>
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">8</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> get k2
+<span class="token string">"8"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>mset &lt;key1&gt;&lt;value1&gt;&lt;key2&gt;&lt;value2&gt;</code>  同时设置一个或多个 key-value 对</p>
+</li>
+<li>
+<p><code v-pre>mget &lt;key1&gt;&lt;key2&gt;&lt;key3&gt;</code>  同时获取一个或多个 value</p>
+</li>
+<li>
+<p><code v-pre>msetnx &lt;key1&gt;&lt;value1&gt;&lt;key2&gt;&lt;value2&gt;</code>  同时设置一个或多个 key-value 对，当且仅当所有给定 key 都不存在。</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> mset k1 v1 k2 v2
+OK
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> mget k1 k2
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"v1"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"v2"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> msetnx k3 v3 k4 v4
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> msetnx k3 k33 k5 v5
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> get k5
+<span class="token punctuation">(</span>nil<span class="token punctuation">)</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>原子性，有一个失败则都失败</strong></p>
+</li>
+<li>
+<p><code v-pre>getrange &lt;key&gt;&lt;起始位置&gt;&lt;结束位置&gt;</code>  获得值的范围，类似 substring，<strong>前包，后包</strong></p>
+</li>
+<li>
+<p><code v-pre>setrange &lt;key&gt;&lt;起始位置&gt;&lt;value&gt;    用 &lt;value&gt; 覆写&lt;key&gt;所储存的字符串值</code>，从起始位置开始（索引从0开始）。</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> <span class="token keyword">set</span> k1 abcdefg
+OK
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> getrange k1 <span class="token number">2</span> <span class="token number">4</span>
+<span class="token string">"cde"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> setrange k1 <span class="token number">1</span> xxx
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">7</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> get k1
+<span class="token string">"axxxefg"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>setex &lt;key&gt;&lt;过期时间&gt;&lt;value&gt;</code> 设置键值的同时，设置过期时间，单位秒。</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> setex k2 <span class="token number">10</span> v2
+OK
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> ttl k2
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">7</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>getset &lt;key&gt;&lt;value&gt; 以新换旧</code>，设置了新值同时获得旧值，重新设置则默认永不过期</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> <span class="token keyword">set</span> k3 v3
+OK
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> getset k3 v33
+<span class="token string">"v3"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> get k3
+<span class="token string">"v33"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ol>
+<p>原子性：</p>
+<p>所谓 <strong>原子操作</strong> 是指不会被线程调度机制打断的操作。</p>
+<p>这种操作一旦开始，就一直运行到结束，中间不会有任何 context switch 。</p>
+<p>（1）在单线程中， 能够在单条指令中完成的操作都可以认为是 &quot;原子操作&quot;，因为中断只能发生于指令之间。</p>
+<p>（2）在多线程中，不能被其它进程（线程）打断的操作就叫原子操作。</p>
+<p><strong>Redis 单命令的原子性主要得益于 Redis 的单线程。</strong></p>
+<p><mark> Redis 中的 incr/decr 是原子操作</mark></p>
+<p><strong>案例：</strong></p>
+<p>Java中的 i++ 是否是原子操作？<strong>不是</strong></p>
+<p>i=0; 两个线程分别对 i 进行 ++100次，值是多少？【2-200】</p>
+<figure><img src="@source/DataBase/Redis/i++不是原子操作.png" alt="i++不是原子操作" tabindex="0" loading="lazy"><figcaption>i++不是原子操作</figcaption></figure>
+<p>说明：</p>
+<p>i++ 的操作分为三步：取值，++，再赋值</p>
+<p>a 线程加到 99 但未赋值，被 b 线程打断并进行加 1 操作，此时 a 线程执行赋值操作 i=1，b 线程打断并加到 99，i++ 后 i = 100，a 线程打断，再次 i++ ，最终值为 2，两个线程都执行了100次，所以最终的范围是 [2, 200]</p>
+<h3 id="数据结构" tabindex="-1"><a class="header-anchor" href="#数据结构" aria-hidden="true">#</a> 数据结构</h3>
+<p>​		String 的数据结构为简单动态字符串（Simple Dynamic String，缩写 SDS）。是可以修改的字符串，内部结构实现上类似于Java 的 ArrayList，<strong>采用预分配冗余空间的方式来减少内存的频繁分配。</strong></p>
+<figure><img src="@source/DataBase/Redis/字符串数据结构.png" alt="字符串数据结构" tabindex="0" loading="lazy"><figcaption>字符串数据结构</figcaption></figure>
+<p>​		如图中所示，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字符串最大长度为 512M。</p>
+<h2 id="redis-列表-list" tabindex="-1"><a class="header-anchor" href="#redis-列表-list" aria-hidden="true">#</a> Redis 列表（List）</h2>
+<h3 id="简介-1" tabindex="-1"><a class="header-anchor" href="#简介-1" aria-hidden="true">#</a> 简介</h3>
+<p>单键多值</p>
+<p>​		Redis 列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）。它的底层实际是个双向链表，对两端的操作性能很高，通过索引下标的操作中间的节点性能会较差。</p>
+<figure><img src="@source/DataBase/Redis/链表.png" alt="链表" tabindex="0" loading="lazy"><figcaption>链表</figcaption></figure>
+<h3 id="常用命令-1" tabindex="-1"><a class="header-anchor" href="#常用命令-1" aria-hidden="true">#</a> 常用命令</h3>
+<ol>
+<li>
+<p><code v-pre>lpush/rpush &lt;key&gt;&lt;value1&gt;&lt;value2&gt;&lt;value3&gt; .... 从左边/右边插入一个或多个值。</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lpush code java go c<span class="token operator">+</span><span class="token operator">+</span>
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange code <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"c++"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"go"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"java"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> rpush code python scala
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">5</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange code <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"c++"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"go"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"java"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"python"</span>
+<span class="token number">5</span><span class="token punctuation">)</span> <span class="token string">"scala"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>lrange &lt;key&gt;&lt;start&gt;&lt;stop&gt; 按照索引下标获得元素(从左到右)，（0 到 -1表示获取所有）</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange code <span class="token number">0</span> <span class="token number">2</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"c++"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"go"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"java"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>lpop/rpop &lt;key&gt; &lt;count&gt;从左边/右边弹出一个或多个值。</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lpop code
+<span class="token string">"c++"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> rpop code <span class="token number">2</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"scala"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"python"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange code <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"go"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"java"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>rpoplpush &lt;key1&gt;&lt;key2&gt;从&lt;key1&gt;列表右边弹出一个值，插到&lt;key2&gt;列表左边。</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> rpush list01 A B C
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> rpush list02 D E F
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> rpoplpush list01 list02
+<span class="token string">"C"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange list01 <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange list02 <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"D"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"E"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"F"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>lindex &lt;key&gt;&lt;index&gt;按照索引下标获得元素(从左到右)</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange list02 <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"D"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"E"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"F"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lindex list02 <span class="token number">2</span>
+<span class="token string">"E"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>llen &lt;key&gt;获得列表长度 </code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> llen list02
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">4</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>linsert &lt;key&gt; before &lt;value&gt;&lt;newvalue&gt;在&lt;value&gt;的后面插入&lt;newvalue&gt;插入值</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> rpush list A B C D
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">4</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> linsert list before C X
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">5</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange list <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"X"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">5</span><span class="token punctuation">)</span> <span class="token string">"D"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>lrem &lt;key&gt;&lt;n&gt;&lt;value&gt;从左边删除 n 个 value (从左到右)</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> rpush list A B B B C D
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">6</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrem list <span class="token number">2</span> B
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">2</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange list <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"D"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>lset&lt;key&gt;&lt;index&gt;&lt;value&gt;将列表key下标为index的值替换成value</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lset list <span class="token number">2</span> CC
+OK
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> lrange list <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"CC"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"D"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ol>
+<h3 id="数据结构-1" tabindex="-1"><a class="header-anchor" href="#数据结构-1" aria-hidden="true">#</a> 数据结构</h3>
+<p><strong>List 的数据结构为快速链表 quickList。</strong></p>
+<p>首先在列表元素较少的情况下会使用一块连续的内存存储，这个结构是 ziplist，也即是压缩列表，它将所有的元素紧挨着一起存储，分配的是一块连续的内存。</p>
+<p>当数据量比较多的时候才会改成 quicklist。</p>
+<p>因为普通的链表需要的附加指针空间太大，会比较浪费空间。比如这个列表里存的只是 int 类型的数据，结构上还需要两个额外的指针 prev 和 next。</p>
+<figure><img src="@source/DataBase/Redis/List数据结构QuickList.png" alt="List数据结构QuickList" tabindex="0" loading="lazy"><figcaption>List数据结构QuickList</figcaption></figure>
+<p>Redis 将链表和 ziplist 结合起来组成了 quicklist。也就是将多个 ziplist 使用双向指针串起来使用。这样既满足了快速的插入删除性能，又不会出现太大的空间冗余。</p>
+<h2 id="redis-集合-set" tabindex="-1"><a class="header-anchor" href="#redis-集合-set" aria-hidden="true">#</a> Redis 集合（Set）</h2>
+<h3 id="简介-2" tabindex="-1"><a class="header-anchor" href="#简介-2" aria-hidden="true">#</a> 简介</h3>
+<p>​		Set 对外提供的功能与 List 类似是一个列表的功能，特殊之处在于 Set 是可以<strong>自动去重</strong>的，当你需要存储一个列表数据，又不希望出现重复数据时，Set 是一个很好的选择，并且 Set 提供了判断某个成员是否在一个 Set 集合内的重要接口，这个也是 List 所不能提供的。</p>
+<p>​		<strong>Redis 的 Set 是 String 类型的无序集合。<strong>它底层其实是一个 value 为 null 的 hash 表，所以添加，删除，查找的</strong>复杂度都是</strong>O(1)。一个算法，随着数据的增加，执行时间的长短，如果是 O(1)，数据增加，查找数据的时间不变。</p>
+<h3 id="常用命令-2" tabindex="-1"><a class="header-anchor" href="#常用命令-2" aria-hidden="true">#</a> 常用命令</h3>
+<ol>
+<li>
+<p><code v-pre>sadd &lt;key&gt;&lt;value1&gt;&lt;value2&gt;</code> 将一个或多个 member 元素加入到集合 key 中，已存在的 member 元素将被忽略</p>
+</li>
+<li>
+<p><code v-pre>smembers &lt;key&gt;</code>  取出该集合的所有值。</p>
+</li>
+<li>
+<p><code v-pre>sismember &lt;key&gt;&lt;value&gt;  判断集合&lt;key&gt;是否为含有该&lt;value&gt;值，有1，没有0</code></p>
+</li>
+<li>
+<p><code v-pre>scard&lt;key&gt;  返回该集合的元素个数。</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> sadd set01 A A B C C
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> smembers set01
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> sismember set01 C
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> scard set01
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>srem &lt;key&gt;&lt;value1&gt;&lt;value2&gt;  删除集合中的某个元素。</code></p>
+</li>
+<li>
+<p><code v-pre>spop &lt;key&gt;  随机从该集合中弹出一个值。</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> smembers set01
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"F"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"E"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">5</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">6</span><span class="token punctuation">)</span> <span class="token string">"D"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> srem set01 D
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> smembers set01
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"F"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"E"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">5</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> spop set01 <span class="token number">2</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> smembers set01
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"F"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"E"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>srandmember &lt;key&gt;&lt;n&gt; 随机从该集合中取出n个值。不会从集合中删除 。</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> sadd set01  A B C D E F
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">6</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> srandmember set01 <span class="token number">2</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"E"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>smove &lt;source&gt;&lt;destination&gt;  value  把集合中一个值从一个集合移动到另一个集合。</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> sadd set01 A B C
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> smove set01 set02 A
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> smembers set02
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>sinter &lt;key1&gt;&lt;key2&gt;  返回两个集合的交集元素。</code></p>
+</li>
+<li>
+<p><code v-pre>sunion &lt;key1&gt;&lt;key2&gt;返回两个集合的并集元素。</code></p>
+</li>
+<li>
+<p><code v-pre>sdiff &lt;key1&gt;&lt;key2&gt;    返回两个集合的差集元素（key1中的，不包含key2中的）。</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> sadd set01 A C D
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> sadd set02 B C E
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> sinter set01 set02
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> sunion set01 set02
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"D"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">5</span><span class="token punctuation">)</span> <span class="token string">"E"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> sdiff set01 set02
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"D"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ol>
+<h3 id="数据结构-2" tabindex="-1"><a class="header-anchor" href="#数据结构-2" aria-hidden="true">#</a> 数据结构</h3>
+<p>Set 数据结构是 dict 字典，字典是用哈希表实现的。</p>
+<p>​		Java 中 HashSet 的内部实现使用的是 HashMap，只不过所有的 value 都指向同一个对象。Redis 的 Set 结构也是一样，它的内部也使用 hash 结构，所有的 value 都指向同一个内部值。</p>
+<h2 id="redis-哈希-hash" tabindex="-1"><a class="header-anchor" href="#redis-哈希-hash" aria-hidden="true">#</a> Redis 哈希（Hash）</h2>
+<h3 id="简介-3" tabindex="-1"><a class="header-anchor" href="#简介-3" aria-hidden="true">#</a> 简介</h3>
+<p>Redis hash 是一个键值对集合。</p>
+<p>Redis hash 是一个 String 类型的 field 和 value 的映射表，<mark>hash 特别适合用于存储对象。</mark></p>
+<p>类似 Java 里面的 Map&lt;String, Object&gt;</p>
+<h3 id="常用命令-3" tabindex="-1"><a class="header-anchor" href="#常用命令-3" aria-hidden="true">#</a> 常用命令</h3>
+<ol>
+<li>
+<p><code v-pre>hset &lt;key&gt;&lt;field&gt;&lt;value&gt;    给&lt;key&gt;集合中的 &lt;field&gt;键赋值&lt;value&gt;</code></p>
+</li>
+<li>
+<p><code v-pre>hget &lt;key1&gt;&lt;field&gt;</code>                 <code v-pre>从&lt;key1&gt;集合&lt;field&gt;取出 value </code></p>
+</li>
+<li>
+<p><code v-pre>hmset &lt;key1&gt;&lt;field1&gt;&lt;value1&gt;&lt;field2&gt;&lt;value2&gt;</code>                批量设置 hash 的值</p>
+</li>
+<li>
+<p><code v-pre>hexists&lt;key1&gt;&lt;field&gt;</code>             查看哈希表 key 中，给定域 field 是否存在。</p>
+</li>
+<li>
+<p><code v-pre>hkeys &lt;key&gt;    </code>                           列出该hash集合的所有field</p>
+</li>
+<li>
+<p><code v-pre>hvals &lt;key&gt;  </code>                              列出该hash集合的所有value</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hset hash01 id <span class="token number">1</span>
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hget hash01 id
+<span class="token string">"1"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hmset hash02 name tom age <span class="token number">12</span> gender man
+OK
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hexists hash02 birth
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hkeys hash02
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"name"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"age"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"gender"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hvals hash02
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"tom"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"12"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"man"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>hincrby &lt;key&gt;&lt;field&gt;&lt;increment&gt;  </code>    为哈希表 key 中的域 field 的值加上增量 1  -1</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hget hash02 age
+<span class="token string">"12"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hincrby hash02 age <span class="token number">2</span>
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">14</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hget hash02 age
+<span class="token string">"14"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>hsetnx &lt;key&gt;&lt;field&gt;&lt;value&gt;</code>                将哈希表 key 中的域 field 的值设置为 value ，当且仅当域 field 不存在。</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hkeys hash02
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"name"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"age"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"gender"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hsetnx hash02 age <span class="token number">10</span>
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> hsetnx hash02 birth <span class="token number">1997</span><span class="token operator">/</span><span class="token number">01</span><span class="token operator">/</span><span class="token number">20</span>
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">1</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ol>
+<h3 id="数据结构-3" tabindex="-1"><a class="header-anchor" href="#数据结构-3" aria-hidden="true">#</a> 数据结构</h3>
+<p>​		<strong>Hash 类型对应的数据结构是两种：ziplist（压缩列表），hashtable（哈希表）。当 field-value 长度较短且个数较少时，使用 ziplist，否则使用 hashtable。</strong></p>
+<h2 id="redis-有序集合-zset-sorted-set" tabindex="-1"><a class="header-anchor" href="#redis-有序集合-zset-sorted-set" aria-hidden="true">#</a> Redis 有序集合 Zset（Sorted set）</h2>
+<h3 id="简介-4" tabindex="-1"><a class="header-anchor" href="#简介-4" aria-hidden="true">#</a> 简介</h3>
+<p>Redis 有序集合 Sorted Set 与普通集合 set 非常相似，是一个没有重复元素的字符串集合。</p>
+<p>不同之处是有序集合的每个成员都关联了一个<strong>评分（score）</strong>，这个评分（score）被用来按照从最低分到最高分的方式排序集合中的成员。</p>
+<p>集合的成员是唯一的，但是评分可以重复 。</p>
+<p>因为元素是有序的， 所以可以很快的根据评分（score）或者次序（position）来获取一个范围的元素。</p>
+<p>访问有序集合的中间元素也是非常快的，因此能够使用有序集合作为一个没有重复成员的智能列表。</p>
+<h3 id="常用命令-4" tabindex="-1"><a class="header-anchor" href="#常用命令-4" aria-hidden="true">#</a> 常用命令</h3>
+<ol>
+<li>
+<p><code v-pre>zadd &lt;key&gt;&lt;score1&gt;&lt;value1&gt;&lt;score2&gt;&lt;value2&gt;</code></p>
+<p>将一个或多个 member 元素及其 score 值加入到有序集 key 当中。</p>
+</li>
+<li>
+<p><code v-pre>zrange &lt;key&gt;&lt;start&gt;&lt;stop&gt; [WITHSCORES]</code></p>
+<p>返回有序集 key 中，<code v-pre>&lt;mark&gt;下标在&lt;start&gt;&lt;stop&gt;之间的元素&lt;/mark&gt;</code>，带 WITHSCORES，可以让分数一起和值返回到结果集。</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> zadd zset01 <span class="token number">30</span> A <span class="token number">40</span> B <span class="token number">10</span> C
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> zrange zset01 <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> zrange zset01 <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span> withscores
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"10"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"30"</span>
+<span class="token number">5</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">6</span><span class="token punctuation">)</span> <span class="token string">"40"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>zrangebyscore key minmax [withscores] [limit offset count]</code></p>
+<p>返回有序集 key 中，<mark>所有 score 值介于 min 和 max 之间</mark>（包括等于 min 或 max ）成员。有序集成员按 score 值递增（从小到大）次序排列。</p>
+</li>
+<li>
+<p><code v-pre>zrevrangebyscore key maxmin [withscores] [limit offset count] </code>     同上，改为从大到小排列。</p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> zrangebyscore zset01 <span class="token number">20</span> <span class="token number">40</span> withscores
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"30"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"40"</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> zrevrangebyscore zset01 <span class="token number">30</span> <span class="token number">10</span>  withscores
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"30"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"C"</span>
+<span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"10"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>zincrby &lt;key&gt;&lt;increment&gt;&lt;value&gt;   为元素的score加上增量</code></p>
+<div class="language-SQL line-numbers-mode" data-ext="SQL"><pre v-pre class="language-SQL"><code>127.0.0.1:6379&gt; zincrby zset01 10 B
+&quot;50&quot;
+127.0.0.1:6379&gt; zrange zset01 0 -1 withscores
+1) &quot;C&quot;
+2) &quot;10&quot;
+3) &quot;A&quot;
+4) &quot;30&quot;
+5) &quot;B&quot;
+6) &quot;50&quot;
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p><code v-pre>zcount &lt;key&gt;&lt;min&gt;&lt;max&gt;统计该集合，分数区间内的元素个数 </code></p>
+</li>
+<li>
+<p><code v-pre>zrank &lt;key&gt;&lt;value&gt;返回该值在集合中的排名，从0开始。</code></p>
+</li>
+<li>
+<p><code v-pre>zrem &lt;key&gt;&lt;value&gt;删除该集合下，指定值的元素</code></p>
+<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code><span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> zcount zset01 <span class="token number">10</span> <span class="token number">50</span>
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> zrank zset01 A
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> zrem zset01 C
+<span class="token punctuation">(</span><span class="token keyword">integer</span><span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span><span class="token number">.0</span><span class="token number">.1</span>:<span class="token number">6379</span><span class="token operator">></span> zrange zset01 <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"A"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"B"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ol>
+<h3 id="数据结构-4" tabindex="-1"><a class="header-anchor" href="#数据结构-4" aria-hidden="true">#</a> 数据结构</h3>
+<p>​		SortedSet（zset）是 Redis 提供的一个非常特别的数据结构，一方面它等价于 Java 的数据结构 Map&lt;String, Double&gt;，可以给每一个元素 value 赋予一个权重 score，另一方面它又类似于 TreeSet，内部的元素会按照权重 score 进行排序，可以得到每个元素的名次，还可以通过 score 的范围来获取元素的列表。</p>
+<p>zset 底层使用了两个数据结构：</p>
+<p>（1）hash，hash 的作用就是关联元素 value 和权重 score，保障元素 value 的唯一性，可以通过元素 value 找到相应的 score 值。</p>
+<p>（2）跳跃表，<mark>跳跃表的目的在于给元素 value 排序，根据 score 的范围获取元素列表。</mark></p>
+<h3 id="跳跃表" tabindex="-1"><a class="header-anchor" href="#跳跃表" aria-hidden="true">#</a> 跳跃表</h3>
+<ol>
+<li>简介</li>
+</ol>
+<p>​		有序集合在生活中比较常见，例如根据成绩对学生排名，根据得分对玩家排名等。对于有序集合的底层实现，可以用数组、平衡树、链表等。数组不便元素的插入、删除；平衡树或红黑树虽然效率高但结构复杂；链表查询需要遍历所有效率低。Redis 采用的是跳跃表。跳跃表效率堪比红黑树，实现远比红黑树简单。</p>
+<ol start="2">
+<li>实例</li>
+</ol>
+<p>​		对比有序链表和跳跃表，从链表中查询出 51。</p>
+<p>​	2.1 有序链表</p>
+<figure><img src="@source/DataBase/Redis/image-20220513110841045.png" alt="image-20220513110841045" tabindex="0" loading="lazy"><figcaption>image-20220513110841045</figcaption></figure>
+<p>​		要查找值为 51 的元素，需要从第一个元素开始依次查找、比较才能找到，共需要 6 次比较。</p>
+<p>​	2.2 跳跃表</p>
+<figure><img src="@source/DataBase/Redis/image-20220513110851298.png" alt="image-20220513110851298" tabindex="0" loading="lazy"><figcaption>image-20220513110851298</figcaption></figure>
+<ol>
+<li>从第 2 层开始，1 节点比 51 节点小，向后比较。</li>
+<li>21 节点比 51 节点小，继续向后比较，后面就是 NULL 了，所以从 21 节点向下到第 1 层</li>
+<li>在第 1 层，41 节点比 51 节点小，继续向后，61 节点比 51 节点大，所以从 41 向下</li>
+<li>在第 0 层，51节点为要查找的节点，节点被找到，共查找 4 次。</li>
+<li>从此可以看出跳跃表比有序链表效率要高。</li>
+</ol>
+<h1 id="redis-配置文件介绍" tabindex="-1"><a class="header-anchor" href="#redis-配置文件介绍" aria-hidden="true">#</a> Redis 配置文件介绍</h1>
+<p>/etc/redis.conf</p>
+<h2 id="units-单位" tabindex="-1"><a class="header-anchor" href="#units-单位" aria-hidden="true">#</a> Units 单位</h2>
+<p>配置大小单位，开头定义了一些基本的度量单位，只支持 bytes，不支持 bit，大小写不敏感。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>     <span class="token number">1</span>  <span class="token comment"># Redis configuration file example.</span>
+     <span class="token number">4</span>  <span class="token comment"># started with the file path as first argument:</span>
+     <span class="token number">6</span>  <span class="token comment"># ./redis-server /path/to/redis.conf</span>
+     <span class="token number">8</span>  <span class="token comment"># Note on units: when memory size is needed, it is possible to specify</span>
+     <span class="token number">9</span>  <span class="token comment"># it in the usual form of 1k 5GB 4M and so forth:</span>
+    <span class="token number">10</span>  <span class="token comment">#</span>
+    <span class="token number">11</span>  <span class="token comment"># 1k => 1000 bytes</span>
+    <span class="token number">12</span>  <span class="token comment"># 1kb => 1024 bytes</span>
+    <span class="token number">13</span>  <span class="token comment"># 1m => 1000000 bytes</span>
+    <span class="token number">14</span>  <span class="token comment"># 1mb => 1024*1024 bytes</span>
+    <span class="token number">15</span>  <span class="token comment"># 1g => 1000000000 bytes</span>
+    <span class="token number">16</span>  <span class="token comment"># 1gb => 1024*1024*1024 bytes</span>
+    <span class="token number">17</span>  <span class="token comment">#</span>
+    <span class="token number">18</span>  <span class="token comment"># units are case insensitive so 1GB 1Gb 1gB are all the same.</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="includes-包含" tabindex="-1"><a class="header-anchor" href="#includes-包含" aria-hidden="true">#</a> INCLUDES 包含</h2>
+<p>引入其他配置</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>    <span class="token number">20</span>	<span class="token comment">################################## INCLUDES ###################################</span>
+    <span class="token number">21</span>	
+    <span class="token number">22</span>	<span class="token comment"># Include one or more other config files here.  This is useful if you</span>
+    <span class="token number">23</span>	<span class="token comment"># have a standard template that goes to all Redis servers but also need</span>
+    <span class="token number">24</span>	<span class="token comment"># to customize a few per-server settings.  Include files can include</span>
+    <span class="token number">25</span>	<span class="token comment"># other files, so use this wisely.</span>
+    <span class="token number">26</span>	<span class="token comment">#</span>
+    <span class="token number">27</span>	<span class="token comment"># Note that option "include" won't be rewritten by command "CONFIG REWRITE"</span>
+    <span class="token number">28</span>	<span class="token comment"># from admin or Redis Sentinel. Since Redis always uses the last processed</span>
+    <span class="token number">29</span>	<span class="token comment"># line as value of a configuration directive, you'd better put includes</span>
+    <span class="token number">30</span>	<span class="token comment"># at the beginning of this file to avoid overwriting config change at runtime.</span>
+    <span class="token number">31</span>	<span class="token comment">#</span>
+    <span class="token number">32</span>	<span class="token comment"># If instead you are interested in using includes to override configuration</span>
+    <span class="token number">33</span>	<span class="token comment"># options, it is better to use include as the last line.</span>
+    <span class="token number">34</span>	<span class="token comment">#</span>
+    <span class="token number">35</span>	<span class="token comment"># include /path/to/local.conf</span>
+    <span class="token number">36</span>	<span class="token comment"># include /path/to/other.conf</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="网络相关配置" tabindex="-1"><a class="header-anchor" href="#网络相关配置" aria-hidden="true">#</a> 网络相关配置</h2>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>    <span class="token number">46</span>	<span class="token comment">################################## NETWORK #####################################</span>
+    <span class="token number">47</span>	
+    <span class="token number">48</span>	<span class="token comment"># By default, if no "bind" configuration directive is specified, Redis listens</span>
+    <span class="token number">49</span>	<span class="token comment"># for connections from all available network interfaces on the host machine.</span>
+    <span class="token number">50</span>	<span class="token comment"># It is possible to listen to just one or multiple selected interfaces using</span>
+    <span class="token number">51</span>	<span class="token comment"># the "bind" configuration directive, followed by one or more IP addresses.</span>
+    <span class="token number">52</span>	<span class="token comment"># Each address can be prefixed by "-", which means that redis will not fail to</span>
+    <span class="token number">53</span>	<span class="token comment"># start if the address is not available. Being not available only refers to</span>
+    <span class="token number">54</span>	<span class="token comment"># addresses that does not correspond to any network interfece. Addresses that</span>
+    <span class="token number">55</span>	<span class="token comment"># are already in use will always fail, and unsupported protocols will always BE</span>
+    <span class="token number">56</span>	<span class="token comment"># silently skipped.</span>
+    <span class="token number">57</span>	<span class="token comment">#</span>
+    <span class="token number">58</span>	<span class="token comment"># Examples:</span>
+    <span class="token number">59</span>	<span class="token comment">#</span>
+    <span class="token number">60</span>	<span class="token comment"># bind 192.168.1.100 10.0.0.1     # listens on two specific IPv4 addresses</span>
+    <span class="token number">61</span>	<span class="token comment"># bind 127.0.0.1 ::1              # listens on loopback IPv4 and IPv6</span>
+    <span class="token number">62</span>	<span class="token comment"># bind * -::*                     # like the default, all available interfaces</span>
+    <span class="token number">63</span>	<span class="token comment">#</span>
+    <span class="token number">64</span>	<span class="token comment"># ~~~ WARNING ~~~ If the computer running Redis is directly exposed to the</span>
+    <span class="token number">65</span>	<span class="token comment"># internet, binding to all the interfaces is dangerous and will expose the</span>
+    <span class="token number">66</span>	<span class="token comment"># instance to everybody on the internet. So by default we uncomment the</span>
+    <span class="token number">67</span>	<span class="token comment"># following bind directive, that will force Redis to listen only on the</span>
+    <span class="token number">68</span>	<span class="token comment"># IPv4 and IPv6 (if available) loopback interface addresses (this means Redis</span>
+    <span class="token number">69</span>	<span class="token comment"># will only be able to accept client connections from the same host that it is</span>
+    <span class="token number">70</span>	<span class="token comment"># running on).</span>
+    <span class="token number">71</span>	<span class="token comment">#</span>
+    <span class="token number">72</span>	<span class="token comment"># IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES</span>
+    <span class="token number">73</span>	<span class="token comment"># JUST COMMENT OUT THE FOLLOWING LINE.</span>
+    <span class="token number">74</span>	<span class="token comment"># ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+    <span class="token number">75</span>	<span class="token builtin class-name">bind</span> <span class="token number">127.0</span>.0.1 -::1
+    <span class="token number">76</span>	
+    <span class="token number">77</span>	<span class="token comment"># Protected mode is a layer of security protection, in order to avoid that</span>
+    <span class="token number">78</span>	<span class="token comment"># Redis instances left open on the internet are accessed and exploited.</span>
+    <span class="token number">79</span>	<span class="token comment">#</span>
+    <span class="token number">80</span>	<span class="token comment"># When protected mode is on and if:</span>
+    <span class="token number">81</span>	<span class="token comment">#</span>
+    <span class="token number">82</span>	<span class="token comment"># 1) The server is not binding explicitly to a set of addresses using the</span>
+    <span class="token number">83</span>	<span class="token comment">#    "bind" directive.</span>
+    <span class="token number">84</span>	<span class="token comment"># 2) No password is configured.</span>
+    <span class="token number">85</span>	<span class="token comment">#</span>
+    <span class="token number">86</span>	<span class="token comment"># The server only accepts connections from clients connecting from the</span>
+    <span class="token number">87</span>	<span class="token comment"># IPv4 and IPv6 loopback addresses 127.0.0.1 and ::1, and from Unix domain</span>
+    <span class="token number">88</span>	<span class="token comment"># sockets.</span>
+    <span class="token number">89</span>	<span class="token comment">#</span>
+    <span class="token number">90</span>	<span class="token comment"># By default protected mode is enabled. You should disable it only if</span>
+    <span class="token number">91</span>	<span class="token comment"># you are sure you want clients from other hosts to connect to Redis</span>
+    <span class="token number">92</span>	<span class="token comment"># even if no authentication is configured, nor a specific set of interfaces</span>
+    <span class="token number">93</span>	<span class="token comment"># are explicitly listed using the "bind" directive.</span>
+    <span class="token number">94</span>	protected-mode <span class="token function">yes</span>
+    <span class="token number">95</span>	
+    <span class="token number">96</span>	<span class="token comment"># Accept connections on the specified port, default is 6379 (IANA #815344).</span>
+    <span class="token number">97</span>	<span class="token comment"># If port 0 is specified Redis will not listen on a TCP socket.</span>
+    <span class="token number">98</span>	port <span class="token number">6379</span>
+    <span class="token number">99</span>	
+   <span class="token number">100</span>	<span class="token comment"># TCP listen() backlog.</span>
+   <span class="token number">101</span>	<span class="token comment">#</span>
+   <span class="token number">102</span>	<span class="token comment"># In high requests-per-second environments you need a high backlog in order</span>
+   <span class="token number">103</span>	<span class="token comment"># to avoid slow clients connection issues. Note that the Linux kernel</span>
+   <span class="token number">104</span>	<span class="token comment"># will silently truncate it to the value of /proc/sys/net/core/somaxconn so</span>
+   <span class="token number">105</span>	<span class="token comment"># make sure to raise both the value of somaxconn and tcp_max_syn_backlog</span>
+   <span class="token number">106</span>	<span class="token comment"># in order to get the desired effect.</span>
+   <span class="token number">107</span>	tcp-backlog <span class="token number">511</span>
+   <span class="token number">108</span>	
+   <span class="token number">109</span>	<span class="token comment"># Unix socket.</span>
+   <span class="token number">110</span>	<span class="token comment">#</span>
+   <span class="token number">111</span>	<span class="token comment"># Specify the path for the Unix socket that will be used to listen for</span>
+   <span class="token number">112</span>	<span class="token comment"># incoming connections. There is no default, so Redis will not listen</span>
+   <span class="token number">113</span>	<span class="token comment"># on a unix socket when not specified.</span>
+   <span class="token number">114</span>	<span class="token comment">#</span>
+   <span class="token number">115</span>	<span class="token comment"># unixsocket /run/redis.sock</span>
+   <span class="token number">116</span>	<span class="token comment"># unixsocketperm 700</span>
+   <span class="token number">117</span>	
+   <span class="token number">118</span>	<span class="token comment"># Close the connection after a client is idle for N seconds (0 to disable)</span>
+   <span class="token number">119</span>	<span class="token function">timeout</span> <span class="token number">0</span>
+   <span class="token number">120</span>	
+   <span class="token number">121</span>	<span class="token comment"># TCP keepalive.</span>
+   <span class="token number">122</span>	<span class="token comment">#</span>
+   <span class="token number">123</span>	<span class="token comment"># If non-zero, use SO_KEEPALIVE to send TCP ACKs to clients in absence</span>
+   <span class="token number">124</span>	<span class="token comment"># of communication. This is useful for two reasons:</span>
+   <span class="token number">125</span>	<span class="token comment">#</span>
+   <span class="token number">126</span>	<span class="token comment"># 1) Detect dead peers.</span>
+   <span class="token number">127</span>	<span class="token comment"># 2) Force network equipment in the middle to consider the connection to be</span>
+   <span class="token number">128</span>	<span class="token comment">#    alive.</span>
+   <span class="token number">129</span>	<span class="token comment">#</span>
+   <span class="token number">130</span>	<span class="token comment"># On Linux, the specified value (in seconds) is the period used to send ACKs.</span>
+   <span class="token number">131</span>	<span class="token comment"># Note that to close the connection the double of the time is needed.</span>
+   <span class="token number">132</span>	<span class="token comment"># On other kernels the period depends on the kernel configuration.</span>
+   <span class="token number">133</span>	<span class="token comment">#</span>
+   <span class="token number">134</span>	<span class="token comment"># A reasonable value for this option is 300 seconds, which is the new</span>
+   <span class="token number">135</span>	<span class="token comment"># Redis default starting with Redis 3.2.1.</span>
+   <span class="token number">136</span>	tcp-keepalive <span class="token number">300</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="bind" tabindex="-1"><a class="header-anchor" href="#bind" aria-hidden="true">#</a> bind</h3>
+<p>默认情况 bind=127.0.0.1 只能接受本机的访问请求，不写的情况下，无限制接受任何 ip 地址的访问。</p>
+<p>生产环境要写应用服务器的地址；服务器是需要远程访问的，所以需要将其注释掉。</p>
+<p>如果开启了 protected-mode，那么在没有设定 bind ip 且没有设密码的情况下，Redis 只允许接受本机的响应。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># ps -ef |grep redis|grep -v grep</span>
+root      <span class="token number">97989</span>      <span class="token number">1</span>  <span class="token number">0</span> 09:43 ?        00:00:31 redis-server <span class="token number">127.0</span>.0.1:6379
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div><p>注释掉 bind</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># redis-server /etc/redis.conf</span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># ps -ef |grep redis|grep -v grep</span>
+root      <span class="token number">99498</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">11</span>:39 ?        00:00:00 redis-server *:6379
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="protected-mode" tabindex="-1"><a class="header-anchor" href="#protected-mode" aria-hidden="true">#</a> protected-mode</h3>
+<p>本机访问保护模式</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>protected-mode no
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><h3 id="port" tabindex="-1"><a class="header-anchor" href="#port" aria-hidden="true">#</a> port</h3>
+<p>端口默认 6379</p>
+<h3 id="tcp-backlog" tabindex="-1"><a class="header-anchor" href="#tcp-backlog" aria-hidden="true">#</a> tcp-backlog</h3>
+<p>设置 tcp 的 backlog，backlog 其实是一个连接队列，backlog 队列总和 = 未完成三次握手队列 + 已经完成三次握手队列。</p>
+<p><strong>在高并发环境下你需要一个高 backlog 值来避免慢客户端连接问题。</strong></p>
+<p>注意 Linux 内核会将这个值减小到 <strong>/proc/sys/net/core/somaxconn</strong> 的值（128），所以需要确认增大 <strong>/proc/sys/net/core/somaxconn</strong> 和 <strong>/proc/sys/net/ipv4/tcp_max_syn_backlog</strong>（128）两个值来达到想要的效果</p>
+<h3 id="timeout" tabindex="-1"><a class="header-anchor" href="#timeout" aria-hidden="true">#</a> timeout</h3>
+<p>一个空闲的客户端维持多少秒会关闭，0 表示关闭该功能。即永不关闭。</p>
+<h3 id="tcp-keepalive" tabindex="-1"><a class="header-anchor" href="#tcp-keepalive" aria-hidden="true">#</a> tcp-keepalive</h3>
+<p>对访问客户端的一种心跳检测，每隔 n 秒检测一次。</p>
+<p>单位为秒，如果设置为 0，则不会进行 Keepalive 检测，建议设置成 60 。</p>
+<h2 id="general-通用" tabindex="-1"><a class="header-anchor" href="#general-通用" aria-hidden="true">#</a> GENERAL 通用</h2>
+<h3 id="daemonize" tabindex="-1"><a class="header-anchor" href="#daemonize" aria-hidden="true">#</a> daemonize</h3>
+<p>是否为后台进程，设置为 yes</p>
+<h3 id="pidfile" tabindex="-1"><a class="header-anchor" href="#pidfile" aria-hidden="true">#</a> pidfile</h3>
+<p>存放 pid 文件的位置，每个实例会产生一个不同的 pid 文件</p>
+<h3 id="loglevel" tabindex="-1"><a class="header-anchor" href="#loglevel" aria-hidden="true">#</a> loglevel</h3>
+<p>指定日志记录级别，Redis 总共支持四个级别：debug、verbose、notice、warning，默认为 <strong>notice</strong></p>
+<p>四个级别根据使用阶段来选择，生产环境选择 notice 或者 warning</p>
+<h3 id="logfile" tabindex="-1"><a class="header-anchor" href="#logfile" aria-hidden="true">#</a> logfile</h3>
+<p>日志文件名称</p>
+<h3 id="database-16" tabindex="-1"><a class="header-anchor" href="#database-16" aria-hidden="true">#</a> database  16</h3>
+<p>设定库的数量默认16，默认数据库为 0，可以使用 <code v-pre>SELECT &lt;dbid&gt;</code> 命令在连接上指定数据库 id</p>
+<h2 id="security-安全" tabindex="-1"><a class="header-anchor" href="#security-安全" aria-hidden="true">#</a> SECURITY 安全</h2>
+<h3 id="设置密码" tabindex="-1"><a class="header-anchor" href="#设置密码" aria-hidden="true">#</a> 设置密码</h3>
+<p>访问密码的查看、设置和取消</p>
+<p>在命令中设置密码，只是临时的。重启 redis 服务器，密码就还原了。</p>
+<p>永久设置，需要再配置文件中进行设置。</p>
+<h2 id="limit-限制" tabindex="-1"><a class="header-anchor" href="#limit-限制" aria-hidden="true">#</a> LIMIT 限制</h2>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">946</span> <span class="token comment">############################## MEMORY MANAGEMENT ################################</span>
+ <span class="token number">947</span>
+ <span class="token number">948</span> <span class="token comment"># Set a memory usage limit to the specified amount of bytes.</span>
+ <span class="token number">949</span> <span class="token comment"># When the memory limit is reached Redis will try to remove keys</span>
+ <span class="token number">950</span> <span class="token comment"># according to the eviction policy selected (see maxmemory-policy).</span>
+ <span class="token number">951</span> <span class="token comment">#</span>
+ <span class="token number">952</span> <span class="token comment"># If Redis can't remove keys according to the policy, or if the policy is</span>
+ <span class="token number">953</span> <span class="token comment"># set to 'noeviction', Redis will start to reply with errors to commands</span>
+ <span class="token number">954</span> <span class="token comment"># that would use more memory, like SET, LPUSH, and so on, and will continue</span>
+ <span class="token number">955</span> <span class="token comment"># to reply to read-only commands like GET.</span>
+ <span class="token number">956</span> <span class="token comment">#</span>
+ <span class="token number">957</span> <span class="token comment"># This option is usually useful when using Redis as an LRU or LFU cache, or to</span>
+ <span class="token number">958</span> <span class="token comment"># set a hard memory limit for an instance (using the 'noeviction' policy).</span>
+ <span class="token number">959</span> <span class="token comment">#</span>
+ <span class="token number">960</span> <span class="token comment"># WARNING: If you have replicas attached to an instance with maxmemory on,</span>
+ <span class="token number">961</span> <span class="token comment"># the size of the output buffers needed to feed the replicas are subtracted</span>
+ <span class="token number">962</span> <span class="token comment"># from the used memory count, so that network problems / resyncs will</span>
+ <span class="token number">963</span> <span class="token comment"># not trigger a loop where keys are evicted, and in turn the output</span>
+ <span class="token number">964</span> <span class="token comment"># buffer of replicas is full with DELs of keys evicted triggering the deletion</span>
+ <span class="token number">965</span> <span class="token comment"># of more keys, and so forth until the database is completely emptied.</span>
+ <span class="token number">966</span> <span class="token comment">#</span>
+ <span class="token number">967</span> <span class="token comment"># In short... if you have replicas attached it is suggested that you set a lower</span>
+ <span class="token number">968</span> <span class="token comment"># limit for maxmemory so that there is some free RAM on the system for replica</span>
+ <span class="token number">969</span> <span class="token comment"># output buffers (but this is not needed if the policy is 'noeviction').</span>
+ <span class="token number">970</span> <span class="token comment">#</span>
+ <span class="token number">971</span> <span class="token comment"># maxmemory &lt;bytes></span>
+ <span class="token number">972</span>
+ <span class="token number">973</span> <span class="token comment"># MAXMEMORY POLICY: how Redis will select what to remove when maxmemory</span>
+ <span class="token number">974</span> <span class="token comment"># is reached. You can select one from the following behaviors:</span>
+ <span class="token number">975</span> <span class="token comment">#</span>
+ <span class="token number">976</span> <span class="token comment"># volatile-lru -> Evict using approximated LRU, only keys with an expire set.</span>
+ <span class="token number">977</span> <span class="token comment"># allkeys-lru -> Evict any key using approximated LRU.</span>
+ <span class="token number">978</span> <span class="token comment"># volatile-lfu -> Evict using approximated LFU, only keys with an expire set.</span>
+ <span class="token number">979</span> <span class="token comment"># allkeys-lfu -> Evict any key using approximated LFU.</span>
+ <span class="token number">980</span> <span class="token comment"># volatile-random -> Remove a random key having an expire set.</span>
+ <span class="token number">981</span> <span class="token comment"># allkeys-random -> Remove a random key, any key.</span>
+ <span class="token number">982</span> <span class="token comment"># volatile-ttl -> Remove the key with the nearest expire time (minor TTL)</span>
+ <span class="token number">983</span> <span class="token comment"># noeviction -> Don't evict anything, just return an error on write operations.</span>
+ <span class="token number">984</span> <span class="token comment">#</span>
+ <span class="token number">985</span> <span class="token comment"># LRU means Least Recently Used</span>
+ <span class="token number">986</span> <span class="token comment"># LFU means Least Frequently Used</span>
+ <span class="token number">987</span> <span class="token comment">#</span>
+ <span class="token number">988</span> <span class="token comment"># Both LRU, LFU and volatile-ttl are implemented using approximated</span>
+ <span class="token number">989</span> <span class="token comment"># randomized algorithms.</span>
+ <span class="token number">990</span> <span class="token comment">#</span>
+ <span class="token number">991</span> <span class="token comment"># Note: with any of the above policies, when there are no suitable keys for</span>
+ <span class="token number">992</span> <span class="token comment"># eviction, Redis will return an error on write operations that require</span>
+ <span class="token number">993</span> <span class="token comment"># more memory. These are usually commands that create new keys, add data or</span>
+ <span class="token number">994</span> <span class="token comment"># modify existing keys. A few examples are: SET, INCR, HSET, LPUSH, SUNIONSTORE,</span>
+ <span class="token number">995</span> <span class="token comment"># SORT (due to the STORE argument), and EXEC (if the transaction includes any</span>
+ <span class="token number">996</span> <span class="token comment"># command that requires memory).</span>
+ <span class="token number">997</span> <span class="token comment">#</span>
+ <span class="token number">998</span> <span class="token comment"># The default is:</span>
+ <span class="token number">999</span> <span class="token comment">#</span>
+<span class="token number">1000</span> <span class="token comment"># maxmemory-policy noeviction</span>
+<span class="token number">1001</span>
+<span class="token number">1002</span> <span class="token comment"># LRU, LFU and minimal TTL algorithms are not precise algorithms but approximated</span>
+<span class="token number">1003</span> <span class="token comment"># algorithms (in order to save memory), so you can tune it for speed or</span>
+<span class="token number">1004</span> <span class="token comment"># accuracy. By default Redis will check five keys and pick the one that was</span>
+<span class="token number">1005</span> <span class="token comment"># used least recently, you can change the sample size using the following</span>
+<span class="token number">1006</span> <span class="token comment"># configuration directive.</span>
+<span class="token number">1007</span> <span class="token comment">#</span>
+<span class="token number">1008</span> <span class="token comment"># The default of 5 produces good enough results. 10 Approximates very closely</span>
+<span class="token number">1009</span> <span class="token comment"># true LRU but costs more CPU. 3 is faster but not very accurate.</span>
+<span class="token number">1010</span> <span class="token comment">#</span>
+<span class="token number">1011</span> <span class="token comment"># maxmemory-samples 5</span>
+<span class="token number">1012</span>
+<span class="token number">1013</span> <span class="token comment"># Eviction processing is designed to function well with the default setting.</span>
+<span class="token number">1014</span> <span class="token comment"># If there is an unusually large amount of write traffic, this value may need to</span>
+<span class="token number">1015</span> <span class="token comment"># be increased.  Decreasing this value may reduce latency at the risk of</span>
+<span class="token number">1016</span> <span class="token comment"># eviction processing effectiveness</span>
+<span class="token number">1017</span> <span class="token comment">#   0 = minimum latency, 10 = default, 100 = process without regard to latency</span>
+<span class="token number">1018</span> <span class="token comment">#</span>
+<span class="token number">1019</span> <span class="token comment"># maxmemory-eviction-tenacity 10</span>
+<span class="token number">1020</span>
+<span class="token number">1021</span> <span class="token comment"># Starting from Redis 5, by default a replica will ignore its maxmemory setting</span>
+<span class="token number">1022</span> <span class="token comment"># (unless it is promoted to master after a failover or manually). It means</span>
+<span class="token number">1023</span> <span class="token comment"># that the eviction of keys will be just handled by the master, sending the</span>
+<span class="token number">1024</span> <span class="token comment"># DEL commands to the replica as keys evict in the master side.</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="maxclients" tabindex="-1"><a class="header-anchor" href="#maxclients" aria-hidden="true">#</a> maxclients</h3>
+<ol>
+<li>设置 redis 同时可以与多少个客户端进行连接。</li>
+<li>默认情况下为 10000 个客户端。</li>
+<li>如果达到了此限制，redis 则会拒绝新的连接请求，并且向这些连接请求方发出 &quot;max number of clients reached&quot; 以作回应。</li>
+</ol>
+<h3 id="maxmemory" tabindex="-1"><a class="header-anchor" href="#maxmemory" aria-hidden="true">#</a> maxmemory</h3>
+<ol>
+<li>
+<p>建议<strong>必须设置</strong>，否则，将内存占满，造成服务器宕机</p>
+</li>
+<li>
+<p>设置 redis 可以使用的内存量。一旦到达内存使用上限，redis 将会试图移除内部数据，移除规则可以通过 <strong>maxmemory-policy</strong> 来指定。</p>
+</li>
+<li>
+<p>如果 redis 无法根据移除规则来移除内存中的数据，或者设置了 &quot;不允许移除&quot;，那么 redis 则会针对那些需要申请内存的指令返回错误信息，比如 SET、LPUSH 等。</p>
+</li>
+<li>
+<p>但是对于无内存申请的指令，仍然会正常响应，比如 GET 等。如 redis 是主 redis，那么在设置内存使用上限时，需要在系统中留出一些内存空间给同步队列缓存，只有在你设置的是 &quot;不移除&quot; 的情况下，才不用考虑这个因素。</p>
+</li>
+</ol>
+<h3 id="maxmemory-policy" tabindex="-1"><a class="header-anchor" href="#maxmemory-policy" aria-hidden="true">#</a> maxmemory-policy</h3>
+<ol>
+<li>volatile-lru：使用 LRU 算法移除 key，只对设置了过期时间的键；（最近最少使用）</li>
+<li>allkeys-lru：在所有集合 key 中，使用 LRU 算法移除 key</li>
+<li>volatile-random：在过期集合中移除随机的 key，只对设置了过期时间的键</li>
+<li>allkeys-random：在所有集合 key 中，移除随机的 key</li>
+<li>volatile-ttl：移除那些 TTL 值最小的 key，即那些最近要过期的 key</li>
+<li>noeviction：不进行移除。针对写操作，只是返回错误信息【默认值】</li>
+</ol>
+<h3 id="maxmemory-samples" tabindex="-1"><a class="header-anchor" href="#maxmemory-samples" aria-hidden="true">#</a> maxmemory-samples</h3>
+<ol>
+<li>
+<p>设置样本数量，LRU 算法和最小 TTL 算法都并非是精确的算法，而是估算值，所以你可以设置样本的大小，redis 默认会检查这么多个 key ，并选择其中 LRU 的那个。</p>
+</li>
+<li>
+<p>一般设置 3 到 7 的数字，数值越小样本越不准确，但性能消耗越小。</p>
+</li>
+</ol>
+<h1 id="redis-的发布和订阅" tabindex="-1"><a class="header-anchor" href="#redis-的发布和订阅" aria-hidden="true">#</a> Redis 的发布和订阅</h1>
+<h2 id="发布和订阅" tabindex="-1"><a class="header-anchor" href="#发布和订阅" aria-hidden="true">#</a> 发布和订阅</h2>
+<p>Redis 发布订阅 （pub/sub） 是一种消息通信模式：发送者 （pub） 发送消息，订阅者 （sub）接收消息。</p>
+<p>Redis 客户端可以订阅任意数量的频道。</p>
+<h2 id="redis-的发布和订阅-1" tabindex="-1"><a class="header-anchor" href="#redis-的发布和订阅-1" aria-hidden="true">#</a> Redis 的发布和订阅</h2>
+<ol>
+<li>
+<p>客户端可以订阅频道如下图，当给这个频道发布消息后，消息就会发送给订阅的客户端。</p>
+<figure><img src="@source/DataBase/Redis/Redis发布订阅.png" alt="Redis发布订阅" tabindex="0" loading="lazy"><figcaption>Redis发布订阅</figcaption></figure>
+</li>
+<li>
+<p>示例</p>
+<ol>
+<li>
+<p>打开一个客户端订阅 channel01</p>
+</li>
+<li>
+<p>打开另一个客户端，给 channel01 发布字符串消息 hello redis，<strong>返回的 1 是订阅者数量</strong></p>
+</li>
+<li>
+<p>打开第一个客户端可以看到发送的消息</p>
+</li>
+<li>
+<p>注意：发布的消息没有持久化，如果在订阅的客户端收不到 hello，<strong>只能收到订阅后发布的消息</strong></p>
+</li>
+</ol>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> subscribe channel01
+Reading messages<span class="token punctuation">..</span>. <span class="token punctuation">(</span>press Ctrl-C to quit<span class="token punctuation">)</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"subscribe"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"channel01"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># redis-cli</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> publish channel01 hello redis
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> ERR wrong number of arguments <span class="token keyword">for</span> <span class="token string">'publish'</span> <span class="token builtin class-name">command</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> publish channel01 <span class="token string">"hello redis"</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> subscribe channel01
+Reading messages<span class="token punctuation">..</span>. <span class="token punctuation">(</span>press Ctrl-C to quit<span class="token punctuation">)</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"subscribe"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"channel01"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"message"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"channel01"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"hello redis"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ol>
+<h1 id="redis-新数据类型" tabindex="-1"><a class="header-anchor" href="#redis-新数据类型" aria-hidden="true">#</a> Redis 新数据类型</h1>
+<h2 id="bitmaps" tabindex="-1"><a class="header-anchor" href="#bitmaps" aria-hidden="true">#</a> Bitmaps</h2>
+<h3 id="简介-5" tabindex="-1"><a class="header-anchor" href="#简介-5" aria-hidden="true">#</a> 简介</h3>
+<p>​		现代计算机用二进制（位） 作为信息的基础单位， 1个字节等于8位， 例如 &quot;abc&quot; 字符串是由 3 个字节组成， 但实际在计算机存储时将其用二进制表示，  &quot;abc&quot; 分别对应的 ASCII 码分别是97、 98、 99， 对应的二进制分别是 01100001、 01100010 和 01100011，如下图：</p>
+<img src="@source/DataBase/Redis/image-20221009163649599.png" alt="image-20221009163649599" style="zoom:80%;" />
+<p>合理地使用操作位能够有效地提高内存使用率和开发效率。</p>
+<p>Redis 提供了 Bitmaps 这个  &quot;数据类型&quot; 可以实现对位的操作：</p>
+<p>（1）  Bitmaps 本身不是一种数据类型， 实际上它就是字符串（key-value） ， 但是它可以对字符串的位进行操作。</p>
+<p>（2）  Bitmaps 单独提供了一套命令， 所以在 Redis 中使用 Bitmaps 和使用字符串的方法不太相同。 可以把 Bitmaps 想象成一个以位为单位的数组， 数组的每个单元</p>
+<p>​				只能存储 0 和 1， 数组的下标在 Bitmaps 中叫做偏移量。</p>
+<h3 id="命令" tabindex="-1"><a class="header-anchor" href="#命令" aria-hidden="true">#</a> 命令</h3>
+<ol>
+<li>
+<p>setbit</p>
+<p>​	<code v-pre>setbit&lt;key&gt;&lt;offset&gt;&lt;value&gt;</code></p>
+<p>​	设置Bitmaps中某个偏移量的值（0或1），*offset：偏移量从0开始</p>
+</li>
+</ol>
+<blockquote>
+<p>示例：</p>
+<p>​		每个独立用户是否访问过网站存放在Bitmaps中， 将访问的用户记做1， 没有访问的用户记做0， 用偏移量作为用户的id。设置键的第offset个位的值（从0算起） ， 假设现在有20个用户，userid=1， 6， 11， 15， 19的用户对网站进行了访问， 那么当前Bitmaps初始化结果如图：</p>
+<img src="@source/DataBase/Redis/image-20221009171946723.png" alt="image-20221009171946723" style="zoom:80%;" />
+<p>unique:users:20201106代表2020-11-06这天的独立访问用户的Bitmaps</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> setbit unique:user:20220202 <span class="token number">1</span> <span class="token number">1</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> setbit unique:user:20220202 <span class="token number">6</span> <span class="token number">1</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> setbit unique:user:20220202 <span class="token number">11</span> <span class="token number">1</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> setbit unique:user:20220202 <span class="token number">15</span> <span class="token number">1</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> setbit unique:user:20220202 <span class="token number">19</span> <span class="token number">1</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>注意：</p>
+<p>​		很多应用的用户 id 以一个指定数字（例如10000） 开头， 直接将用户 id 和 Bitmaps 的偏移量对应势必会造成一定的浪费， 通常的做法是每次做 setbit 操作时将用户 id 减去这个指定数字。</p>
+<p>在第一次初始化Bitmaps时， 假如偏移量非常大， 那么整个初始化过程执行会比较慢， 可能会造成Redis的阻塞。</p>
+</blockquote>
+<p>（2）getbit</p>
+<p>​		<code v-pre>getbit&lt;key&gt;&lt;offset&gt;</code></p>
+<p>​		获取Bitmaps中某个偏移量的值（获取键的第offset位的值（从0开始算））</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> getbit unique:user:20220202 <span class="token number">1</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> getbit unique:user:20220202 <span class="token number">3</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> getbit unique:user:20220202 <span class="token number">6</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<p>（3）bitcount</p>
+<p>​		<code v-pre>bitcount&lt;key&gt;[start end] </code></p>
+<p>​		统计字符串<strong>从 start 字节到 end 字节</strong>比特值为1的数量</p>
+<blockquote>
+<p>​		统计<strong>字符串</strong>被设置为1的bit数。一般情况下，给定的整个字符串都会被进行计数，通过指定额外的 start 或 end 参数，可以让计数只在特定的位上进行。start 和 end 参数的设置，都可以使用负数值：比如 -1 表示最后一个位，而 -2 表示倒数第二个位，start、end 是指bit组的字节的下标数，二者皆包含。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> bitcount unique:user:20220202
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">5</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> bitcount unique:user:20220202 <span class="token number">1</span> <span class="token number">3</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">3</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>start 和 end 代表起始和结束字节数， 下面操作计算用户id在第1个字节到第3个字节之间的独立访问用户数， 对应的用户id是11， 15， 19。</p>
+<p>说明：</p>
+<p>举例： K1 【01000001 01000000 00000000 00100001】，对应【0，1，2，3】</p>
+<p>bitcount K1 1 2 ： 统计下标1、2字节组中bit=1的个数，即01000000 00000000  结果为1</p>
+<p>bitcount K1 1 3 ： 统计下标1、2字节组中bit=1的个数，即01000000 00000000 00100001  结果为3</p>
+<p>bitcount K1 0 -2 ： 统计下标0到下标倒数第2，字节组中bit=1的个数，即01000001 01000000  00000000 结果为3</p>
+<p>注意：redis的setbit设置或清除的是bit位置，而bitcount计算的是byte位置。</p>
+</blockquote>
+<p>（4）bitop</p>
+<p>​		<code v-pre>bitop and(or/not/xor) &lt;destkey&gt; [key…]</code></p>
+<p>​		bitop是一个复合操作， 它可以做多个Bitmaps的 <strong>and（交集） 、 or（并集） 、 not（非） 、 xor（异或）</strong> 操作并将结果保存在destkey中。</p>
+<blockquote>
+<p>2022-02-02 日访问网站的userid=1, 2, 5, 9。</p>
+<p>setbit unique:users:20220202 1 1</p>
+<p>setbit unique:users:20220202 2 1</p>
+<p>setbit unique:users:20220202 5 1</p>
+<p>setbit unique:users:20220202 9 1</p>
+<p>2022-02-03 日访问网站的userid=0, 1, 4, 9。</p>
+<p>setbit unique:users:20220203 0 1</p>
+<p>setbit unique:users:20220203 1 1</p>
+<p>setbit unique:users:20220203 4 1</p>
+<p>setbit unique:users:20220203 9 1</p>
+<p>计算出两天都访问过网站的用户数量：</p>
+<p>bitop	and	unique:users:and:20220202_03	unique:users:20220203	unique:users:20220202</p>
+<p>计算出任意一天都访问过网站的用户数量（例如月活跃就是类似这种） ， 可以使用or求并集</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> BITOP and unique:users:and:20220202_03 unique:users:20220203 unique:users:20220202
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">2</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> BITOP or unique:users:and:20220202_03 unique:users:20220203 unique:users:20220202
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">2</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<h3 id="bitmaps-与-set-对比" tabindex="-1"><a class="header-anchor" href="#bitmaps-与-set-对比" aria-hidden="true">#</a> Bitmaps 与 set 对比</h3>
+<p>假设网站有 1 亿用户， 每天独立访问的用户有 5 千万， 如果每天用集合类型和 Bitmaps 分别存储活跃用户可以得到表：</p>
+<table>
+<thead>
+<tr>
+<th>set和Bitmaps存储一天活跃用户对比</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据  类型</td>
+<td>每个用户id占用空间</td>
+<td>需要存储的用户量</td>
+<td>全部内存量</td>
+</tr>
+<tr>
+<td>集合  类型</td>
+<td>64位</td>
+<td>50000000</td>
+<td>64位*50000000 = 400MB</td>
+</tr>
+<tr>
+<td>Bitmaps</td>
+<td>1位</td>
+<td>100000000</td>
+<td>1位*100000000 = 12.5MB</td>
+</tr>
+</tbody>
+</table>
+<p>很明显， 这种情况下使用Bitmaps能节省很多的内存空间， 尤其是随着时间推移节省的内存还是非常可观的。</p>
+<table>
+<thead>
+<tr>
+<th>set和Bitmaps存储独立用户空间对比</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据类型</td>
+<td>一天</td>
+<td>一个月</td>
+<td>一年</td>
+</tr>
+<tr>
+<td>集合类型</td>
+<td>400MB</td>
+<td>12GB</td>
+<td>144GB</td>
+</tr>
+<tr>
+<td>Bitmaps</td>
+<td>12.5MB</td>
+<td>375MB</td>
+<td>4.5GB</td>
+</tr>
+</tbody>
+</table>
+<p>但Bitmaps并不是万金油， 假如该网站每天的独立访问用户很少， 例如只有10万（大量的僵尸用户） ， 那么两者的对比如下表所示， 很显然， 这时候使用Bitmaps就不太合适了， 因为基本上大部分位都是0。</p>
+<table>
+<thead>
+<tr>
+<th>set和Bitmaps存储一天活跃用户对比 独立用户比较少）</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据类型</td>
+<td>每个userid占用空间</td>
+<td>需要存储的用户量</td>
+<td>全部内存量</td>
+</tr>
+<tr>
+<td>集合类型</td>
+<td>64位</td>
+<td>100000</td>
+<td>64位*100000 = 800KB</td>
+</tr>
+<tr>
+<td>Bitmaps</td>
+<td>1位</td>
+<td>100000000</td>
+<td>1位*100000000 = 12.5MB</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hyperloglog" tabindex="-1"><a class="header-anchor" href="#hyperloglog" aria-hidden="true">#</a> HyperLogLog</h2>
+<h3 id="简介-6" tabindex="-1"><a class="header-anchor" href="#简介-6" aria-hidden="true">#</a> 简介</h3>
+<p>​		在工作当中，我们经常会遇到与统计相关的功能需求，比如统计网站PV（PageView页面访问量）,可以使用Redis的incr、incrby轻松实现。</p>
+<p>​		但像UV（UniqueVisitor，独立访客）、独立IP数、搜索记录数等需要去重和计数的问题如何解决？这种求集合中不重复元素个数的问题称为基数问题。</p>
+<p>解决基数问题有很多种方案：</p>
+<p>（1）数据存储在MySQL表中，使用distinct count计算不重复个数</p>
+<p>（2）使用Redis提供的hash、set、bitmaps等数据结构来处理</p>
+<p>以上的方案结果精确，但随着数据不断增加，导致占用空间越来越大，对于非常大的数据集是不切实际的。</p>
+<p>能否能够降低一定的精度来平衡存储空间？Redis推出了HyperLogLog</p>
+<p>Redis HyperLogLog 是用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定的、并且是很小的。</p>
+<p>在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 2^64 个不同元素的基数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。</p>
+<p>但是，因为 HyperLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以 HyperLogLog 不能像集合那样，返回输入的各个元素。</p>
+<p>什么是基数?</p>
+<p>比如数据集 {1, 3, 5, 7, 5, 7, 8}， 那么这个数据集的基数集为 {1, 3, 5 ,7, 8}, 基数(不重复元素)为5。 基数估计就是在误差可接受的范围内，快速计算基数。</p>
+<h3 id="命令-1" tabindex="-1"><a class="header-anchor" href="#命令-1" aria-hidden="true">#</a> 命令</h3>
+<p>（1）pfadd</p>
+<p>​		<code v-pre>pfadd &lt;key&gt;&lt; element&gt; [element ...]  </code></p>
+<p>​		添加指定元素到 HyperLogLog 中</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfadd hll1 <span class="token string">"redis"</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfadd hll1 <span class="token string">"mysql"</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfadd hll1 <span class="token string">"redis"</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​		将所有元素添加到指定HyperLogLog数据结构中。如果执行命令后HLL估计的近似基数发生变化，则返回1，否则返回0。</p>
+</blockquote>
+<p>（2）pfcount</p>
+<p>​		<code v-pre>pfcount&lt;key&gt; [key ...] </code></p>
+<p>​		计算HLL的近似基数，可以计算多个HLL，比如用HLL存储每天的UV，计算一周的UV可以使用7天的UV合并计算即可</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfadd hll1 <span class="token string">"redis"</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfadd hll1 <span class="token string">"mysql"</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfadd hll1 <span class="token string">"redis"</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfcount hll1
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">2</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfadd hll2 <span class="token string">"kafka"</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfadd hll2 <span class="token string">"nginx"</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfcount hll1 hll2
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">4</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<p>（3）pfmerge</p>
+<p>​		<code v-pre>pfmerge&lt;destkey&gt;&lt;sourcekey&gt; [sourcekey ...] </code></p>
+<p>​		将一个或多个HLL合并后的结果存储在另一个HLL中，比如每月活跃用户可以使用每天的活跃用户来合并计算可得</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfcount hll1 hll2
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">4</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfmerge hll3 hll1 hll2
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> pfcount hll3
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">4</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<h2 id="geospatial" tabindex="-1"><a class="header-anchor" href="#geospatial" aria-hidden="true">#</a> Geospatial</h2>
+<h3 id="简介-7" tabindex="-1"><a class="header-anchor" href="#简介-7" aria-hidden="true">#</a> 简介</h3>
+<p>​		Redis 3.2 中增加了对 GEO 类型的支持。GEO，Geographic，地理信息的缩写。该类型，就是元素的二维坐标，在地图上就是经纬度。redis 基于该类型，提供了经纬度设置，查询，范围查询，距离查询，经纬度 Hash 等常见操作。</p>
+<h3 id="命令-2" tabindex="-1"><a class="header-anchor" href="#命令-2" aria-hidden="true">#</a> 命令</h3>
+<p>（1）geoadd</p>
+<p>​		<code v-pre>geoadd&lt;key&gt;&lt; longitude&gt;&lt;latitude&gt;&lt;member&gt; [longitude latitude member...]  </code></p>
+<p>​		添加地理位置（经度，纬度，名称）</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> geoadd china:city <span class="token number">121.47</span> <span class="token number">31.23</span> shanghai
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> geoadd china:city <span class="token number">106.50</span> <span class="token number">29.53</span> chongqing <span class="token number">114.05</span> <span class="token number">22.52</span> shenzhen <span class="token number">116.38</span> <span class="token number">39.90</span> beijing
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> geoadd china:city <span class="token number">121.47</span> <span class="token number">31.23</span> shanghai
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><ul>
+<li>两极无法直接添加，一般会下载城市数据，直接通过 Java 程序一次性导入。</li>
+<li>有效的经度从 -180 度到 180 度。有效的纬度从 -85.05112878 度到 85.05112878 度。</li>
+<li>当坐标位置超出指定范围时，该命令将会返回一个错误。</li>
+<li><strong>已经添加的数据，是无法再次往里面添加的。</strong></li>
+</ul>
+</blockquote>
+<p>（2）geopos</p>
+<p>​		<code v-pre>geopos &lt;key&gt;&lt;member&gt; [member...]</code></p>
+<p>​		获得指定地区的坐标值</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> geopos china:city shanghai
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"121.47000163793563843"</span>
+   <span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"31.22999903975783553"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<p>（3）geodist</p>
+<p>​		<code v-pre>geodist&lt;key&gt;&lt;member1&gt;&lt;member2&gt; [m|km|ft|mi ] </code></p>
+<p>​		获取两个位置之间的直线距离</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> geodist china:city beijing shanghai
+<span class="token string">"1068153.5181"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> geodist china:city beijing shanghai km
+<span class="token string">"1068.1535"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>单位：</p>
+<ul>
+<li>
+<p>m 表示单位为米[默认值]。</p>
+</li>
+<li>
+<p>km 表示单位为千米。</p>
+</li>
+<li>
+<p>mi 表示单位为英里。</p>
+</li>
+<li>
+<p>ft 表示单位为英尺。</p>
+<p>如果用户没有显式地指定单位参数， 那么 GEODIST 默认使用米作为单位</p>
+</li>
+</ul>
+</blockquote>
+<p>（4）georadius</p>
+<p>​		<code v-pre>georadius&lt;key&gt;&lt; longitude&gt;&lt;latitude&gt;radius m|km|ft|mi </code></p>
+<p>​		以给定的经纬度为中心，找出某一半径内的元素</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> georadius china:city <span class="token number">110</span> <span class="token number">30</span> <span class="token number">1000</span> km
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"chongqing"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"shenzhen"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h1 id="jedis-连接-redis" tabindex="-1"><a class="header-anchor" href="#jedis-连接-redis" aria-hidden="true">#</a> Jedis 连接 Redis</h1>
+<p>创建工程 <code v-pre>RedisTest</code></p>
+<h2 id="pom-xml" tabindex="-1"><a class="header-anchor" href="#pom-xml" aria-hidden="true">#</a> pom.xml</h2>
+<div class="language-xml line-numbers-mode" data-ext="xml"><pre v-pre class="language-xml"><code>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>redis.clients<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jedis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>3.2.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="连接-redis-注意事项" tabindex="-1"><a class="header-anchor" href="#连接-redis-注意事项" aria-hidden="true">#</a> 连接 Redis 注意事项</h2>
+<p>禁用 Linux 的防火墙：Linux（CentOS7）执行命令</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>systemctl stop/disable firewalld.service
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><p>或者开放端口 6379</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token comment"># 查看开放的端口号</span>
+firewall-cmd --list-all
+<span class="token comment"># 设置开放的端口号</span>
+firewall-cmd --add-service<span class="token operator">=</span>redis <span class="token parameter variable">--permanent</span>
+firewall-cmd --add-port<span class="token operator">=</span><span class="token number">6379</span>/tcp <span class="token parameter variable">--permanent</span>
+<span class="token comment"># 重启防火墙</span>
+firewall-cmd <span class="token parameter variable">--reload</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>redis.conf 中注释掉 bind 127.0.0.1，并且设置： protected-mode no</p>
+<p>【<strong>改配置前必须关掉 redis，否则不生效</strong>】</p>
+<div class="language-tex line-numbers-mode" data-ext="tex"><pre v-pre class="language-tex"><code>-DENIED Redis is running in protected mode because protected mode is enabled, no bind address was specified, no authentication password is requested to clients. In this mode connections are only accepted from the loopback interface. If you want to connect from external computers to Redis you may adopt one of the following solutions: 
+1) Just disable protected mode sending the command 'CONFIG SET protected-mode no' from the loopback interface by connecting to Redis from the same host the server is running, however MAKE SURE Redis is not publicly accessible from internet if you do so. Use CONFIG REWRITE to make this change permanent. 
+2) Alternatively you can just disable the protected mode by editing the Redis configuration file, and setting the protected mode option to 'no', and then restarting the server. 
+3) If you started the server manually just for testing, restart it with the '--protected-mode no' option. 
+4) Setup a bind address or an authentication password. 
+NOTE: You only need to do one of the above things in order for the server to start accepting connections from the outside. 
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="测试连接" tabindex="-1"><a class="header-anchor" href="#测试连接" aria-hidden="true">#</a> 测试连接</h2>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">JedisTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token constant">REDIS_HOST</span> <span class="token operator">=</span> <span class="token string">"192.168.100.100"</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">REDIS_PORT</span> <span class="token operator">=</span> <span class="token number">6379</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Jedis</span> jedis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jedis</span><span class="token punctuation">(</span><span class="token constant">REDIS_HOST</span><span class="token punctuation">,</span> <span class="token constant">REDIS_PORT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> pong <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">ping</span><span class="token punctuation">(</span><span class="token string">"Hello Redis!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"pong: "</span> <span class="token operator">+</span> pong<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="测试数据类型" tabindex="-1"><a class="header-anchor" href="#测试数据类型" aria-hidden="true">#</a> 测试数据类型</h2>
+<h3 id="key" tabindex="-1"><a class="header-anchor" href="#key" aria-hidden="true">#</a> key</h3>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DataTypeTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token constant">REDIS_HOST</span> <span class="token operator">=</span> <span class="token string">"192.168.100.100"</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">REDIS_PORT</span> <span class="token operator">=</span> <span class="token number">6379</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Jedis</span> jedis <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Before</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        jedis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jedis</span><span class="token punctuation">(</span><span class="token constant">REDIS_HOST</span><span class="token punctuation">,</span> <span class="token constant">REDIS_PORT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">flushDB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@After</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>  
+    <span class="token doc-comment comment">/**
+     * 测试 key
+     */</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        jedis<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"k1"</span><span class="token punctuation">,</span> <span class="token string">"v1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"k2"</span><span class="token punctuation">,</span> <span class="token string">"v2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"k3"</span><span class="token punctuation">,</span> <span class="token string">"v3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> keys <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span><span class="token string">"*"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        keys<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token string">"k1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">ttl</span><span class="token punctuation">(</span><span class="token string">"k1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"k1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="string" tabindex="-1"><a class="header-anchor" href="#string" aria-hidden="true">#</a> string</h3>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code>    <span class="token doc-comment comment">/**
+     * 测试 string
+     */</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        jedis<span class="token punctuation">.</span><span class="token function">mset</span><span class="token punctuation">(</span><span class="token string">"k1"</span><span class="token punctuation">,</span> <span class="token string">"v1"</span><span class="token punctuation">,</span> <span class="token string">"k2"</span><span class="token punctuation">,</span> <span class="token string">"v2"</span><span class="token punctuation">,</span> <span class="token string">"k3"</span><span class="token punctuation">,</span> <span class="token string">"v3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">mget</span><span class="token punctuation">(</span><span class="token string">"k1"</span><span class="token punctuation">,</span> <span class="token string">"k2"</span><span class="token punctuation">,</span> <span class="token string">"k3"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="list" tabindex="-1"><a class="header-anchor" href="#list" aria-hidden="true">#</a> list</h3>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code>    <span class="token doc-comment comment">/**
+     * 测试 list
+     */</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testList</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        jedis<span class="token punctuation">.</span><span class="token function">rpush</span><span class="token punctuation">(</span><span class="token string">"list01"</span><span class="token punctuation">,</span> <span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token string">"B"</span><span class="token punctuation">,</span> <span class="token string">"C"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">lrange</span><span class="token punctuation">(</span><span class="token string">"list01"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="set" tabindex="-1"><a class="header-anchor" href="#set" aria-hidden="true">#</a> set</h3>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code>    <span class="token doc-comment comment">/**
+     * 测试 set
+     */</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        jedis<span class="token punctuation">.</span><span class="token function">sadd</span><span class="token punctuation">(</span><span class="token string">"set01"</span><span class="token punctuation">,</span> <span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token string">"B"</span><span class="token punctuation">,</span> <span class="token string">"C"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">smembers</span><span class="token punctuation">(</span><span class="token string">"set01"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="hash" tabindex="-1"><a class="header-anchor" href="#hash" aria-hidden="true">#</a> hash</h3>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code>    <span class="token doc-comment comment">/**
+     * 测试 hash
+     */</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testHash</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">></span></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"tom"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"address"</span><span class="token punctuation">,</span> <span class="token string">"NewYork"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">,</span> <span class="token string">"12"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">hmset</span><span class="token punctuation">(</span><span class="token string">"hash01"</span><span class="token punctuation">,</span> map<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">hmget</span><span class="token punctuation">(</span><span class="token string">"hash01"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"address"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="zset" tabindex="-1"><a class="header-anchor" href="#zset" aria-hidden="true">#</a> zset</h3>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code>    <span class="token doc-comment comment">/**
+     * 测试 zset
+     */</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testZset</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        jedis<span class="token punctuation">.</span><span class="token function">zadd</span><span class="token punctuation">(</span><span class="token string">"zset01"</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">zadd</span><span class="token punctuation">(</span><span class="token string">"zset01"</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">,</span> <span class="token string">"B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">zadd</span><span class="token punctuation">(</span><span class="token string">"zset01"</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">"C"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">zrange</span><span class="token punctuation">(</span><span class="token string">"zset01"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="jedis-验证码示例" tabindex="-1"><a class="header-anchor" href="#jedis-验证码示例" aria-hidden="true">#</a> Jedis 验证码示例</h2>
+<p>需求：</p>
+<ol>
+<li>
+<p>输入手机号，点击发送后随机生成 6 位数字码，2 分钟有效</p>
+</li>
+<li>
+<p>输入验证码，点击验证，返回成功或失败</p>
+</li>
+<li>
+<p>每个手机号每天只能输入 3 次</p>
+</li>
+</ol>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>jedis</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">Jedis</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Random</span></span><span class="token punctuation">;</span>
+
+<span class="token doc-comment comment">/**
+ * 1. 输入手机号，点击发送后随机生成 6 位数字码，2 分钟有效【验证码存入 redis】
+ * 2. 输入验证码，点击验证，返回成功或失败
+ * 3. 每个手机号每天只能输入 3 次 【发送次数存入 redis】
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">VerifyCode</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token constant">REDIS_HOST</span> <span class="token operator">=</span> <span class="token string">"192.168.100.100"</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">REDIS_PORT</span> <span class="token operator">=</span> <span class="token number">6379</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> alphas <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span>
+            <span class="token char">'a'</span><span class="token punctuation">,</span> <span class="token char">'b'</span><span class="token punctuation">,</span> <span class="token char">'c'</span><span class="token punctuation">,</span> <span class="token char">'d'</span><span class="token punctuation">,</span> <span class="token char">'e'</span><span class="token punctuation">,</span> <span class="token char">'f'</span><span class="token punctuation">,</span> <span class="token char">'g'</span><span class="token punctuation">,</span> <span class="token char">'h'</span><span class="token punctuation">,</span> <span class="token char">'i'</span><span class="token punctuation">,</span> <span class="token char">'j'</span><span class="token punctuation">,</span> <span class="token char">'k'</span><span class="token punctuation">,</span> <span class="token char">'l'</span><span class="token punctuation">,</span>
+            <span class="token char">'m'</span><span class="token punctuation">,</span> <span class="token char">'n'</span><span class="token punctuation">,</span> <span class="token char">'o'</span><span class="token punctuation">,</span> <span class="token char">'p'</span><span class="token punctuation">,</span> <span class="token char">'q'</span><span class="token punctuation">,</span> <span class="token char">'r'</span><span class="token punctuation">,</span> <span class="token char">'s'</span><span class="token punctuation">,</span> <span class="token char">'t'</span><span class="token punctuation">,</span> <span class="token char">'u'</span><span class="token punctuation">,</span> <span class="token char">'v'</span><span class="token punctuation">,</span> <span class="token char">'w'</span><span class="token punctuation">,</span> <span class="token char">'x'</span><span class="token punctuation">,</span>
+            <span class="token char">'y'</span><span class="token punctuation">,</span> <span class="token char">'z'</span><span class="token punctuation">,</span> <span class="token char">'0'</span><span class="token punctuation">,</span> <span class="token char">'1'</span><span class="token punctuation">,</span> <span class="token char">'2'</span><span class="token punctuation">,</span> <span class="token char">'3'</span><span class="token punctuation">,</span> <span class="token char">'4'</span><span class="token punctuation">,</span> <span class="token char">'5'</span><span class="token punctuation">,</span> <span class="token char">'6'</span><span class="token punctuation">,</span> <span class="token char">'7'</span><span class="token punctuation">,</span> <span class="token char">'8'</span><span class="token punctuation">,</span> <span class="token char">'9'</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Random</span> random <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">VerifyCode</span> verifyCode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VerifyCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> phone <span class="token operator">=</span> <span class="token string">"18220549581"</span><span class="token punctuation">;</span>
+        <span class="token comment">// verifyCode.sendCode(phone);</span>
+        verifyCode<span class="token punctuation">.</span><span class="token function">checkCode</span><span class="token punctuation">(</span>phone<span class="token punctuation">,</span> <span class="token string">"rg105r"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">sendCode</span><span class="token punctuation">(</span><span class="token class-name">String</span> phone<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 判断一天内的发送次数</span>
+        <span class="token class-name">String</span> phoneCountKey <span class="token operator">=</span> <span class="token string">"code:"</span> <span class="token operator">+</span> phone <span class="token operator">+</span> <span class="token string">":count"</span><span class="token punctuation">;</span>
+        <span class="token class-name">Jedis</span> jedis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jedis</span><span class="token punctuation">(</span><span class="token constant">REDIS_HOST</span><span class="token punctuation">,</span> <span class="token constant">REDIS_PORT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> phoneCount <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>phoneCountKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>phoneCount <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            jedis<span class="token punctuation">.</span><span class="token function">setex</span><span class="token punctuation">(</span>phoneCountKey<span class="token punctuation">,</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>phoneCount<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            jedis<span class="token punctuation">.</span><span class="token function">incr</span><span class="token punctuation">(</span>phoneCountKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"验证码发送已经超过三次"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token class-name">String</span> code <span class="token operator">=</span> <span class="token function">createCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"createCode: "</span> <span class="token operator">+</span> code<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> phoneCodeKey <span class="token operator">=</span> <span class="token string">"code:"</span> <span class="token operator">+</span> phone <span class="token operator">+</span> <span class="token string">":code"</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">setex</span><span class="token punctuation">(</span>phoneCodeKey<span class="token punctuation">,</span> <span class="token number">2</span> <span class="token operator">*</span> <span class="token number">60</span><span class="token punctuation">,</span> code<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">String</span> <span class="token function">createCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">StringBuilder</span> stringBuilder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">6</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            stringBuilder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>alphas<span class="token punctuation">[</span>random<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span>alphas<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> stringBuilder<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token doc-comment comment">/**
+     * 判断验证码是否正确
+     * <span class="token keyword">@param</span> <span class="token parameter">phone</span>
+     * <span class="token keyword">@param</span> <span class="token parameter">code</span>
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">checkCode</span><span class="token punctuation">(</span><span class="token class-name">String</span> phone<span class="token punctuation">,</span> <span class="token class-name">String</span> code<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>phone <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> code <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"phone 或者 code 不为 null"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">Jedis</span> jedis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jedis</span><span class="token punctuation">(</span><span class="token constant">REDIS_HOST</span><span class="token punctuation">,</span> <span class="token constant">REDIS_PORT</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">String</span> phoneCodeKey <span class="token operator">=</span> <span class="token string">"code:"</span> <span class="token operator">+</span> phone <span class="token operator">+</span> <span class="token string">":code"</span><span class="token punctuation">;</span>
+            <span class="token class-name">String</span> redisCode <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>phoneCodeKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>code<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>redisCode<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"验证码正确！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"验证码错误！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h1 id="springboot-整合-redis" tabindex="-1"><a class="header-anchor" href="#springboot-整合-redis" aria-hidden="true">#</a> SpringBoot 整合 Redis</h1>
+<h2 id="引入依赖" tabindex="-1"><a class="header-anchor" href="#引入依赖" aria-hidden="true">#</a> 引入依赖</h2>
+<p>创建 SpringBoot 工程 <code v-pre>SpringBootRedisTest</code>，引入依赖</p>
+<div class="language-xml line-numbers-mode" data-ext="xml"><pre v-pre class="language-xml"><code><span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>project</span> <span class="token attr-name">xmlns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://maven.apache.org/POM/4.0.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>xsi</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="token punctuation">"</span></span>
+         <span class="token attr-name"><span class="token namespace">xsi:</span>schemaLocation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>modelVersion</span><span class="token punctuation">></span></span>4.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>modelVersion</span><span class="token punctuation">></span></span>
+    
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>parent</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-parent<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.7.14<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>relativePath</span><span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>parent</span><span class="token punctuation">></span></span>
+    
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.example<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>SpringBootRedisTest<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.0.1-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>SpringBootRedisTest<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">></span></span>SpringBootRedisTest<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">></span></span>
+    
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>properties</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>java.version</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>java.version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>properties</span><span class="token punctuation">></span></span>
+    
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+        
+        <span class="token comment">&lt;!-- spring2.X 集成 redis 所需 common-pool2，可以不用引入--></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.commons<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>commons-pool2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+            <span class="token comment">&lt;!--注意该版本应该由spring boot仲裁--></span>
+            <span class="token comment">&lt;!--&lt;version>2.6.0&lt;/version>--></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+		
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-web<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugins</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-maven-plugin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugins</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>project</span><span class="token punctuation">></span></span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="配置" tabindex="-1"><a class="header-anchor" href="#配置" aria-hidden="true">#</a> 配置</h2>
+<p>application.properties</p>
+<div class="language-properties line-numbers-mode" data-ext="properties"><pre v-pre class="language-properties"><code><span class="token comment">#Redis服务器地址</span>
+<span class="token key attr-name">spring.redis.host</span><span class="token punctuation">=</span><span class="token value attr-value">192.168.100.100</span>
+<span class="token comment">#Redis服务器连接端口</span>
+<span class="token key attr-name">spring.redis.port</span><span class="token punctuation">=</span><span class="token value attr-value">6379</span>
+<span class="token comment">#Redis数据库索引（默认为0）</span>
+<span class="token key attr-name">spring.redis.database</span><span class="token punctuation">=</span> <span class="token value attr-value">0</span>
+<span class="token comment">#连接超时时间（毫秒）</span>
+<span class="token key attr-name">spring.redis.timeout</span><span class="token punctuation">=</span><span class="token value attr-value">1800000</span>
+<span class="token comment">#连接池最大连接数（使用负值表示没有限制）</span>
+<span class="token key attr-name">spring.redis.lettuce.pool.max-active</span><span class="token punctuation">=</span><span class="token value attr-value">20</span>
+<span class="token comment">#最大阻塞等待时间(负数表示没限制)</span>
+<span class="token key attr-name">spring.redis.lettuce.pool.max-wait</span><span class="token punctuation">=</span><span class="token value attr-value">-1</span>
+<span class="token comment">#连接池中的最大空闲连接</span>
+<span class="token key attr-name">spring.redis.lettuce.pool.max-idle</span><span class="token punctuation">=</span><span class="token value attr-value">5</span>
+<span class="token comment">#连接池中的最小空闲连接</span>
+<span class="token key attr-name">spring.redis.lettuce.pool.min-idle</span><span class="token punctuation">=</span><span class="token value attr-value">0</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>application.yml</p>
+<div class="language-yaml line-numbers-mode" data-ext="yml"><pre v-pre class="language-yaml"><code><span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">redis</span><span class="token punctuation">:</span>
+    <span class="token key atrule">database</span><span class="token punctuation">:</span> <span class="token number">0</span>
+    <span class="token key atrule">host</span><span class="token punctuation">:</span> 192.168.100.100
+    <span class="token key atrule">lettuce</span><span class="token punctuation">:</span>
+      <span class="token key atrule">pool</span><span class="token punctuation">:</span>
+        <span class="token key atrule">max-active</span><span class="token punctuation">:</span> <span class="token number">20</span>
+        <span class="token key atrule">max-idle</span><span class="token punctuation">:</span> <span class="token number">5</span>
+        <span class="token key atrule">max-wait</span><span class="token punctuation">:</span> <span class="token number">-1</span>
+        <span class="token key atrule">min-idle</span><span class="token punctuation">:</span> <span class="token number">0</span>
+    <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">6379</span>
+    <span class="token key atrule">timeout</span><span class="token punctuation">:</span> <span class="token number">1800000</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>配置类 RedisConfig</p>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>springbootredis<span class="token punctuation">.</span>config</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">JsonAutoDetect</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">PropertyAccessor</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>databind<span class="token punctuation">.</span></span><span class="token class-name">ObjectMapper</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>cache<span class="token punctuation">.</span></span><span class="token class-name">CacheManager</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">CachingConfigurerSupport</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">EnableCaching</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Bean</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Configuration</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>cache<span class="token punctuation">.</span></span><span class="token class-name">RedisCacheConfiguration</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>cache<span class="token punctuation">.</span></span><span class="token class-name">RedisCacheManager</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>connection<span class="token punctuation">.</span></span><span class="token class-name">RedisConnectionFactory</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>core<span class="token punctuation">.</span></span><span class="token class-name">RedisTemplate</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>serializer<span class="token punctuation">.</span></span><span class="token class-name">Jackson2JsonRedisSerializer</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>serializer<span class="token punctuation">.</span></span><span class="token class-name">RedisSerializationContext</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>serializer<span class="token punctuation">.</span></span><span class="token class-name">RedisSerializer</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>serializer<span class="token punctuation">.</span></span><span class="token class-name">StringRedisSerializer</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span><span class="token class-name">Duration</span></span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@EnableCaching</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisConfig</span> <span class="token keyword">extends</span> <span class="token class-name">CachingConfigurerSupport</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">redisTemplate</span><span class="token punctuation">(</span><span class="token class-name">RedisConnectionFactory</span> factory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> template <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">RedisSerializer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> redisSerializer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringRedisSerializer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Jackson2JsonRedisSerializer</span> jackson2JsonRedisSerializer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jackson2JsonRedisSerializer</span><span class="token punctuation">(</span><span class="token class-name">Object</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">ObjectMapper</span> om <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectMapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        om<span class="token punctuation">.</span><span class="token function">setVisibility</span><span class="token punctuation">(</span><span class="token class-name">PropertyAccessor</span><span class="token punctuation">.</span><span class="token constant">ALL</span><span class="token punctuation">,</span> <span class="token class-name">JsonAutoDetect<span class="token punctuation">.</span>Visibility</span><span class="token punctuation">.</span><span class="token constant">ANY</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        om<span class="token punctuation">.</span><span class="token function">enableDefaultTyping</span><span class="token punctuation">(</span><span class="token class-name">ObjectMapper<span class="token punctuation">.</span>DefaultTyping</span><span class="token punctuation">.</span><span class="token constant">NON_FINAL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jackson2JsonRedisSerializer<span class="token punctuation">.</span><span class="token function">setObjectMapper</span><span class="token punctuation">(</span>om<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        template<span class="token punctuation">.</span><span class="token function">setConnectionFactory</span><span class="token punctuation">(</span>factory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// key 序列化方式</span>
+        template<span class="token punctuation">.</span><span class="token function">setKeySerializer</span><span class="token punctuation">(</span>redisSerializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// value 序列化</span>
+        template<span class="token punctuation">.</span><span class="token function">setValueSerializer</span><span class="token punctuation">(</span>jackson2JsonRedisSerializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// value hashmap 序列化</span>
+        template<span class="token punctuation">.</span><span class="token function">setHashValueSerializer</span><span class="token punctuation">(</span>jackson2JsonRedisSerializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> template<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+	
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">CacheManager</span> <span class="token function">cacheManager</span><span class="token punctuation">(</span><span class="token class-name">RedisConnectionFactory</span> factory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">RedisSerializer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> redisSerializer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringRedisSerializer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">Jackson2JsonRedisSerializer</span> jackson2JsonRedisSerializer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jackson2JsonRedisSerializer</span><span class="token punctuation">(</span><span class="token class-name">Object</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 解决查询缓存转换异常的问题</span>
+        <span class="token class-name">ObjectMapper</span> om <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectMapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        om<span class="token punctuation">.</span><span class="token function">setVisibility</span><span class="token punctuation">(</span><span class="token class-name">PropertyAccessor</span><span class="token punctuation">.</span><span class="token constant">ALL</span><span class="token punctuation">,</span> <span class="token class-name">JsonAutoDetect<span class="token punctuation">.</span>Visibility</span><span class="token punctuation">.</span><span class="token constant">ANY</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        om<span class="token punctuation">.</span><span class="token function">enableDefaultTyping</span><span class="token punctuation">(</span><span class="token class-name">ObjectMapper<span class="token punctuation">.</span>DefaultTyping</span><span class="token punctuation">.</span><span class="token constant">NON_FINAL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jackson2JsonRedisSerializer<span class="token punctuation">.</span><span class="token function">setObjectMapper</span><span class="token punctuation">(</span>om<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 配置序列化（解决乱码的问题）,过期时间 600 秒</span>
+        <span class="token class-name">RedisCacheConfiguration</span> config <span class="token operator">=</span> <span class="token class-name">RedisCacheConfiguration</span><span class="token punctuation">.</span><span class="token function">defaultCacheConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">entryTtl</span><span class="token punctuation">(</span><span class="token class-name">Duration</span><span class="token punctuation">.</span><span class="token function">ofSeconds</span><span class="token punctuation">(</span><span class="token number">600</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">serializeKeysWith</span><span class="token punctuation">(</span><span class="token class-name">RedisSerializationContext<span class="token punctuation">.</span>SerializationPair</span><span class="token punctuation">.</span><span class="token function">fromSerializer</span><span class="token punctuation">(</span>redisSerializer<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">serializeValuesWith</span><span class="token punctuation">(</span><span class="token class-name">RedisSerializationContext<span class="token punctuation">.</span>SerializationPair</span><span class="token punctuation">.</span><span class="token function">fromSerializer</span><span class="token punctuation">(</span>jackson2JsonRedisSerializer<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">disableCachingNullValues</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">RedisCacheManager</span> cacheManager <span class="token operator">=</span> <span class="token class-name">RedisCacheManager</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span>factory<span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">cacheDefaults</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> cacheManager<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="测试" tabindex="-1"><a class="header-anchor" href="#测试" aria-hidden="true">#</a> 测试</h2>
+<p>RedisTestController</p>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>core<span class="token punctuation">.</span></span><span class="token class-name">RedisTemplate</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">GetMapping</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RestController</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Set</span></span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisTestController</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">></span></span> redisTemplate<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/string"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">stringTest</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"str"</span><span class="token punctuation">,</span> <span class="token string">"Java"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"str"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/set"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Set</span> <span class="token function">setTest</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        redisTemplate<span class="token punctuation">.</span><span class="token function">opsForSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"set"</span><span class="token punctuation">,</span> <span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token string">"B"</span><span class="token punctuation">,</span> <span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">members</span><span class="token punctuation">(</span><span class="token string">"set"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h1 id="redis-事务与锁" tabindex="-1"><a class="header-anchor" href="#redis-事务与锁" aria-hidden="true">#</a> Redis 事务与锁</h1>
+<h2 id="redis事务定义" tabindex="-1"><a class="header-anchor" href="#redis事务定义" aria-hidden="true">#</a> Redis事务定义</h2>
+<p>​		Redis 事务是一个单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。<mark>Redis 事务的主要作用就是串联多个命令防止别的命令插队。</mark></p>
+<h2 id="multi、exec、discard" tabindex="-1"><a class="header-anchor" href="#multi、exec、discard" aria-hidden="true">#</a> Multi、Exec、discard</h2>
+<p>​		从输入 Multi 命令开始，输入的命令都会依次进入命令队列中，但不会执行，直到输入 Exec 后，Redis 会将之前的命令队列中的命令依次执行。<mark>组队的过程中可以通过 discard 来放弃组队。</mark></p>
+<figure><img src="@source/DataBase/Redis/image-20220513194048072.png" alt="image-20220513194048072" tabindex="0" loading="lazy"><figcaption>image-20220513194048072</figcaption></figure>
+<p>事务示例：</p>
+<ol>
+<li>
+<p>组队成功，提交成功</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> multi
+OK
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">set</span> k1 v1
+QUEUED
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">set</span> k2 v2
+QUEUED
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">exec</span>
+<span class="token number">1</span><span class="token punctuation">)</span> OK
+<span class="token number">2</span><span class="token punctuation">)</span> OK
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p>组队阶段报错，提交失败</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> multi
+OK
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">set</span> k1 v1
+QUEUED
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">set</span> k2
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> ERR wrong number of arguments <span class="token keyword">for</span> <span class="token string">'set'</span> <span class="token builtin class-name">command</span>
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">exec</span>
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> EXECABORT Transaction discarded because of previous errors.
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p>组队成功，提交有成功有失败情况</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> multi
+OK
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">set</span> k1 v1
+QUEUED
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">set</span> k2 v2
+QUEUED
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> incr k2
+QUEUED
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">exec</span>
+<span class="token number">1</span><span class="token punctuation">)</span> OK
+<span class="token number">2</span><span class="token punctuation">)</span> OK
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> ERR value is not an integer or out of range
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get k1
+<span class="token string">"v1"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get k2
+<span class="token string">"v2"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ol>
+<h2 id="事务的错误处理" tabindex="-1"><a class="header-anchor" href="#事务的错误处理" aria-hidden="true">#</a> 事务的错误处理</h2>
+<p>组队中某个命令出现了报告错误，执行时整个的所有队列都会被取消。</p>
+<p>如果执行阶段某个命令报错，则只有报错的命令不会被执行，而其他的命令都会执行，不会回滚。</p>
+<h2 id="事务冲突" tabindex="-1"><a class="header-anchor" href="#事务冲突" aria-hidden="true">#</a> 事务冲突</h2>
+<h3 id="悲观锁" tabindex="-1"><a class="header-anchor" href="#悲观锁" aria-hidden="true">#</a> 悲观锁</h3>
+<figure><img src="@source/DataBase/Redis/image-20221007171853393.png" alt="image-20221007171853393" tabindex="0" loading="lazy"><figcaption>image-20221007171853393</figcaption></figure>
+<p>​		<strong>悲观锁(Pessimistic Lock)</strong>, 顾名思义，就是很悲观，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会block直到它拿到锁。<strong>传统的关系型数据库里边就用到了很多这种锁机制</strong>，比如<strong>行锁</strong>，<strong>表锁</strong>等，<strong>读锁</strong>，<strong>写锁</strong>等，都是在做操作之前先上锁。</p>
+<h3 id="乐观锁" tabindex="-1"><a class="header-anchor" href="#乐观锁" aria-hidden="true">#</a> <strong>乐观锁</strong></h3>
+<figure><img src="@source/DataBase/Redis/image-20221007172000166.png" alt="image-20221007172000166" tabindex="0" loading="lazy"><figcaption>image-20221007172000166</figcaption></figure>
+<p>​		**乐观锁(Optimistic Lock)，顾名思义，就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。**乐观锁适用于多读的应用类型，这样可以提高吞吐量。Redis 就是利用这种 check-and-set 机制实现事务的。</p>
+<h3 id="watch-key" tabindex="-1"><a class="header-anchor" href="#watch-key" aria-hidden="true">#</a> <strong>WATCH</strong> <strong>key</strong></h3>
+<p>​		在执行 multi 之前，先执行 watch key1 [key2]，可以监视一个(或多个) key ，<strong>如果在事务执行之前这个(或这些) key被其他命令所改动，那么事务将被打断。</strong></p>
+<p>示例：开启两个客户端测试</p>
+<p>客户端一：</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token function">watch</span> balance
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> multi
+OK
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> decrby balance <span class="token number">20</span>
+QUEUED
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">exec</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">80</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<p>客户端二：</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token function">watch</span> balance
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> multi
+OK
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> incrby balance <span class="token number">10</span>
+QUEUED
+<span class="token number">127.0</span>.0.1:6379<span class="token punctuation">(</span>TX<span class="token punctuation">)</span><span class="token operator">></span> <span class="token builtin class-name">exec</span>
+<span class="token punctuation">(</span>nil<span class="token punctuation">)</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>客户端二 exec 时，不会执行操作，返回 nil。</p>
+</blockquote>
+<h3 id="unwatch" tabindex="-1"><a class="header-anchor" href="#unwatch" aria-hidden="true">#</a> <strong>unwatch</strong></h3>
+<p>取消 WATCH 命令对所有 key 的监视。</p>
+<p>如果在执行 WATCH 命令之后，EXEC 命令或DISCARD 命令先被执行了的话，那么就不需要再执行UNWATCH 了。</p>
+<p><a href="http://doc.redisfans.com/transaction/exec.html" target="_blank" rel="noopener noreferrer">http://doc.redisfans.com/transaction/exec.html<ExternalLinkIcon/></a></p>
+<h2 id="redis-事务三特性" tabindex="-1"><a class="header-anchor" href="#redis-事务三特性" aria-hidden="true">#</a> Redis  事务三特性</h2>
+<ol>
+<li>
+<p>单独的隔离操作</p>
+<p>​	事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。</p>
+</li>
+<li>
+<p>没有隔离级别的概念</p>
+<p>​	队列中的命令没有提交之前都不会实际被执行，因为事务提交前任何指令都不会被实际执行</p>
+</li>
+<li>
+<p>不保证原子性</p>
+<p>​	事务中如果有一条命令执行失败，其后的命令仍然会被执行，没有回滚</p>
+</li>
+</ol>
+<h2 id="redis事务-秒杀示例" tabindex="-1"><a class="header-anchor" href="#redis事务-秒杀示例" aria-hidden="true">#</a> Redis事务：秒杀示例</h2>
+<p>将库存信息以及秒杀成功用户放入Redis</p>
+<h3 id="基本代码" tabindex="-1"><a class="header-anchor" href="#基本代码" aria-hidden="true">#</a> 基本代码</h3>
+<p>Idea 建立 web 工程：</p>
+<p>index.jsp</p>
+<blockquote>
+<div class="language-html line-numbers-mode" data-ext="html"><pre v-pre class="language-html"><code>&lt;%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span> <span class="token name">PUBLIC</span> <span class="token string">"-//W3C//DTD HTML 4.01 Transitional//EN"</span> <span class="token string">"http://www.w3.org/TR/html4/loose.dtd"</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">http-equiv</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Content-Type<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/html; charset=UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Insert title here<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>商品秒杀！！！<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>msform<span class="token punctuation">"</span></span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>${pageContext.request.contextPath}/doseckill<span class="token punctuation">"</span></span> <span class="token attr-name">enctype</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>application/x-www-form-urlencoded<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>prodid<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>prodId<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0101<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>miaosha_btn<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>seckill_btn<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>点击秒杀<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>${pageContext.request.contextPath}/script/jquery/jquery-3.1.0.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#miaosha_btn"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">var</span> url <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#msform"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">attr</span><span class="token punctuation">(</span><span class="token string">"action"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            $<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#msform"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">serialize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>data <span class="token operator">==</span> <span class="token string">"false"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">"抢光了"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#miaosha_btn"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">attr</span><span class="token punctuation">(</span><span class="token string">"disabled"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<p>servlet：</p>
+<blockquote>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>servlet</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ServletException</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServlet</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Random</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SecondKillServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> <span class="token number">1L</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> resp<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">doPost</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> resp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token doc-comment comment">/**
+     * 使用 ab 工具模拟测试：
+     * vim postfile
+     *      prodId=0101&amp;
+     * ab -n 2000 -c 200 -p ~/postfile -T application/x-www-form-urlencoded http://192.168.50.211:8080/seckill/doseckill
+     * <span class="token keyword">@param</span> <span class="token parameter">request</span>
+     * <span class="token keyword">@param</span> <span class="token parameter">response</span>
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doPost</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">String</span> userId <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token number">50000</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> prodId <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getParameter</span><span class="token punctuation">(</span><span class="token string">"prodId"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 模拟库存：set sc:0101:qt 10</span>
+        <span class="token keyword">boolean</span> result <span class="token operator">=</span> <span class="token class-name">SecondKill_redis</span><span class="token punctuation">.</span><span class="token function">doSecondKill</span><span class="token punctuation">(</span>userId<span class="token punctuation">,</span> prodId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<p><strong>连接池：使用连接池解决请求数量过多时造成的连接超时问题。</strong></p>
+<p>连接池参数：</p>
+<ul>
+<li>MaxTotal：控制一个pool可分配多少个jedis实例，通过pool.getResource()来获取；如果赋值为-1，则表示不限制；如果pool已经分配了MaxTotal个jedis实例，则此时pool的状态为exhausted。</li>
+<li>maxIdle：控制一个pool最多有多少个状态为idle(空闲)的jedis实例。</li>
+<li>MaxWaitMillis：表示当borrow一个jedis实例时，最大的等待毫秒数，如果超过等待时间，则直接抛JedisConnectionException。</li>
+<li>testOnBorrow：获得一个jedis实例的时候是否检查连接可用性（ping()）；如果为true，则得到的jedis实例均是可用的。</li>
+</ul>
+<blockquote>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>servlet</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">Jedis</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">JedisPool</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">JedisPoolConfig</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">JedisPoolUtil</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">volatile</span> <span class="token class-name">JedisPool</span> jedisPool<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">JedisPoolUtil</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">JedisPool</span> <span class="token function">getJedisPoolInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>jedisPool <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token class-name">JedisPoolUtil</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>jedisPool <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token class-name">JedisPoolConfig</span> poolConfig <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">JedisPoolConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    poolConfig<span class="token punctuation">.</span><span class="token function">setMaxTotal</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    poolConfig<span class="token punctuation">.</span><span class="token function">setMaxIdle</span><span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    poolConfig<span class="token punctuation">.</span><span class="token function">setMaxWaitMillis</span><span class="token punctuation">(</span><span class="token number">100</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    poolConfig<span class="token punctuation">.</span><span class="token function">setBlockWhenExhausted</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    poolConfig<span class="token punctuation">.</span><span class="token function">setTestOnBorrow</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    jedisPool <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">JedisPool</span><span class="token punctuation">(</span>poolConfig<span class="token punctuation">,</span> <span class="token string">"192.168.100.100"</span><span class="token punctuation">,</span> <span class="token number">6379</span><span class="token punctuation">,</span> <span class="token number">60000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> jedisPool<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">release</span><span class="token punctuation">(</span><span class="token class-name">JedisPool</span> jedisPool<span class="token punctuation">,</span> <span class="token class-name">Jedis</span> jedis<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>jedis <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            jedisPool<span class="token punctuation">.</span><span class="token function">returnResource</span><span class="token punctuation">(</span>jedis<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<p>秒杀代码：</p>
+<blockquote>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>servlet</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">Jedis</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">JedisPool</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SecondKill_redis</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">doSecondKill</span><span class="token punctuation">(</span><span class="token class-name">String</span> userId<span class="token punctuation">,</span> <span class="token class-name">String</span> prodId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>userId <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> prodId <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token class-name">JedisPool</span> jedisPool <span class="token operator">=</span> <span class="token class-name">JedisPoolUtil</span><span class="token punctuation">.</span><span class="token function">getJedisPoolInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Jedis</span> jedis <span class="token operator">=</span> jedisPool<span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> kcKey <span class="token operator">=</span> <span class="token string">"sk:"</span> <span class="token operator">+</span> prodId <span class="token operator">+</span> <span class="token string">":qt"</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> userKey <span class="token operator">=</span> <span class="token string">"sk:"</span> <span class="token operator">+</span> prodId <span class="token operator">+</span> <span class="token string">":user"</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> kc <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>kcKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>kc <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"秒杀还没开始，请等待..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">sismember</span><span class="token punctuation">(</span>userKey<span class="token punctuation">,</span> userId<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"秒杀已经成功，不能重复秒杀..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>kc<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"秒杀已经结束..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        jedis<span class="token punctuation">.</span><span class="token function">decr</span><span class="token punctuation">(</span>kcKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">sadd</span><span class="token punctuation">(</span>userKey<span class="token punctuation">,</span> userId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"秒杀成功..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<p>测试：</p>
+<p>redis 设置商品库存：set sk:0101:qt 10</p>
+<h3 id="ab-工具使用" tabindex="-1"><a class="header-anchor" href="#ab-工具使用" aria-hidden="true">#</a> ab 工具使用</h3>
+<p>使用 ab 工具模拟并发操作。</p>
+<p>CentOS6 默认安装</p>
+<p>CentOS7 需要手动安装：yum install httpd-tools</p>
+<p><strong>无网络</strong></p>
+<p>（1） 进入cd /run/media/root/CentOS 7 x86_64/Packages（路径跟centos6不同）</p>
+<p>（2） 顺序安装</p>
+<ul>
+<li>apr-1.4.8-3.el7.x86_64.rpm</li>
+<li>apr-util-1.5.2-6.el7.x86_64.rpm</li>
+<li>httpd-tools-2.4.6-67.el7.centos.x86_64.rpm</li>
+</ul>
+<p>ab 命令：</p>
+<div class="language-text line-numbers-mode" data-ext="text"><pre v-pre class="language-text"><code>ab -n 2000 -c 200 -p ~/postfile -T application/x-www-form-urlencoded http://192.168.50.211:8080/seckill/doseckill
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><p>-n	请求数量</p>
+<p>-c	并发数量</p>
+<p>-T	application/x-www-form-urlencoded</p>
+<p>-p	post请求文件，需要创建该文件</p>
+<p>​		vim postfile 模拟表单提交参数，以&amp;符号结尾;存放当前目录。</p>
+<p>​		内容：prodId=0101&amp;</p>
+<p>测试：</p>
+<p>出现超卖问题：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get sk:0101:qt
+<span class="token string">"-4"</span><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> SMEMBERS sk:0101:user
+ <span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"311"</span>
+ <span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"1862"</span>
+ <span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"4314"</span>
+ <span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"7396"</span>
+ <span class="token number">5</span><span class="token punctuation">)</span> <span class="token string">"21514"</span>
+ <span class="token number">6</span><span class="token punctuation">)</span> <span class="token string">"22009"</span>
+ <span class="token number">7</span><span class="token punctuation">)</span> <span class="token string">"24781"</span>
+ <span class="token number">8</span><span class="token punctuation">)</span> <span class="token string">"24884"</span>
+ <span class="token number">9</span><span class="token punctuation">)</span> <span class="token string">"29747"</span>
+<span class="token number">10</span><span class="token punctuation">)</span> <span class="token string">"33970"</span>
+<span class="token number">11</span><span class="token punctuation">)</span> <span class="token string">"35109"</span>
+<span class="token number">12</span><span class="token punctuation">)</span> <span class="token string">"35508"</span>
+<span class="token number">13</span><span class="token punctuation">)</span> <span class="token string">"36228"</span>
+<span class="token number">14</span><span class="token punctuation">)</span> <span class="token string">"49708"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get sk:0101:qt
+<span class="token string">"-"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="超卖问题" tabindex="-1"><a class="header-anchor" href="#超卖问题" aria-hidden="true">#</a> 超卖问题</h3>
+<img src="@source/DataBase/Redis/image-20221009174213877.png" alt="image-20221009174213877" style="zoom:80%;" />
+<p><strong>利用乐观锁淘汰用户，解决超卖问题。</strong>【watch multi exec】</p>
+<p>修改代码：</p>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>servlet</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">Jedis</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">JedisPool</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">Transaction</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SecondKill_redis_chaomai</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">doSecondKill</span><span class="token punctuation">(</span><span class="token class-name">String</span> userId<span class="token punctuation">,</span> <span class="token class-name">String</span> prodId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>userId <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> prodId <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token class-name">JedisPool</span> jedisPool <span class="token operator">=</span> <span class="token class-name">JedisPoolUtil</span><span class="token punctuation">.</span><span class="token function">getJedisPoolInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Jedis</span> jedis <span class="token operator">=</span> jedisPool<span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> kcKey <span class="token operator">=</span> <span class="token string">"sk:"</span> <span class="token operator">+</span> prodId <span class="token operator">+</span> <span class="token string">":qt"</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> userKey <span class="token operator">=</span> <span class="token string">"sk:"</span> <span class="token operator">+</span> prodId <span class="token operator">+</span> <span class="token string">":user"</span><span class="token punctuation">;</span>
+        <span class="token comment">// 监视库存</span>
+        jedis<span class="token punctuation">.</span><span class="token function">watch</span><span class="token punctuation">(</span>kcKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">String</span> kc <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>kcKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>kc <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"秒杀还没开始，请等待..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>jedis<span class="token punctuation">.</span><span class="token function">sismember</span><span class="token punctuation">(</span>userKey<span class="token punctuation">,</span> userId<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"秒杀已经成功，不能重复秒杀..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>kc<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"秒杀已经结束..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 使用事务</span>
+        <span class="token class-name">Transaction</span> multi <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">multi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        multi<span class="token punctuation">.</span><span class="token function">decr</span><span class="token punctuation">(</span>kcKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        multi<span class="token punctuation">.</span><span class="token function">sadd</span><span class="token punctuation">(</span>userKey<span class="token punctuation">,</span> userId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> exec <span class="token operator">=</span> multi<span class="token punctuation">.</span><span class="token function">exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>exec <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> exec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"秒杀失败...."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"秒杀成功..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>再次测试，没有超卖问题。</p>
+<p>修改库存数量：set sk:0101:qt 500</p>
+<p>出现了库存遗留问题：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> sk:0101:qt <span class="token number">500</span>
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get sk:0101:qt
+<span class="token string">"463"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="库存遗留问题" tabindex="-1"><a class="header-anchor" href="#库存遗留问题" aria-hidden="true">#</a> 库存遗留问题</h3>
+<p>库存遗留问题是由于乐观锁产生的。</p>
+<p>使用乐观锁时，会锁定当前操作的数据版本，其他请求不会处理，造成库存遗留。</p>
+<p>解决方案：<strong>LUA</strong>脚本</p>
+<p>Lua 是一个小巧的 <a href="http://baike.baidu.com/item/%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80" target="_blank" rel="noopener noreferrer">脚本语言<ExternalLinkIcon/></a>，Lua脚本可以很容易的被C/C++ 代码调用，也可以反过来调用C/C++的函数，Lua并没有提供强大的库，一个完整的Lua解释器不过200k，所以Lua不适合作为开发独立应用程序的语言，而是作为嵌入式脚本语言。</p>
+<p>很多应用程序、游戏使用LUA作为自己的嵌入式脚本语言，以此来实现可配置性、可扩展性。</p>
+<p><a href="https://www.w3cschool.cn/lua/" target="_blank" rel="noopener noreferrer">https://www.w3cschool.cn/lua/<ExternalLinkIcon/></a></p>
+<p><strong>Lua 脚本处理库存遗留问题：</strong></p>
+<p><strong>将复杂的或者多步的 redis 操作，写为一个脚本，一次提交给 redis 执行，减少反复连接 redis 的次数。提升性能。</strong></p>
+<p>LUA 脚本是类似 redis 事务，有一定的原子性，不会被其他命令插队，可以完成一些 redis 事务性的操作。</p>
+<p>但是注意 redis 的 lua 脚本功能，只有在 Redis 2.6 以上的版本才可以使用。</p>
+<p>利用 lua 脚本淘汰用户，解决超卖问题。</p>
+<p>redis 2.6 版本以后，通过 lua 脚本解决<strong>争抢问题</strong>，实际上是 <strong>redis</strong> <strong>利用其单线程的特性，用任务队列的方式解决多任务并发问题</strong>。</p>
+<p>Lua：</p>
+<blockquote>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token builtin class-name">local</span> <span class="token assign-left variable">userid</span><span class="token operator">=</span>KEYS<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span> 
+<span class="token builtin class-name">local</span> <span class="token assign-left variable">prodid</span><span class="token operator">=</span>KEYS<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token builtin class-name">local</span> <span class="token assign-left variable">qtkey</span><span class="token operator">=</span><span class="token string">"sk:"</span><span class="token punctuation">..</span>prodid<span class="token punctuation">..</span><span class="token string">":qt"</span><span class="token punctuation">;</span>
+<span class="token builtin class-name">local</span> <span class="token assign-left variable">usersKey</span><span class="token operator">=</span><span class="token string">"sk:"</span><span class="token punctuation">..</span>prodid.<span class="token string">":usr'; 
+local userExists=redis.call("</span>sismember<span class="token string">",usersKey,userid);
+if tonumber(userExists)==1 then 
+  return 2;
+end
+local num= redis.call("</span>get<span class="token string">" ,qtkey);
+if tonumber(num)&lt;=0 then 
+  return 0; 
+else 
+  redis.call("</span>decr<span class="token string">",qtkey);
+  redis.call("</span>sadd",usersKey,userid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+end
+<span class="token builtin class-name">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></blockquote>
+<p>代码修改：</p>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>servlet</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">Jedis</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">JedisPool</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SecondKill_Redis_LuaScript</span> <span class="token punctuation">{</span>
+    
+    <span class="token keyword">static</span> <span class="token class-name">String</span> secKillScript <span class="token operator">=</span> <span class="token string">"local userId=KEYS[1];\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"local prodId=KEYS[2];\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"local qtkey='sk:'..prodId..\":qt\";\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"local usersKey='sk:'..prodId..\":usr\";\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"local userExists=redis.call(\"sismember\",usersKey,userId);\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"if tonumber(userExists)==1 then \r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"   return 2;\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"end\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"local num= redis.call(\"get\" ,qtkey);\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"if tonumber(num)&lt;=0 then \r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"   return 0;\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"else \r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"   redis.call(\"decr\",qtkey);\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"   redis.call(\"sadd\",usersKey,userId);\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"end\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"return 1"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">static</span> <span class="token class-name">String</span> secKillScript2 <span class="token operator">=</span>
+            <span class="token string">"local userExists=redis.call(\"sismember\",\"{sk}:0101:usr\",userid);\r\n"</span> <span class="token operator">+</span>
+                    <span class="token string">" return 1"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">doSecKill</span><span class="token punctuation">(</span><span class="token class-name">String</span> userId<span class="token punctuation">,</span> <span class="token class-name">String</span> prodId<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+
+        <span class="token class-name">JedisPool</span> jedispool <span class="token operator">=</span> <span class="token class-name">JedisPoolUtil</span><span class="token punctuation">.</span><span class="token function">getJedisPoolInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Jedis</span> jedis <span class="token operator">=</span> jedispool<span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//String sha1=  .secKillScript;</span>
+        <span class="token class-name">String</span> sha1 <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">scriptLoad</span><span class="token punctuation">(</span>secKillScript<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Object</span> result <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">evalsha</span><span class="token punctuation">(</span>sha1<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> userId<span class="token punctuation">,</span> prodId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">String</span> reString <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"0"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>reString<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"已抢空！！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>reString<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"抢购成功！！！！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>reString<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"该用户已抢过！！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"抢购异常！！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        jedis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h1 id="redis-持久化" tabindex="-1"><a class="header-anchor" href="#redis-持久化" aria-hidden="true">#</a> Redis 持久化</h1>
+<p>Redis 提供了 2 种不同形式的持久化方式。</p>
+<p>文档说明：<a href="https://redis.io/docs/management/persistence/" target="_blank" rel="noopener noreferrer">https://redis.io/docs/management/persistence/<ExternalLinkIcon/></a></p>
+<ul>
+<li>RDB（Redis DataBase）</li>
+<li>AOF（Append Of File）</li>
+</ul>
+<blockquote>
+<h1 id="redis-persistence" tabindex="-1"><a class="header-anchor" href="#redis-persistence" aria-hidden="true">#</a> Redis persistence</h1>
+<p>How Redis writes data to disk</p>
+<p>Persistence refers to the writing of data to durable storage, such as a solid-state disk (SSD). Redis provides a range of persistence options. These include:</p>
+<ul>
+<li><strong>RDB</strong> (Redis Database): RDB persistence performs point-in-time snapshots of your dataset at specified intervals.</li>
+<li><strong>AOF</strong> (Append Only File): AOF persistence logs every write operation received by the server. These operations can then be replayed again at server startup, reconstructing the original dataset. Commands are logged using the same format as the Redis protocol itself.</li>
+<li><strong>No persistence</strong>: You can disable persistence completely. This is sometimes used when caching.</li>
+<li><strong>RDB + AOF</strong>: You can also combine both AOF and RDB in the same instance.</li>
+</ul>
+<p>If you'd rather not think about the tradeoffs between these different persistence strategies, you may want to consider <a href="https://docs.redis.com/latest/rs/databases/configure/database-persistence/" target="_blank" rel="noopener noreferrer">Redis Enterprise's persistence options<ExternalLinkIcon/></a>, which can be pre-configured using a UI.</p>
+</blockquote>
+<h2 id="rdb-redis-database" tabindex="-1"><a class="header-anchor" href="#rdb-redis-database" aria-hidden="true">#</a> RDB (Redis DataBase)</h2>
+<h3 id="官网介绍" tabindex="-1"><a class="header-anchor" href="#官网介绍" aria-hidden="true">#</a> 官网介绍</h3>
+<blockquote>
+<h2 id="rdb-advantages" tabindex="-1"><a class="header-anchor" href="#rdb-advantages" aria-hidden="true">#</a> RDB advantages</h2>
+<ul>
+<li>RDB is a very compact single-file point-in-time representation of your Redis data. RDB files are perfect for backups. For instance you may want to archive your RDB files every hour for the latest 24 hours, and to save an RDB snapshot every day for 30 days. This allows you to easily restore different versions of the data set in case of disasters.</li>
+<li>RDB is very good for disaster recovery, being a single compact file that can be transferred to far data centers, or onto Amazon S3 (possibly encrypted).</li>
+<li>RDB maximizes Redis performances since the only work the Redis parent process needs to do in order to persist is forking a child that will do all the rest. The parent process will never perform disk I/O or alike.</li>
+<li>RDB allows faster restarts with big datasets compared to AOF.</li>
+<li>On replicas, RDB supports <a href="https://redis.io/topics/replication#partial-resynchronizations-after-restarts-and-failovers" target="_blank" rel="noopener noreferrer">partial resynchronizations after restarts and failovers<ExternalLinkIcon/></a>.</li>
+</ul>
+<h2 id="rdb-disadvantages" tabindex="-1"><a class="header-anchor" href="#rdb-disadvantages" aria-hidden="true">#</a> RDB disadvantages</h2>
+<ul>
+<li>RDB is NOT good if you need to minimize the chance of data loss in case Redis stops working (for example after a power outage). You can configure different <em>save points</em> where an RDB is produced (for instance after at least five minutes and 100 writes against the data set, you can have multiple save points). However you'll usually create an RDB snapshot every five minutes or more, so in case of Redis stopping working without a correct shutdown for any reason you should be prepared to lose the latest minutes of data.</li>
+<li>RDB needs to fork() often in order to persist on disk using a child process. fork() can be time consuming if the dataset is big, and may result in Redis stopping serving clients for some milliseconds or even for one second if the dataset is very big and the CPU performance is not great. AOF also needs to fork() but less frequently and you can tune how often you want to rewrite your logs without any trade-off on durability.</li>
+</ul>
+</blockquote>
+<h3 id="定义" tabindex="-1"><a class="header-anchor" href="#定义" aria-hidden="true">#</a> 定义</h3>
+<p>​		<strong>在指定的时间间隔内将内存中的数据集快照写入磁盘， 即 Snapshot 快照，它恢复时是将快照文件直接读到内存里。</strong></p>
+<h3 id="备份文件的执行" tabindex="-1"><a class="header-anchor" href="#备份文件的执行" aria-hidden="true">#</a> 备份文件的执行</h3>
+<ul>
+<li>
+<p>Redis 会单独创建（fork）一个子进程来进行持久化，会先将数据写入到 一个临时文件中，待持久化过程都结束了，再用这个临时文件替换上次持久化好的文件（防止中间出现宕机导致数据丢失）。</p>
+</li>
+<li>
+<p>整个过程中，主进程是不进行任何 IO 操作的，这就确保了极高的性能。<strong>如果需要进行大规模数据的恢复，且对于数据恢复的完整性不是非常敏感，那 RDB 方式要比 AOF 方式更加的高效。RDB 的缺点是最后一次持久化后的数据可能丢失。</strong></p>
+</li>
+</ul>
+<h3 id="fork" tabindex="-1"><a class="header-anchor" href="#fork" aria-hidden="true">#</a> Fork</h3>
+<ol>
+<li>
+<p>Fork 的作用是复制一个与当前进程一样的进程。新进程的所有数据（变量、环境变量、程序计数器等） 数值都和原进程一致，但是是一个全新的进程，并作为原进程的子进程。</p>
+</li>
+<li>
+<p>在 Linux 程序中，fork() 会产生一个和父进程完全相同的子进程，但子进程在此后多会 exec 系统调用，出于效率考虑，Linux 中引入了<strong>写时复制技术</strong></p>
+</li>
+<li>
+<p><strong>一般情况父进程和子进程会共用同一段物理内存</strong>，只有进程空间的各段的内容要发生变化时，才会将父进程的内容复制一份给子进程。</p>
+</li>
+</ol>
+<h3 id="rdb-持久化流程" tabindex="-1"><a class="header-anchor" href="#rdb-持久化流程" aria-hidden="true">#</a> RDB 持久化流程</h3>
+<figure><img src="@source/DataBase/Redis/image-20221008151945129.png" alt="image-20221008151945129" tabindex="0" loading="lazy"><figcaption>image-20221008151945129</figcaption></figure>
+<h3 id="rdb-文件配置" tabindex="-1"><a class="header-anchor" href="#rdb-文件配置" aria-hidden="true">#</a> rdb 文件配置</h3>
+<p>​		在 redis.conf 中配置文件名称，默认为 dump.rdb。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code> <span class="token number">406</span> <span class="token comment"># Enables or disables full sanitation checks for ziplist and listpack etc when</span>
+ <span class="token number">407</span> <span class="token comment"># loading an RDB or RESTORE payload. This reduces the chances of a assertion or</span>
+ <span class="token number">408</span> <span class="token comment"># crash later on while processing commands.</span>
+ <span class="token number">409</span> <span class="token comment"># Options:</span>
+ <span class="token number">410</span> <span class="token comment">#   no         - Never perform full sanitation</span>
+ <span class="token number">411</span> <span class="token comment">#   yes        - Always perform full sanitation</span>
+ <span class="token number">412</span> <span class="token comment">#   clients    - Perform full sanitation only for user connections.</span>
+ <span class="token number">413</span> <span class="token comment">#                Excludes: RDB files, RESTORE commands received from the master</span>
+ <span class="token number">414</span> <span class="token comment">#                connection, and client connections which have the</span>
+ <span class="token number">415</span> <span class="token comment">#                skip-sanitize-payload ACL flag.</span>
+ <span class="token number">416</span> <span class="token comment"># The default should be 'clients' but since it currently affects cluster</span>
+ <span class="token number">417</span> <span class="token comment"># resharding via MIGRATE, it is temporarily set to 'no' by default.</span>
+ <span class="token number">418</span> <span class="token comment">#</span>
+ <span class="token number">419</span> <span class="token comment"># sanitize-dump-payload no</span>
+ <span class="token number">420</span>
+ <span class="token number">421</span> <span class="token comment"># The filename where to dump the DB</span>
+ <span class="token number">422</span> dbfilename dump.rdb
+
+ <span class="token comment"># The working directory.</span>
+ <span class="token number">438</span> <span class="token comment">#</span>
+ <span class="token number">439</span> <span class="token comment"># The DB will be written inside this directory, with the filename specified</span>
+ <span class="token number">440</span> <span class="token comment"># above using the 'dbfilename' configuration directive.</span>
+ <span class="token number">441</span> <span class="token comment">#</span>
+ <span class="token number">442</span> <span class="token comment"># The Append Only File will also be created inside this directory.</span>
+ <span class="token number">443</span> <span class="token comment">#</span>
+ <span class="token number">444</span> <span class="token comment"># Note that you must specify a directory here, not a file name.</span>
+ <span class="token comment"># 默认当前启动目录下的 dump.rdb</span>
+ <span class="token number">445</span> <span class="token function">dir</span> ./
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="rdb-快照触发" tabindex="-1"><a class="header-anchor" href="#rdb-快照触发" aria-hidden="true">#</a> RDB 快照触发</h3>
+<h4 id="默认配置" tabindex="-1"><a class="header-anchor" href="#默认配置" aria-hidden="true">#</a> 默认配置</h4>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code> <span class="token number">351</span> <span class="token comment">################################ SNAPSHOTTING  ################################</span>
+ <span class="token number">352</span>
+ <span class="token number">353</span> <span class="token comment"># Save the DB to disk.</span>
+ <span class="token number">354</span> <span class="token comment">#</span>
+ <span class="token number">355</span> <span class="token comment"># save &lt;seconds> &lt;changes></span>
+ <span class="token number">356</span> <span class="token comment">#</span>
+ <span class="token number">357</span> <span class="token comment"># Redis will save the DB if both the given number of seconds and the given</span>
+ <span class="token number">358</span> <span class="token comment"># number of write operations against the DB occurred.</span>
+ <span class="token number">359</span> <span class="token comment">#</span>
+ <span class="token number">360</span> <span class="token comment"># Snapshotting can be completely disabled with a single empty string argument</span>
+ <span class="token number">361</span> <span class="token comment"># as in following example:</span>
+ <span class="token number">362</span> <span class="token comment">#</span>
+ <span class="token number">363</span> <span class="token comment"># save ""</span>
+ <span class="token number">364</span> <span class="token comment">#</span>
+ <span class="token number">365</span> <span class="token comment"># Unless specified otherwise, by default Redis will save the DB:</span>
+ <span class="token number">366</span> <span class="token comment">#   * After 3600 seconds (an hour) if at least 1 key changed</span>
+ <span class="token number">367</span> <span class="token comment">#   * After 300 seconds (5 minutes) if at least 100 keys changed</span>
+ <span class="token number">368</span> <span class="token comment">#   * After 60 seconds if at least 10000 keys changed</span>
+ <span class="token number">369</span> <span class="token comment">#</span>
+ <span class="token number">370</span> <span class="token comment"># You can set these explicitly by uncommenting the three following lines.</span>
+ <span class="token number">371</span> <span class="token comment">#</span>
+ <span class="token number">372</span> <span class="token comment"># save 3600 1</span>
+ <span class="token number">373</span> <span class="token comment"># save 300 100</span>
+ <span class="token number">374</span> <span class="token comment"># save 60 10000</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>说明：</p>
+<p>默认 1 小时内至少有个 key 发生改变</p>
+<p>5 分钟内至少有 100 个 key 发生改变</p>
+<p>1 分钟内至少有 10000 个key发生改变。</p>
+<p>格式：save 秒钟 写操作次数</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token comment"># 改变的越频繁，备份的间隔时间越小。</span>
+save <span class="token number">20</span> <span class="token number">3</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div><p>RDB 是整个内存的压缩过的 Snapshot，RDB 的数据结构，可以配置复合的快照触发条件。</p>
+<p>不设置 save 指令，或者给 save 传入空字符串：save &quot;&quot;</p>
+<h4 id="save-与-bgsave-命令" tabindex="-1"><a class="header-anchor" href="#save-与-bgsave-命令" aria-hidden="true">#</a> save 与 bgsave 命令</h4>
+<ul>
+<li>save ：save 时只管保存，其它不管，全部阻塞。<strong>手动保存，不建议。</strong></li>
+<li><strong>bgsave</strong>：Redis 会在后台异步进行快照操作，快照同时还可以响应客户端请求。</li>
+</ul>
+<p>可以通过 lastsave 命令获取最后一次成功执行快照的时间</p>
+<h4 id="flushall-命令" tabindex="-1"><a class="header-anchor" href="#flushall-命令" aria-hidden="true">#</a> flushall 命令</h4>
+<p>​		执行 flushall 命令，也会产生 dump.rdb 文件，但里面是空的，无意义</p>
+<h4 id="stop-writes-on-bgsave-error" tabindex="-1"><a class="header-anchor" href="#stop-writes-on-bgsave-error" aria-hidden="true">#</a> stop-writes-on-bgsave-error</h4>
+<p>​		当 Redis 无法写入磁盘的话，直接关掉 Redis 的写操作。推荐 yes</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code> <span class="token number">376</span> <span class="token comment"># By default Redis will stop accepting writes if RDB snapshots are enabled</span>
+ <span class="token number">377</span> <span class="token comment"># (at least one save point) and the latest background save failed.</span>
+ <span class="token number">378</span> <span class="token comment"># This will make the user aware (in a hard way) that data is not persisting</span>
+ <span class="token number">379</span> <span class="token comment"># on disk properly, otherwise chances are that no one will notice and some</span>
+ <span class="token number">380</span> <span class="token comment"># disaster will happen.</span>
+ <span class="token number">381</span> <span class="token comment">#</span>
+ <span class="token number">382</span> <span class="token comment"># If the background saving process will start working again Redis will</span>
+ <span class="token number">383</span> <span class="token comment"># automatically allow writes again.</span>
+ <span class="token number">384</span> <span class="token comment">#</span>
+ <span class="token number">385</span> <span class="token comment"># However if you have setup your proper monitoring of the Redis server</span>
+ <span class="token number">386</span> <span class="token comment"># and persistence, you may want to disable this feature so that Redis will</span>
+ <span class="token number">387</span> <span class="token comment"># continue to work as usual even if there are problems with disk,</span>
+ <span class="token number">388</span> <span class="token comment"># permissions, and so forth.</span>
+ <span class="token number">389</span> stop-writes-on-bgsave-error <span class="token function">yes</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>rdbcompression</strong> <strong>压缩文件</strong></p>
+<p>对于存储到磁盘中的快照，可以设置是否进行压缩存储。如果是的话，redis 会采用 LZF 算法进行压缩。</p>
+<p>如果你不想消耗 CPU 来进行压缩的话，可以设置为关闭此功能。推荐 yes。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code> <span class="token number">391</span> <span class="token comment"># Compress string objects using LZF when dump .rdb databases?</span>
+ <span class="token number">392</span> <span class="token comment"># By default compression is enabled as it's almost always a win.</span>
+ <span class="token number">393</span> <span class="token comment"># If you want to save some CPU in the saving child set it to 'no' but</span>
+ <span class="token number">394</span> <span class="token comment"># the dataset will likely be bigger if you have compressible values or keys.</span>
+ <span class="token number">395</span> rdbcompression <span class="token function">yes</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>rdbchecksum 检查完整性</strong></p>
+<p>在存储快照后，还可以让 redis 使用 CRC64 算法来进行数据校验，但是这样做会增加大约 10% 的性能消耗，如果希望获取到最大的性能提升，可以关闭此功能，推荐 yes。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code> <span class="token number">391</span> <span class="token comment"># Compress string objects using LZF when dump .rdb databases?</span>
+ <span class="token number">392</span> <span class="token comment"># By default compression is enabled as it's almost always a win.</span>
+ <span class="token number">393</span> <span class="token comment"># If you want to save some CPU in the saving child set it to 'no' but</span>
+ <span class="token number">394</span> <span class="token comment"># the dataset will likely be bigger if you have compressible values or keys.</span>
+ <span class="token number">395</span> rdbcompression <span class="token function">yes</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h4 id="rdb-的备份" tabindex="-1"><a class="header-anchor" href="#rdb-的备份" aria-hidden="true">#</a> rdb 的备份</h4>
+<p>先通过 config get dir 查询 rdb 文件的目录 ，将 *.rdb 的文件拷贝到别的地方。</p>
+<p>rdb 的恢复</p>
+<ul>
+<li>关闭 Redis</li>
+<li>先把备份的文件拷贝到工作目录下 cp dump2.rdb dump.rdb</li>
+<li>启动 Redis，备份数据会直接加载</li>
+</ul>
+<h3 id="rdb-优势" tabindex="-1"><a class="header-anchor" href="#rdb-优势" aria-hidden="true">#</a> RDB 优势</h3>
+<ol>
+<li>适合大规模数据的恢复</li>
+<li>对数据的完整性和一致性要求不高时适合使用</li>
+<li>节省磁盘空间（相比较于 AOF，没有命令存储）</li>
+<li>恢复速度快</li>
+</ol>
+<h3 id="rdb-劣势" tabindex="-1"><a class="header-anchor" href="#rdb-劣势" aria-hidden="true">#</a> RDB 劣势</h3>
+<ol>
+<li>
+<p>Fork 的时候，内存中的数据被克隆了一份，大致 2 倍的膨胀性需要考虑</p>
+</li>
+<li>
+<p>虽然 Redis 在 fork 时使用了<strong>写时拷贝技术</strong>，但是如果数据庞大时还是比较消耗性能。</p>
+</li>
+<li>
+<p>在备份周期在一定间隔时间做一次备份，所以如果 Redis 意外 down 掉的话，就会丢失最后一次快照后的所有修改。</p>
+</li>
+</ol>
+<h3 id="动态停止rdb" tabindex="-1"><a class="header-anchor" href="#动态停止rdb" aria-hidden="true">#</a> 动态停止RDB</h3>
+<p>动态停止 RDB：redis-cli config set save &quot;&quot;    # save后给空值，表示禁用保存策略</p>
+<h3 id="rdb-总结" tabindex="-1"><a class="header-anchor" href="#rdb-总结" aria-hidden="true">#</a> RDB 总结</h3>
+<figure><img src="@source/DataBase/Redis/image-20221008153853024.png" alt="image-20221008153853024" tabindex="0" loading="lazy"><figcaption>image-20221008153853024</figcaption></figure>
+<h2 id="aof-append-only-file" tabindex="-1"><a class="header-anchor" href="#aof-append-only-file" aria-hidden="true">#</a> AOF（Append Only File）</h2>
+<h3 id="定义-1" tabindex="-1"><a class="header-anchor" href="#定义-1" aria-hidden="true">#</a> 定义</h3>
+<p>​		以<strong>日志</strong>的形式来记录每个写操作（增量保存），将 Redis 执行过的所有写指令记录下来（<strong>读操作不记录</strong>）， <strong>只许追加文件但不可以改写文件</strong>，redis 启动之初会读取该文件重新构建数据，换言之，redis 重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作。</p>
+<h3 id="aof-持久化流程" tabindex="-1"><a class="header-anchor" href="#aof-持久化流程" aria-hidden="true">#</a> AOF 持久化流程</h3>
+<p>（1）客户端的请求写命令会被 append 追加到 AOF 缓冲区内</p>
+<p>（2）AOF 缓冲区根据 AOF 持久化策略 <strong>[always, everysec, no]</strong> 将操作 sync 同步到磁盘的 AOF 文件中</p>
+<p>（3）AOF 文件大小超过重写策略或手动重写时，会对 AOF 文件 rewrite 重写，压缩 AOF 文件容量</p>
+<p>（4）Redis 服务重启时，会重新 load 加载 AOF 文件中的写操作达到数据恢复的目的</p>
+<img src="@source/DataBase/Redis/image-20221008154119947.png" alt="image-20221008154119947" style="zoom:67%;" />
+<h3 id="aof-默认配置" tabindex="-1"><a class="header-anchor" href="#aof-默认配置" aria-hidden="true">#</a> AOF 默认配置</h3>
+<p>在 redis.conf 中配置文件名称，默认为 appendonly.aof，AOF 文件的保存路径，同 RDB 的路径一致。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">1211</span> <span class="token comment">############################## APPEND ONLY MODE ###############################</span>
+<span class="token number">1212</span>
+<span class="token number">1213</span> <span class="token comment"># By default Redis asynchronously dumps the dataset on disk. This mode is</span>
+<span class="token number">1214</span> <span class="token comment"># good enough in many applications, but an issue with the Redis process or</span>
+<span class="token number">1215</span> <span class="token comment"># a power outage may result into a few minutes of writes lost (depending on</span>
+<span class="token number">1216</span> <span class="token comment"># the configured save points).</span>
+<span class="token number">1217</span> <span class="token comment">#</span>
+<span class="token number">1218</span> <span class="token comment"># The Append Only File is an alternative persistence mode that provides</span>
+<span class="token number">1219</span> <span class="token comment"># much better durability. For instance using the default data fsync policy</span>
+<span class="token number">1220</span> <span class="token comment"># (see later in the config file) Redis can lose just one second of writes in a</span>
+<span class="token number">1221</span> <span class="token comment"># dramatic event like a server power outage, or a single write if something</span>
+<span class="token number">1222</span> <span class="token comment"># wrong with the Redis process itself happens, but the operating system is</span>
+<span class="token number">1223</span> <span class="token comment"># still running correctly.</span>
+<span class="token number">1224</span> <span class="token comment">#</span>
+<span class="token number">1225</span> <span class="token comment"># AOF and RDB persistence can be enabled at the same time without problems.</span>
+<span class="token number">1226</span> <span class="token comment"># If the AOF is enabled on startup Redis will load the AOF, that is the file</span>
+<span class="token number">1227</span> <span class="token comment"># with the better durability guarantees.</span>
+<span class="token number">1228</span> <span class="token comment">#</span>
+<span class="token number">1229</span> <span class="token comment"># Please check http://redis.io/topics/persistence for more information.</span>
+<span class="token number">1230</span>
+<span class="token number">1231</span> appendonly no
+<span class="token number">1232</span>
+<span class="token number">1233</span> <span class="token comment"># The name of the append only file (default: "appendonly.aof")</span>
+<span class="token number">1234</span>
+<span class="token number">1235</span> appendfilename <span class="token string">"appendonly.aof"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="aof-和-rdb-同时开启" tabindex="-1"><a class="header-anchor" href="#aof-和-rdb-同时开启" aria-hidden="true">#</a> AOF 和 RDB 同时开启</h3>
+<p><strong>AOF 和 RDB 同时开启，系统默认取 AOF 的数据（数据不会存在丢失）</strong>，如果 aof 文件为空，则重启后的 redis 没有数据。</p>
+<p>示例：</p>
+<h3 id="aof-启动、恢复" tabindex="-1"><a class="header-anchor" href="#aof-启动、恢复" aria-hidden="true">#</a> AOF 启动、恢复</h3>
+<p>AOF 的备份机制和性能虽然和 RDB 不同，但是备份和恢复的操作同 RDB一样，都是拷贝备份文件，需要恢复时再拷贝到 Redis 工作目录下，启动系统即加载。</p>
+<p>正常恢复</p>
+<ul>
+<li>​	修改默认的 appendonly no，改为 yes</li>
+<li>​	将有数据的 aof 文件复制一份保存到对应目录（查看目录：config get dir）</li>
+<li>​	恢复：重启 redis 然后重新加载</li>
+</ul>
+<p>异常恢复</p>
+<ul>
+<li>​		修改默认的 appendonly no，改为 yes</li>
+<li>​		如遇到 <strong>AOF</strong> 文件损坏，通过 <code v-pre>/usr/local/bin/redis-check-aof--fix appendonly.aof --fixed</code> 进行恢复</li>
+<li>​		备份被写坏的 AOF 文件</li>
+<li>​		恢复：重启 redis，然后重新加载</li>
+</ul>
+<p>示例：</p>
+<h3 id="aof-同步频率设置" tabindex="-1"><a class="header-anchor" href="#aof-同步频率设置" aria-hidden="true">#</a> AOF 同步频率设置</h3>
+<ol>
+<li>
+<p>appendfsync	always</p>
+<p>​	始终同步，每次 Redis 的写入都会立刻记入日志，性能较差但数据完整性比较好</p>
+</li>
+<li>
+<p>appendfsync  everysec</p>
+<p>​	每秒同步，每秒记入日志一次，如果宕机，本秒的数据可能丢失</p>
+</li>
+<li>
+<p>appendfsync  no</p>
+<p>​	redis 不主动进行同步，把同步时机交给操作系统</p>
+</li>
+</ol>
+<h3 id="rewrite-压缩" tabindex="-1"><a class="header-anchor" href="#rewrite-压缩" aria-hidden="true">#</a> Rewrite 压缩</h3>
+<h4 id="定义-2" tabindex="-1"><a class="header-anchor" href="#定义-2" aria-hidden="true">#</a> 定义</h4>
+<p>​		AOF 采用文件追加方式，文件会越来越大为避免出现此种情况，新增了重写机制，当 AOF 文件的大小超过所设定的阈值时，Redis 就会启动 AOF 文件的内容压缩， 只保留可以恢复数据的最小指令集，可以使用命令 bgrewriteaof</p>
+<h4 id="重写原理-如何实现重写" tabindex="-1"><a class="header-anchor" href="#重写原理-如何实现重写" aria-hidden="true">#</a> 重写原理，如何实现重写</h4>
+<p>AOF 文件持续增长而过大时，会 fork 出一条新进程来将文件重写（也是先写临时文件最后再 rename），<strong>redis4.0 版本后的重写，是指把 rdb 的快照，以二进制的形式附在新的 aof 头部，作为已有的历史数据，替换掉原来的流水账操作。</strong></p>
+<p><strong>no-appendfsync-on-rewrite：</strong></p>
+<p>如果 no-appendfsync-on-rewrite=yes ，不写入 aof 文件只写入缓存，用户请求不会阻塞，但是在这段时间如果宕机会丢失这段时间的缓存数据。（降低数据安全性，提高性能）</p>
+<p>如果 no-appendfsync-on-rewrite=no，还是会把数据往磁盘里刷，但是遇到重写操作，可能会发生阻塞。（数据安全，但是性能降低）</p>
+<h4 id="触发机制-何时重写" tabindex="-1"><a class="header-anchor" href="#触发机制-何时重写" aria-hidden="true">#</a> 触发机制，何时重写</h4>
+<p>Redis 会记录上次重写时的 AOF 大小，默认配置是当 AOF 文件大小是上次 rewrite 后大小的一倍且文件大于 64M 时触发</p>
+<p>重写虽然可以节约大量磁盘空间，减少恢复时间。但是每次重写还是有一定的负担的，因此设定 Redis 要满足一定条件才会进行重写。</p>
+<p>auto-aof-rewrite-percentage：设置重写的基准值，文件达到 100% 时开始重写（文件是原来重写后文件的 2 倍时触发）</p>
+<p>auto-aof-rewrite-min-size：设置重写的基准值，最小文件 64MB。达到这个值开始重写。</p>
+<p>例如：文件达到 70MB 开始重写，降到 50MB，下次则 100MB 开始重写。</p>
+<p>系统载入时或者上次重写完毕时，Redis 会记录此时 AOF 大小，设为 base_size，</p>
+<p>如果 Redis 的 AOF 当前大小 &gt;= base_size + base_size * 100% （默认）且当前大小 &gt;= 64mb（默认）的情况下，Redis 会对 AOF 进行重写。</p>
+<h4 id="重写流程" tabindex="-1"><a class="header-anchor" href="#重写流程" aria-hidden="true">#</a> 重写流程</h4>
+<p>（1）bgrewriteaof触发重写，判断是否当前有bgsave或bgrewriteaof在运行，如果有，则等待该命令结束后再继续执行。</p>
+<p>（2）主进程fork出子进程执行重写操作，保证主进程不会阻塞。</p>
+<p>（3）子进程遍历redis内存中数据到临时文件，客户端的写请求同时写入aof_buf缓冲区和aof_rewrite_buf重写缓冲区保证原AOF文件完整以及新AOF文件生成期间的新的数据修改动作不会丢失。</p>
+<p>（4）子进程写完新的AOF文件后，向主进程发信号，父进程更新统计信息。2).主进程把aof_rewrite_buf中的数据写入到新的AOF文件。</p>
+<p>（5）使用新的AOF文件覆盖旧的AOF文件，完成AOF重写。</p>
+<figure><img src="@source/DataBase/Redis/image-20221008155125490.png" alt="image-20221008155125490" tabindex="0" loading="lazy"><figcaption>image-20221008155125490</figcaption></figure>
+<h3 id="优势" tabindex="-1"><a class="header-anchor" href="#优势" aria-hidden="true">#</a> 优势</h3>
+<ol>
+<li>
+<p>备份机制更稳健，丢失数据概率更低。</p>
+</li>
+<li>
+<p>可读的日志文本，通过操作 AOF 稳健，可以处理误操作。</p>
+</li>
+</ol>
+<h3 id="劣势" tabindex="-1"><a class="header-anchor" href="#劣势" aria-hidden="true">#</a> 劣势</h3>
+<ul>
+<li>比起 RDB 占用更多的磁盘空间。</li>
+<li>恢复备份速度要慢。</li>
+<li>每次读写都同步的话，有一定的性能压力。</li>
+<li>存在个别 Bug，造成恢复不能。</li>
+</ul>
+<figure><img src="@source/DataBase/Redis/image-20221008155241481.png" alt="image-20221008155241481" tabindex="0" loading="lazy"><figcaption>image-20221008155241481</figcaption></figure>
+<h2 id="应该使用那个策略" tabindex="-1"><a class="header-anchor" href="#应该使用那个策略" aria-hidden="true">#</a> 应该使用那个策略</h2>
+<h3 id="官方推荐" tabindex="-1"><a class="header-anchor" href="#官方推荐" aria-hidden="true">#</a> 官方推荐</h3>
+<ul>
+<li>官方推荐两个都启用。</li>
+<li>如果对数据不敏感，可以选单独用 RDB。</li>
+<li>不建议单独用 AOF，因为可能会出现 Bug。</li>
+<li>如果只是做纯内存缓存，可以都不用。</li>
+</ul>
+<figure><img src="@source/DataBase/Redis/image-20221008155404670.png" alt="image-20221008155404670" tabindex="0" loading="lazy"><figcaption>image-20221008155404670</figcaption></figure>
+<ul>
+<li>RDB 持久化方式能够在指定的时间间隔能对你的数据进行快照存储</li>
+<li>AOF 持久化方式记录每次对服务器写的操作，当服务器重启的时候会重新执行这些命令来恢复原始的数据，AOF 命令以 Redis 协议追加保存每次写的操作到文件末尾。</li>
+<li>Redis 还能对 AOF 文件进行后台重写，使得 AOF 文件的体积不至于过大</li>
+<li>只做缓存：如果你只希望你的数据在服务器运行的时候存在，也可以不使用任何持久化方式。</li>
+<li>同时开启两种持久化方式
+<ul>
+<li>在这种情况下，当 Redis 重启的时候会优先载入 AOF 文件来恢复原始的数据，因为在通常情况下 AOF 文件保存的数据集要比 RDB 文件保存的数据集要完整。</li>
+<li>RDB 的数据不实时，同时使用两者时服务器重启也只会找 AOF 文件。那要不要只使用 AOF呢？</li>
+<li>建议不要，因为 RDB 更适合用于备份数据库（AOF 在不断变化不好备份）， 快速重启，而且不会有 AOF 可能潜在的 bug，留着作为一个万一的手段。</li>
+</ul>
+</li>
+</ul>
+<h3 id="性能建议" tabindex="-1"><a class="header-anchor" href="#性能建议" aria-hidden="true">#</a> 性能建议</h3>
+<ol>
+<li>
+<p>因为 RDB 文件只用作后备用途，建议只在 Slave上持久化 RDB 文件，而且只要 15 分钟备份一次即可，只保留 save 900 1 这条规则。</p>
+</li>
+<li>
+<p>如果使用 AOF，好处是在最恶劣情况下也只会丢失不超过两秒数据，启动脚本较简单只 load 自己的 AOF 文件就可以了。 代价：一是带来了持续的 IO，二是 AOF rewrite 的最后将 rewrite 过程中产生的新数据写到新文件造成的阻塞几乎是不可避免的。</p>
+</li>
+<li>
+<p><strong>只要硬盘许可，应该尽量减少 AOF  rewrite的频率</strong>，AOF 重写的基础大小默认值 64M 太小了，可以设到 5G 以上。  默认超过原大小100%大小时重写可以改到适当的数值。</p>
+</li>
+</ol>
+<h1 id="redis-主从复制" tabindex="-1"><a class="header-anchor" href="#redis-主从复制" aria-hidden="true">#</a> Redis 主从复制</h1>
+<h2 id="定义-3" tabindex="-1"><a class="header-anchor" href="#定义-3" aria-hidden="true">#</a> 定义</h2>
+<p>​		主机数据更新后根据配置和策略， 自动同步到备机的 master/slaver 机制，<strong>Master</strong> 以写为主，<strong>Slave</strong> 以读为主。</p>
+<h2 id="作用" tabindex="-1"><a class="header-anchor" href="#作用" aria-hidden="true">#</a> 作用</h2>
+<ol>
+<li>
+<p>读写分离，性能扩展</p>
+</li>
+<li>
+<p>容灾快速恢复</p>
+</li>
+</ol>
+<img src="@source/DataBase/Redis/主从复制.png" alt="Redis 主从复制" style="zoom:67%;" />
+<p><strong>说明：如果有多个主机，多个主机写入相同的数据，则从机读取时无法分辨</strong></p>
+<h2 id="搭建主从复制" tabindex="-1"><a class="header-anchor" href="#搭建主从复制" aria-hidden="true">#</a> 搭建主从复制</h2>
+<p>【此处在一台主机上搭建主从复制，需要修改端口，PID 文件等信息】</p>
+<p>新建多份 redis.conf 文件，使用 include 命令引入 /etc/redis.conf</p>
+<ul>
+<li>开启 daemonize yes</li>
+<li>Pid 文件名字 pidfile</li>
+<li>指定端口 port</li>
+<li>Log 文件名字</li>
+<li>dump.rdb 名字 dbfilename</li>
+<li>Appendonly 关掉或者替换名字</li>
+</ul>
+<h3 id="第一步-新建配置文件" tabindex="-1"><a class="header-anchor" href="#第一步-新建配置文件" aria-hidden="true">#</a> 第一步：新建配置文件</h3>
+<p>在 /opt/redis/redisConf 下新建配置文件 redis6379.conf，redis6380.conf，redis6381.conf</p>
+<p>redis6379.conf：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>include /etc/redis.conf
+pidfile /var/run/redis_6379.pid
+port <span class="token number">6379</span>
+dbfilename dump6379.rdb
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>redis6380.conf：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>include /etc/redis.conf
+pidfile /var/run/redis_6380.pid
+port <span class="token number">6380</span>
+dbfilename dump6380.rdb
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>redis6381.conf：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>include /etc/redis.conf
+pidfile /var/run/redis_6381.pid
+port <span class="token number">6381</span>
+dbfilename dump6381.rdb
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第二步-启动三台-redis-查看进程" tabindex="-1"><a class="header-anchor" href="#第二步-启动三台-redis-查看进程" aria-hidden="true">#</a> 第二步：启动三台 Redis，查看进程</h3>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisConf/redis6379.conf</span>
+<span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisConf/redis6380.conf</span>
+<span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisConf/redis6381.conf</span>
+<span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># ps -ef|grep redis</span>
+root       <span class="token number">1279</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">15</span>:22 ?        00:00:12 redis-server *:6379
+root       <span class="token number">1365</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">16</span>:12 ?        00:00:00 redis-server *:6380
+root       <span class="token number">1371</span>      <span class="token number">1</span>  <span class="token number">1</span> <span class="token number">16</span>:12 ?        00:00:00 redis-server *:6381
+root       <span class="token number">1377</span>   <span class="token number">1254</span>  <span class="token number">0</span> <span class="token number">16</span>:12 pts/0    00:00:00 <span class="token function">grep</span> <span class="token parameter variable">--color</span><span class="token operator">=</span>auto redis
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第三步-使用-info-replication-打印主从复制信息" tabindex="-1"><a class="header-anchor" href="#第三步-使用-info-replication-打印主从复制信息" aria-hidden="true">#</a> 第三步：使用 info replication 打印主从复制信息</h3>
+<p>使用命令 <code v-pre>redis-cli -p 6379 </code>连接，此时三台 Redis 没有相关性：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># redis-cli -p 6379</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:master
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:b000a8297805ddb0f87b16a334ac5192fc090a9b
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:0
+second_repl_offset:-1
+repl_backlog_active:0
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:0
+repl_backlog_histlen:0
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第四步-配置主机和从机" tabindex="-1"><a class="header-anchor" href="#第四步-配置主机和从机" aria-hidden="true">#</a> 第四步：配置主机和从机</h3>
+<p>使用 <code v-pre>slaveof &lt;ip&gt;&lt;port&gt;</code> 命令，在从机上配置它的主机。</p>
+<p>redis6379：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># redis-cli -p 6379</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:master
+connected_slaves:2
+slave0:ip<span class="token operator">=</span><span class="token number">127.0</span>.0.1,port<span class="token operator">=</span><span class="token number">6380</span>,state<span class="token operator">=</span>online,offset<span class="token operator">=</span><span class="token number">56</span>,lag<span class="token operator">=</span><span class="token number">0</span>
+slave1:ip<span class="token operator">=</span><span class="token number">127.0</span>.0.1,port<span class="token operator">=</span><span class="token number">6381</span>,state<span class="token operator">=</span>online,offset<span class="token operator">=</span><span class="token number">56</span>,lag<span class="token operator">=</span><span class="token number">0</span>
+master_failover_state:no-failover
+master_replid:8c04d0a2552ad18119aa3b0d037e957646a294ac
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:56
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:56
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>redis6380：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># redis-cli -p 6380</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> slaveof <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+OK
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:slave
+master_host:127.0.0.1
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:2
+master_sync_in_progress:0
+slave_repl_offset:56
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:8c04d0a2552ad18119aa3b0d037e957646a294ac
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:56
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:56
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>redis6381：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># redis-cli -p 6381</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">1</span>></span> slaveof <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+OK
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">1</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:slave
+master_host:127.0.0.1
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:2
+master_sync_in_progress:0
+slave_repl_offset:42
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:8c04d0a2552ad18119aa3b0d037e957646a294ac
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:42
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:29
+repl_backlog_histlen:14
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">1</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第五步-读写数据" tabindex="-1"><a class="header-anchor" href="#第五步-读写数据" aria-hidden="true">#</a> 第五步：读写数据</h3>
+<p>在主机上写，在从机上可以读取数据，在从机上写数据报错：</p>
+<p>在主机上写数据：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redisConf<span class="token punctuation">]</span><span class="token comment"># redis-cli -p 6379</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> k1 v1
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>在从机上读取数据：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># redis-cli -p 6381</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">1</span>></span> get k1
+<span class="token string">"v1"</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">1</span>></span> <span class="token builtin class-name">set</span> k2 v2
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> READONLY You can't <span class="token function">write</span> against a <span class="token builtin class-name">read</span> only replica.
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">1</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第六步-主机挂掉-重启仍是-master" tabindex="-1"><a class="header-anchor" href="#第六步-主机挂掉-重启仍是-master" aria-hidden="true">#</a> 第六步：主机挂掉，重启仍是 master</h3>
+<p>从机 6380：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> info replication
+<span class="token comment"># Replication</span>
+<span class="token comment"># 从机仍然是 slave</span>
+role:slave
+master_host:127.0.0.1
+master_port:6379
+<span class="token comment"># 主机状态为 down</span>
+master_link_status:down
+master_last_io_seconds_ago:-1
+master_sync_in_progress:0
+slave_repl_offset:56
+master_link_down_since_seconds:4
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+master_replid:17ec7bb8d09e2e792490ff387061ad90760aa93b
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:56
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:56
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>重启主机：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:master
+connected_slaves:2
+slave0:ip<span class="token operator">=</span><span class="token number">127.0</span>.0.1,port<span class="token operator">=</span><span class="token number">6380</span>,state<span class="token operator">=</span>online,offset<span class="token operator">=</span><span class="token number">140</span>,lag<span class="token operator">=</span><span class="token number">1</span>
+slave1:ip<span class="token operator">=</span><span class="token number">127.0</span>.0.1,port<span class="token operator">=</span><span class="token number">6381</span>,state<span class="token operator">=</span>online,offset<span class="token operator">=</span><span class="token number">140</span>,lag<span class="token operator">=</span><span class="token number">1</span>
+master_replid:fdaabc55beb3a80fd3e6833cd2733aee63577bc0
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:140
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:140
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第七步-从机重启-需要重新设置-slaveof" tabindex="-1"><a class="header-anchor" href="#第七步-从机重启-需要重新设置-slaveof" aria-hidden="true">#</a> 第七步：从机重启，需要重新设置 slaveof</h3>
+<p>可以将配置增加到文件中，永久生效。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># ps -ef |grep redis</span>
+root       <span class="token number">1459</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">16</span>:19 ?        00:00:02 redis-server *:6379
+root       <span class="token number">1466</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">16</span>:19 ?        00:00:02 redis-server *:6380
+root       <span class="token number">1472</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">16</span>:20 ?        00:00:02 redis-server *:6381
+root       <span class="token number">1483</span>   <span class="token number">1254</span>  <span class="token number">0</span> <span class="token number">16</span>:25 pts/0    00:00:00 redis-cli <span class="token parameter variable">-p</span> <span class="token number">6379</span>
+root       <span class="token number">1485</span>   <span class="token number">1386</span>  <span class="token number">0</span> <span class="token number">16</span>:25 pts/2    00:00:00 redis-cli <span class="token parameter variable">-p</span> <span class="token number">6380</span>
+root       <span class="token number">1492</span>   <span class="token number">1424</span>  <span class="token number">0</span> <span class="token number">16</span>:28 pts/1    00:00:00 <span class="token function">grep</span> <span class="token parameter variable">--color</span><span class="token operator">=</span>auto redis
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># kill -9 1466</span>
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisConf/redis6380.conf</span>
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># redis-cli -p 6380</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> keys *
+<span class="token punctuation">(</span>empty array<span class="token punctuation">)</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:master
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:8628d72c430b24fa92275794735788802033a865
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:0
+second_repl_offset:-1
+repl_backlog_active:0
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:0
+repl_backlog_histlen:0
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> slaveof <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+OK
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> keys *
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"k2"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"k1"</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>注意问题：关闭 redis 时报错</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment">#  redis-cli -p 6379 shutdown</span>
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> ERR Errors trying to SHUTDOWN. Check logs.
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div><p>原因：需要创建日志文件</p>
+<p>解决方案：需要在配置文件中设置 logfile，默认为空（指定日志路径不存在时则必须先创建路径文件夹）</p>
+<p><strong>注意：Redis 在关闭时会创建 dump.rdb 文件</strong></p>
+<h2 id="主从复制原理" tabindex="-1"><a class="header-anchor" href="#主从复制原理" aria-hidden="true">#</a> 主从复制原理</h2>
+<blockquote>
+<ol>
+<li>Slave 启动成功连接到 master 后主动会发送一个 sync 命令</li>
+<li>Master 接到命令启动后台的存盘进程，同时收集所有接收到的用于修改数据集命令， 在后台进程执行完毕之后，Master 将传送整个数据文件到 Slave，以完成一次完全同步</li>
+<li>全量复制：而 Slave 服务在接收到数据库文件数据后，将其存盘并加载到内存中</li>
+<li>增量复制：Master 继续将新的所有收集到的修改命令依次传给 Slave，完成同步</li>
+<li><strong>但是只要是重新连接 Master，一次完全同步（全量复制）将被自动执行</strong></li>
+</ol>
+</blockquote>
+<h2 id="问题-主机从机宕机数据复制问题" tabindex="-1"><a class="header-anchor" href="#问题-主机从机宕机数据复制问题" aria-hidden="true">#</a> 问题：主机从机宕机数据复制问题</h2>
+<ol>
+<li>从机 slave 是全量赋值，从头开始复制，新增的键会重新复制</li>
+<li>从机 slave 可以只能读，不能写</li>
+<li>主机 shutdown 后，从机原地待命，不会变为主机</li>
+<li>主机 shutdown 后，又重新启动，从机仍能接受数据</li>
+<li>从机 shutdown 后，重新启动，会重头开始启动</li>
+</ol>
+<p>示例：</p>
+<h2 id="问题-slave-也可以是-master" tabindex="-1"><a class="header-anchor" href="#问题-slave-也可以是-master" aria-hidden="true">#</a> 问题：Slave 也可以是 Master</h2>
+<p>上一个 Slave 可以是下一个 Slave 的 Master，Slave 同样可以接收其他 Slaves 的连接和同步请求，那么该 Slave 作为了链条中下一个的 Master,，可以有效减轻 Master 的写压力，去中心化降低风险。</p>
+<p>用 <code v-pre>Slaveof &lt;ip&gt;&lt;port&gt;</code></p>
+<p>中途变更转向：会清除之前的数据，重新建立拷贝最新的</p>
+<p>风险是一旦某个 Slave 宕机，后面的 Slave 都没法备份</p>
+<p>主机挂了，从机还是从机，无法写数据了</p>
+<h2 id="问题-master-宕机后-从机变为主机" tabindex="-1"><a class="header-anchor" href="#问题-master-宕机后-从机变为主机" aria-hidden="true">#</a> 问题：Master 宕机后，从机变为主机</h2>
+<p>当一个 master 宕机后，使用<code v-pre>slaveof NO ONE </code>将从机变为主机，注意大小写问题，否则报错</p>
+<p>后面的 slave 可以立刻升为 master，其后面的 slave 不用做任何修改。</p>
+<p>注意：此种方式需要手动修改从机为主机，实际中不会使用，而采用哨兵模式。</p>
+<p>示例：</p>
+<p>redis6379 宕机，设置 redis6380 为主机：</p>
+<p>redis6380：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:slave
+master_host:127.0.0.1
+master_port:6379
+master_link_status:down
+master_last_io_seconds_ago:-1
+master_sync_in_progress:0
+slave_repl_offset:2884
+master_link_down_since_seconds:292
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+master_replid:ef720453975f27b514fe9479b10054384431cf2c
+master_replid2:fdaabc55beb3a80fd3e6833cd2733aee63577bc0
+master_repl_offset:2884
+second_repl_offset:2885
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:2884
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> slaveof on one
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> ERR value is not an integer or out of range
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> slaveof NO ONE
+OK
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:master
+connected_slaves:0
+master_replid:9e0cda03f2dd441051e71f406639b11f9caa9425
+master_replid2:a2455197aa3b1b3fe3008e07ed298c13474b7624
+master_repl_offset:0
+second_repl_offset:1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:0
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="哨兵模式-sentinel" tabindex="-1"><a class="header-anchor" href="#哨兵模式-sentinel" aria-hidden="true">#</a> 哨兵模式（sentinel）</h2>
+<p>主机 shutdown 后，在从机中选出主机。</p>
+<p>通过哨兵能够后台监控主机是否故障，如果出现故障，则根据投票数自动将从库转换为主库。</p>
+<h3 id="第一步-新建-sentinel-conf-文件" tabindex="-1"><a class="header-anchor" href="#第一步-新建-sentinel-conf-文件" aria-hidden="true">#</a> 第一步：新建 sentinel.conf 文件</h3>
+<p><strong>文件名必须匹配</strong></p>
+<h3 id="第二步-配置文件内容" tabindex="-1"><a class="header-anchor" href="#第二步-配置文件内容" aria-hidden="true">#</a> 第二步：配置文件内容</h3>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token comment"># mymaster: 主机别名，1：至少有多少个哨兵同意迁移的数量。 </span>
+sentinel monitor mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6379</span> <span class="token number">1</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第三步-启动-redis-以及哨兵" tabindex="-1"><a class="header-anchor" href="#第三步-启动-redis-以及哨兵" aria-hidden="true">#</a> 第三步：启动 Redis 以及哨兵</h3>
+<p>启动 Redis 并配置好 <code v-pre>slaveof host port</code></p>
+<p>注意端口：26379</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># vim redisConf/sentinel.conf</span>
+sentinel monitor mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6379</span> <span class="token number">1</span>
+<span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># ls /usr/local/bin/</span>
+redis-benchmark  redis-check-aof  redis-check-rdb  redis-cli  redis-sentinel  redis-server
+<span class="token punctuation">[</span>root@localhost redis<span class="token punctuation">]</span><span class="token comment"># redis-sentinel /opt/redis/redisConf/sentinel.conf</span>
+<span class="token punctuation">[</span>root@localhost redisConf<span class="token punctuation">]</span><span class="token comment"># redis-sentinel /opt/redis/redisConf/sentinel.conf</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:45:44.016 <span class="token comment"># oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:45:44.016 <span class="token comment"># Redis version=6.0.16, bits=64, commit=00000000, modified=0, pid=86752, just st                                         arted</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:45:44.016 <span class="token comment"># Configuration loaded</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:45:44.018 * Increased maximum number of <span class="token function">open</span> files to <span class="token number">10032</span> <span class="token punctuation">(</span>it was originally <span class="token builtin class-name">set</span> to <span class="token number">1024</span>                                         <span class="token punctuation">)</span>.
+                _._
+           _.-`<span class="token variable"><span class="token variable">`</span>__ <span class="token string">''</span>-._
+      _.-<span class="token variable">`</span></span><span class="token variable"><span class="token variable">`</span>    <span class="token variable">`</span></span><span class="token builtin class-name">.</span>  <span class="token variable"><span class="token variable">`</span>_.  <span class="token string">''</span>-._           Redis <span class="token number">6.0</span>.16 <span class="token punctuation">(</span>00000000/0<span class="token punctuation">)</span> <span class="token number">64</span> bit
+  .-<span class="token variable">`</span></span><span class="token variable"><span class="token variable">`</span> .-<span class="token variable">`</span></span>`<span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">.</span>  <span class="token variable">`</span></span>`<span class="token variable"><span class="token variable">`</span><span class="token punctuation">\</span>/    _.,_ <span class="token string">''</span>-._
+ <span class="token punctuation">(</span>    '      ,       .-<span class="token variable">`</span></span>  <span class="token operator">|</span> <span class="token variable"><span class="token variable">`</span>,    <span class="token punctuation">)</span>     Running <span class="token keyword">in</span> sentinel mode
+ <span class="token operator">|</span><span class="token variable">`</span></span>-._<span class="token variable"><span class="token variable">`</span>-<span class="token punctuation">..</span>.-<span class="token variable">`</span></span> __<span class="token punctuation">..</span>.-.`<span class="token variable"><span class="token variable">`</span>-._<span class="token operator">|</span>'<span class="token variable">`</span></span> _.-<span class="token string">'|     Port: 26379
+ |    `-._   `._    /     _.-'</span>    <span class="token operator">|</span>     PID: <span class="token number">86752</span>
+  <span class="token variable"><span class="token variable">`</span>-._    <span class="token variable">`</span></span>-._  <span class="token variable"><span class="token variable">`</span>-./  _.-<span class="token string">'    _.-'</span>
+ <span class="token operator">|</span><span class="token variable">`</span></span>-._<span class="token variable"><span class="token variable">`</span>-._    <span class="token variable">`</span></span>-.__.-<span class="token string">'    _.-'</span>_.-<span class="token string">'|
+ |    `-._`-._        _.-'</span>_.-<span class="token string">'    |           http://redis.io
+  `-._    `-._`-.__.-'</span>_.-<span class="token string">'    _.-'</span>
+ <span class="token operator">|</span><span class="token variable"><span class="token variable">`</span>-._<span class="token variable">`</span></span>-._    <span class="token variable"><span class="token variable">`</span>-.__.-<span class="token string">'    _.-'</span>_.-'<span class="token operator">|</span>
+ <span class="token operator">|</span>    <span class="token variable">`</span></span>-._<span class="token variable"><span class="token variable">`</span>-._        _.-<span class="token string">'_.-'</span>    <span class="token operator">|</span>
+  <span class="token variable">`</span></span>-._    <span class="token variable"><span class="token variable">`</span>-._<span class="token variable">`</span></span>-.__.-<span class="token string">'_.-'</span>    _.-<span class="token string">'
+      `-._    `-.__.-'</span>    _.-<span class="token string">'
+          `-._        _.-'</span>
+              `-.__.-'
+
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:45:44.019 <span class="token comment"># WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/n                                         et/core/somaxconn is set to the lower value of 128.</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:45:44.033 <span class="token comment"># Sentinel ID is e72532c059847cdad42c737a8bd0a7e7fd2da106</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:45:44.033 <span class="token comment"># +monitor master mymaster 127.0.0.1 6379 quorum 1</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:48:04.560 * +slave slave <span class="token number">127.0</span>.0.1:6380 <span class="token number">127.0</span>.0.1 <span class="token number">6380</span> @ mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:48:24.675 * +slave slave <span class="token number">127.0</span>.0.1:6381 <span class="token number">127.0</span>.0.1 <span class="token number">6381</span> @ mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第四步-当主机挂掉-在从机选举中产生新的主机" tabindex="-1"><a class="header-anchor" href="#第四步-当主机挂掉-在从机选举中产生新的主机" aria-hidden="true">#</a> 第四步：当主机挂掉，在从机选举中产生新的主机</h3>
+<p>选举原则：根据优先级别：slave-priority ，原主机重启后会变为从机。</p>
+<p>slave-priority 默认100，数值越小，优先级越高。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.032 <span class="token comment"># +sdown master mymaster 127.0.0.1 6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.032 <span class="token comment"># +odown master mymaster 127.0.0.1 6379 #quorum 1/1</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.032 <span class="token comment"># +new-epoch 1</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.032 <span class="token comment"># +try-failover master mymaster 127.0.0.1 6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.038 <span class="token comment"># +vote-for-leader e72532c059847cdad42c737a8bd0a7e7fd2da106 1</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.038 <span class="token comment"># +elected-leader master mymaster 127.0.0.1 6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.038 <span class="token comment"># +failover-state-select-slave master mymaster 127.0.0.1 6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.143 <span class="token comment"># +selected-slave slave 127.0.0.1:6381 127.0.0.1 6381 @ mymaster 127.0.0.1 6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.143 * +failover-state-send-slaveof-noone slave <span class="token number">127.0</span>.0.1:6381 <span class="token number">127.0</span>.0.1 <span class="token number">6381</span> @ mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.238 * +failover-state-wait-promotion slave <span class="token number">127.0</span>.0.1:6381 <span class="token number">127.0</span>.0.1 <span class="token number">6381</span> @ mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.318 <span class="token comment"># +promoted-slave slave 127.0.0.1:6381 127.0.0.1 6381 @ mymaster 127.0.0.1 6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.318 <span class="token comment"># +failover-state-reconf-slaves master mymaster 127.0.0.1 6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:29.390 * +slave-reconf-sent slave <span class="token number">127.0</span>.0.1:6380 <span class="token number">127.0</span>.0.1 <span class="token number">6380</span> @ mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:30.377 * +slave-reconf-inprog slave <span class="token number">127.0</span>.0.1:6380 <span class="token number">127.0</span>.0.1 <span class="token number">6380</span> @ mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:30.377 * +slave-reconf-done slave <span class="token number">127.0</span>.0.1:6380 <span class="token number">127.0</span>.0.1 <span class="token number">6380</span> @ mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:30.436 <span class="token comment"># +failover-end master mymaster 127.0.0.1 6379</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:30.436 <span class="token comment"># +switch-master mymaster 127.0.0.1 6379 127.0.0.1 6381</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:30.436 * +slave slave <span class="token number">127.0</span>.0.1:6380 <span class="token number">127.0</span>.0.1 <span class="token number">6380</span> @ mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6381</span>
+<span class="token number">86752</span>:X <span class="token number">17</span> Aug <span class="token number">2023</span> <span class="token number">17</span>:50:30.436 * +slave slave <span class="token number">127.0</span>.0.1:6379 <span class="token number">127.0</span>.0.1 <span class="token number">6379</span> @ mymaster <span class="token number">127.0</span>.0.1 <span class="token number">6381</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>redis6379 宕机后几秒钟选举出 redis6381 为新的主机，原先的 redis6379 和 redis6380 为从机</p>
+<p>redis6381：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">1</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:master
+connected_slaves:1
+slave0:ip<span class="token operator">=</span><span class="token number">127.0</span>.0.1,port<span class="token operator">=</span><span class="token number">6380</span>,state<span class="token operator">=</span>online,offset<span class="token operator">=</span><span class="token number">16631</span>,lag<span class="token operator">=</span><span class="token number">0</span>
+master_replid:d6304564cdf08a1902ada73ec7e6eb309eefe669
+master_replid2:25027d0c70d2abeec01c16e13bf023d2a1186019
+master_repl_offset:16764
+second_repl_offset:7649
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1102
+repl_backlog_histlen:15663
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>重新启动 redis6379，等一会儿后，发现 redis6379 为从机</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> info replication
+<span class="token comment"># Replication</span>
+<span class="token comment"># 刚开始启动时仍显示 master</span>
+role:master
+connected_slaves:0
+master_replid:f0f45da62ad3a063372458f647b2c2da24cb35be
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:0
+second_repl_offset:-1
+repl_backlog_active:0
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:0
+repl_backlog_histlen:0
+<span class="token comment"># 等一会儿显示为 slave</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> info replication
+<span class="token comment"># Replication</span>
+role:slave
+master_host:127.0.0.1
+master_port:6381
+master_link_status:up
+master_last_io_seconds_ago:1
+master_sync_in_progress:0
+slave_repl_offset:30913
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+master_replid:d6304564cdf08a1902ada73ec7e6eb309eefe669
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:30913
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:22477
+repl_backlog_histlen:8437
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="复制延时" tabindex="-1"><a class="header-anchor" href="#复制延时" aria-hidden="true">#</a> 复制延时</h3>
+<p><strong>由于所有的写操作都是先在 Master 上操作，然后同步更新到 Slave 上，所以从 Master 同步到 Slave 机器有一定的延迟，当系统很繁忙的时候，延迟问题会更加严重，Slave 机器数量的增加也会使这个问题更加严重。</strong></p>
+<h3 id="故障恢复" tabindex="-1"><a class="header-anchor" href="#故障恢复" aria-hidden="true">#</a> 故障恢复</h3>
+<h4 id="选择条件" tabindex="-1"><a class="header-anchor" href="#选择条件" aria-hidden="true">#</a> 选择条件</h4>
+<p>选举的策略：</p>
+<p>选择优先级高的，偏移量大的，runid 最小的服务。</p>
+<ul>
+<li>
+<p>优先级在 redis.conf 中默认：slave-priority 100，值越小优先级越高（高版本采用 replica-priority）</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token comment"># The replica priority is an integer number published by Redis in the INFO</span>
+<span class="token comment"># output. It is used by Redis Sentinel in order to select a replica to promote</span>
+<span class="token comment"># into a master if the master is no longer working correctly.</span>
+<span class="token comment">#</span>
+<span class="token comment"># A replica with a low priority number is considered better for promotion, so</span>
+<span class="token comment"># for instance if there are three replicas with priority 10, 100, 25 Sentinel</span>
+<span class="token comment"># will pick the one with priority 10, that is the lowest.</span>
+<span class="token comment">#</span>
+<span class="token comment"># However a special priority of 0 marks the replica as not able to perform the</span>
+<span class="token comment"># role of master, so a replica with priority of 0 will never be selected by</span>
+<span class="token comment"># Redis Sentinel for promotion.</span>
+<span class="token comment">#</span>
+<span class="token comment"># By default the priority is 100.</span>
+replica-priority <span class="token number">100</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p>偏移量：指获得原主机数据最全的</p>
+</li>
+<li>
+<p>每个 redis 实例启动后都会随机生成一个40位的 runid</p>
+</li>
+</ul>
+<p>挑选出新的主服务后，sentinel 会向原主服务的从服务发送 slaveof 新主机的命令，复制新的 master。</p>
+<p>当原主机重新上线后，sentinel 同样会发送 slaveof 命令，让其成为新主机的从机。</p>
+<h2 id="java-代码实现主从复制" tabindex="-1"><a class="header-anchor" href="#java-代码实现主从复制" aria-hidden="true">#</a> Java 代码实现主从复制</h2>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">JedisSentinelPool</span> jedisSentinelPool<span class="token operator">=</span><span class="token keyword">null</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span>  <span class="token class-name">Jedis</span> <span class="token function">getJedisFromSentinel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>jedisSentinelPool<span class="token operator">==</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> sentinelSet<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            sentinelSet<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"192.168.100.100:26379"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">JedisPoolConfig</span> jedisPoolConfig <span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">JedisPoolConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jedisPoolConfig<span class="token punctuation">.</span><span class="token function">setMaxTotal</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//最大可用连接数</span>
+jedisPoolConfig<span class="token punctuation">.</span><span class="token function">setMaxIdle</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//最大闲置连接数</span>
+jedisPoolConfig<span class="token punctuation">.</span><span class="token function">setMinIdle</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//最小闲置连接数</span>
+jedisPoolConfig<span class="token punctuation">.</span><span class="token function">setBlockWhenExhausted</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//连接耗尽是否等待</span>
+jedisPoolConfig<span class="token punctuation">.</span><span class="token function">setMaxWaitMillis</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//等待时间</span>
+jedisPoolConfig<span class="token punctuation">.</span><span class="token function">setTestOnBorrow</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//取连接的时候进行一下测试 ping pong</span>
+
+jedisSentinelPool<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">JedisSentinelPool</span><span class="token punctuation">(</span><span class="token string">"mymaster"</span><span class="token punctuation">,</span>sentinelSet<span class="token punctuation">,</span>jedisPoolConfig<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">return</span> jedisSentinelPool<span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+<span class="token keyword">return</span> jedisSentinelPool<span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h1 id="redis-集群" tabindex="-1"><a class="header-anchor" href="#redis-集群" aria-hidden="true">#</a> Redis 集群</h1>
+<h2 id="解决的问题" tabindex="-1"><a class="header-anchor" href="#解决的问题" aria-hidden="true">#</a> 解决的问题</h2>
+<ul>
+<li>
+<p>容量不够，Redis 扩容问题</p>
+</li>
+<li>
+<p>并发写操作， Redis 分摊操作</p>
+<p>如不同的请求数据会放在不同的 Redis 中进行缓存，早期可以通过<strong>代理主机</strong>进行解决。</p>
+</li>
+<li>
+<p>但是 Redis3.0 中提供了解决方案。就是 <strong>无中心化集群配置</strong>：每一个 Redis 服务都会转发给其他的 Redis。</p>
+<figure><img src="@source/DataBase/Redis/Redis集群无中心化配置.png" alt="Redis集群无中心化配置" tabindex="0" loading="lazy"><figcaption>Redis集群无中心化配置</figcaption></figure>
+</li>
+</ul>
+<h2 id="搭建集群环境" tabindex="-1"><a class="header-anchor" href="#搭建集群环境" aria-hidden="true">#</a> 搭建集群环境</h2>
+<p>Redis 集群实现了对 Redis 的水平扩容，即启动 N 个 redis 节点，将整个数据库分布存储在这 N 个节点中，每个节点存储总数据的1/N。</p>
+<p><strong>Redis 集群通过分区（partition）来提供一定程度的可用性（availability）</strong>： 即使集群中有一部分节点失效或者无法进行通讯， 集群也可以继续处理命令请求。</p>
+<p>此处以 3 台为例。</p>
+<h3 id="第一步-新建配置文件-1" tabindex="-1"><a class="header-anchor" href="#第一步-新建配置文件-1" aria-hidden="true">#</a> 第一步：新建配置文件</h3>
+<p>在 /opt/redis/redisClusterConf 下新建 redis6379.conf 配置</p>
+<p>使用端口：6379	6380	6381	6389	6390	6391</p>
+<p><strong>配置信息：</strong></p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>include /etc/redis.conf
+pidfile /var/run/redis_6379.pid
+port <span class="token number">6379</span>
+dbfilename dump6379.rdb
+
+<span class="token comment"># 打开集群模式</span>
+cluster-enabled <span class="token function">yes</span>
+<span class="token comment"># 设定节点配置文件名</span>
+cluster-config-file nodes-6379.conf
+<span class="token comment"># 设定节点失联时间，超过该时间（毫秒），集群自动进行主从切换</span>
+cluster-node-timeout <span class="token number">15000</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>拷贝多份文件，并在 vim 中使用命令替换  :%s/6379/6380</strong></p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># ll</span>
+总用量 <span class="token number">24</span>
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">318</span> <span class="token number">10</span>月  <span class="token number">8</span> <span class="token number">17</span>:40 redis6379.conf
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">318</span> <span class="token number">10</span>月  <span class="token number">8</span> <span class="token number">17</span>:42 redis6380.conf
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">318</span> <span class="token number">10</span>月  <span class="token number">8</span> <span class="token number">17</span>:42 redis6381.conf
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">318</span> <span class="token number">10</span>月  <span class="token number">8</span> <span class="token number">17</span>:42 redis6389.conf
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">318</span> <span class="token number">10</span>月  <span class="token number">8</span> <span class="token number">17</span>:43 redis6390.conf
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">318</span> <span class="token number">10</span>月  <span class="token number">8</span> <span class="token number">17</span>:44 redis6391.conf
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第二步-启动-6-个实例" tabindex="-1"><a class="header-anchor" href="#第二步-启动-6-个实例" aria-hidden="true">#</a> 第二步：启动 6 个实例</h3>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisClusterConf/redis6379.conf</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisClusterConf/redis6380.conf</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisClusterConf/redis6381.conf</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisClusterConf/redis6389.conf</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisClusterConf/redis6390.conf</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisClusterConf/redis6391.conf</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># ps -ef|grep redis</span>
+root       <span class="token number">1620</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">17</span>:58 ?        00:00:00 redis-server *:6379 <span class="token punctuation">[</span>cluster<span class="token punctuation">]</span>
+root       <span class="token number">1626</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">17</span>:58 ?        00:00:00 redis-server *:6380 <span class="token punctuation">[</span>cluster<span class="token punctuation">]</span>
+root       <span class="token number">1632</span>      <span class="token number">1</span>  <span class="token number">0</span> <span class="token number">17</span>:58 ?        00:00:00 redis-server *:6381 <span class="token punctuation">[</span>cluster<span class="token punctuation">]</span>
+root       <span class="token number">1638</span>      <span class="token number">1</span>  <span class="token number">1</span> <span class="token number">17</span>:58 ?        00:00:00 redis-server *:6389 <span class="token punctuation">[</span>cluster<span class="token punctuation">]</span>
+root       <span class="token number">1644</span>      <span class="token number">1</span>  <span class="token number">1</span> <span class="token number">17</span>:58 ?        00:00:00 redis-server *:6390 <span class="token punctuation">[</span>cluster<span class="token punctuation">]</span>
+root       <span class="token number">1650</span>      <span class="token number">1</span>  <span class="token number">1</span> <span class="token number">17</span>:58 ?        00:00:00 redis-server *:6391 <span class="token punctuation">[</span>cluster<span class="token punctuation">]</span>
+root       <span class="token number">1656</span>   <span class="token number">1254</span>  <span class="token number">0</span> <span class="token number">17</span>:59 pts/0    00:00:00 <span class="token function">grep</span> <span class="token parameter variable">--color</span><span class="token operator">=</span>auto redis
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment">#</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第三步-启动集群" tabindex="-1"><a class="header-anchor" href="#第三步-启动集群" aria-hidden="true">#</a> 第三步：启动集群</h3>
+<p>Redis 集群需要 ruby 环境，高版本的 Redis 已经集成了 ruby</p>
+<p>命令：</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-cli --cluster create --cluster-replicas 1 192.168.100.100:6379 192.168.100.100:6380 192.168.100.100:6381 192.168.100.100:6389 192.168.100.100:6390 192.168.100.100:6391</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><p>注意：此处不要用 127.0.0.1， 请用真实 IP 地址，<strong>--replicas 1 采用最简单的方式配置集群（一台主机，一台从机，正好三组）</strong></p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-cli --cluster create --cluster-replicas 1 192.168.100.100:6379 192.168.100.100:6380 192.168.100.100:6381 192.168.100.100:6389 192.168.100.100:6390 192.168.100.100:6391</span>
+
+<span class="token operator">>></span><span class="token operator">></span> Performing <span class="token builtin class-name">hash</span> slots allocation on <span class="token number">6</span> nodes<span class="token punctuation">..</span>.
+Master<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> -<span class="token operator">></span> Slots <span class="token number">0</span> - <span class="token number">5460</span>
+Master<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> -<span class="token operator">></span> Slots <span class="token number">5461</span> - <span class="token number">10922</span>
+Master<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> -<span class="token operator">></span> Slots <span class="token number">10923</span> - <span class="token number">16383</span>
+Adding replica <span class="token number">192.168</span>.100.100:6390 to <span class="token number">192.168</span>.100.100:6379
+Adding replica <span class="token number">192.168</span>.100.100:6391 to <span class="token number">192.168</span>.100.100:6380
+Adding replica <span class="token number">192.168</span>.100.100:6389 to <span class="token number">192.168</span>.100.100:6381
+<span class="token operator">>></span><span class="token operator">></span> Trying to optimize slaves allocation <span class="token keyword">for</span> anti-affinity
+<span class="token punctuation">[</span>WARNING<span class="token punctuation">]</span> Some slaves are <span class="token keyword">in</span> the same <span class="token function">host</span> as their master
+M: a0db3d6715900a287d3222ae4b40cc43f8857a95 <span class="token number">192.168</span>.100.100:6379
+   slots:<span class="token punctuation">[</span><span class="token number">0</span>-5460<span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token number">5461</span> slots<span class="token punctuation">)</span> master
+M: e37ee97bc6f1479f01515f51dc595ede9a21a0de <span class="token number">192.168</span>.100.100:6380
+   slots:<span class="token punctuation">[</span><span class="token number">5461</span>-10922<span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token number">5462</span> slots<span class="token punctuation">)</span> master
+M: 622309a93a73692b81b62481c89c5098da6232f4 <span class="token number">192.168</span>.100.100:6381
+   slots:<span class="token punctuation">[</span><span class="token number">10923</span>-16383<span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token number">5461</span> slots<span class="token punctuation">)</span> master
+S: 2a7798be8210b18bac7bbdbaed7a51d76e9a0a59 <span class="token number">192.168</span>.100.100:6389
+   replicates 622309a93a73692b81b62481c89c5098da6232f4
+S: d265240801f512f9df68562029dc6df65afe6ddc <span class="token number">192.168</span>.100.100:6390
+   replicates a0db3d6715900a287d3222ae4b40cc43f8857a95
+S: dc245aad961e75cb71d0ff86de5f83aa3c4bee22 <span class="token number">192.168</span>.100.100:6391
+   replicates e37ee97bc6f1479f01515f51dc595ede9a21a0de
+Can I <span class="token builtin class-name">set</span> the above configuration? <span class="token punctuation">(</span>type <span class="token string">'yes'</span> to accept<span class="token punctuation">)</span>: <span class="token function">yes</span>
+<span class="token operator">>></span><span class="token operator">></span> Nodes configuration updated
+<span class="token operator">>></span><span class="token operator">></span> Assign a different config epoch to each <span class="token function">node</span>
+<span class="token operator">>></span><span class="token operator">></span> Sending CLUSTER MEET messages to <span class="token function">join</span> the cluster
+Waiting <span class="token keyword">for</span> the cluster to <span class="token function">join</span>
+<span class="token builtin class-name">.</span>
+<span class="token operator">>></span><span class="token operator">></span> Performing Cluster Check <span class="token punctuation">(</span>using <span class="token function">node</span> <span class="token number">192.168</span>.100.100:6379<span class="token punctuation">)</span>
+M: a0db3d6715900a287d3222ae4b40cc43f8857a95 <span class="token number">192.168</span>.100.100:6379
+   slots:<span class="token punctuation">[</span><span class="token number">0</span>-5460<span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token number">5461</span> slots<span class="token punctuation">)</span> master
+   <span class="token number">1</span> additional replica<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+S: dc245aad961e75cb71d0ff86de5f83aa3c4bee22 <span class="token number">192.168</span>.100.100:6391
+   slots: <span class="token punctuation">(</span><span class="token number">0</span> slots<span class="token punctuation">)</span> slave
+   replicates e37ee97bc6f1479f01515f51dc595ede9a21a0de
+S: 2a7798be8210b18bac7bbdbaed7a51d76e9a0a59 <span class="token number">192.168</span>.100.100:6389
+   slots: <span class="token punctuation">(</span><span class="token number">0</span> slots<span class="token punctuation">)</span> slave
+   replicates 622309a93a73692b81b62481c89c5098da6232f4
+M: 622309a93a73692b81b62481c89c5098da6232f4 <span class="token number">192.168</span>.100.100:6381
+   slots:<span class="token punctuation">[</span><span class="token number">10923</span>-16383<span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token number">5461</span> slots<span class="token punctuation">)</span> master
+   <span class="token number">1</span> additional replica<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+S: d265240801f512f9df68562029dc6df65afe6ddc <span class="token number">192.168</span>.100.100:6390
+   slots: <span class="token punctuation">(</span><span class="token number">0</span> slots<span class="token punctuation">)</span> slave
+   replicates a0db3d6715900a287d3222ae4b40cc43f8857a95
+M: e37ee97bc6f1479f01515f51dc595ede9a21a0de <span class="token number">192.168</span>.100.100:6380
+   slots:<span class="token punctuation">[</span><span class="token number">5461</span>-10922<span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token number">5462</span> slots<span class="token punctuation">)</span> master
+   <span class="token number">1</span> additional replica<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>OK<span class="token punctuation">]</span> All nodes agree about slots configuration.
+<span class="token operator">>></span><span class="token operator">></span> Check <span class="token keyword">for</span> <span class="token function">open</span> slots<span class="token punctuation">..</span>.
+<span class="token operator">>></span><span class="token operator">></span> Check slots coverage<span class="token punctuation">..</span>.
+<span class="token comment"># 注意 slot 为 16384</span>
+<span class="token punctuation">[</span>OK<span class="token punctuation">]</span> All <span class="token number">16384</span> slots covered.
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment">#</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="第四步-连接" tabindex="-1"><a class="header-anchor" href="#第四步-连接" aria-hidden="true">#</a> 第四步：连接</h3>
+<p><strong>普通方式登录</strong></p>
+<p>​		可能直接进入读主机，存储数据时，会出现 MOVED 重定向操作。应该以集群方式登录。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-cli -p 6379</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> keys *
+<span class="token punctuation">(</span>empty array<span class="token punctuation">)</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> k1 v1
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> MOVED <span class="token number">12706</span> <span class="token number">192.168</span>.100.100:6381
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>集群方式登录</strong></p>
+<p><strong>-c</strong>	<strong>采用集群策略连接，设置数据会自动切换到相应的写主机</strong></p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># redis-cli -c -p 6379</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> keys *
+<span class="token punctuation">(</span>empty array<span class="token punctuation">)</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> k1 v1
+-<span class="token operator">></span> Redirected to slot <span class="token punctuation">[</span><span class="token number">12706</span><span class="token punctuation">]</span> located at <span class="token number">192.168</span>.100.100:6381
+OK
+<span class="token number">192.168</span>.100.100:638<span class="token operator"><span class="token file-descriptor important">1</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>连接集群，写入数据时，会将数据放入 slot 为 12706 中，并重定向到该主机。</p>
+<h3 id="查看集群信息" tabindex="-1"><a class="header-anchor" href="#查看集群信息" aria-hidden="true">#</a> 查看集群信息</h3>
+<p>通过 <strong>cluster nodes</strong> 命令查看集群信息：</p>
+<p>myself 表示当前登录的主机</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">192.168</span>.100.100:638<span class="token operator"><span class="token file-descriptor important">1</span>></span> cluster nodes
+d58b3cbb999444e6f1d14ff77a8e285972b4255e <span class="token number">192.168</span>.100.100:6391@16391 slave fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">0</span> <span class="token number">1692270860991</span> <span class="token number">3</span> connected
+8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">192.168</span>.100.100:6380@16380 master - <span class="token number">0</span> <span class="token number">1692270863091</span> <span class="token number">2</span> connected <span class="token number">5461</span>-10922
+cb4627d4d0c15333131c60b59006a340625364fb <span class="token number">192.168</span>.100.100:6390@16390 slave 8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">0</span> <span class="token number">1692270860000</span> <span class="token number">2</span> connected
+c8679dad6e06520599fc4af76f0b26be70cb2df7 <span class="token number">192.168</span>.100.100:6379@16379 master - <span class="token number">0</span> <span class="token number">1692270862078</span> <span class="token number">1</span> connected <span class="token number">0</span>-5460
+d400f02a38d346b96d12d85ae2cf008a08caba38 <span class="token number">192.168</span>.100.100:6389@16389 slave c8679dad6e06520599fc4af76f0b26be70cb2df7 <span class="token number">0</span> <span class="token number">1692270860000</span> <span class="token number">1</span> connected
+<span class="token comment"># myself 表示当前登录的主机</span>
+fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">192.168</span>.100.100:6381@16381 myself,master - <span class="token number">0</span> <span class="token number">1692270858000</span> <span class="token number">3</span> connected <span class="token number">10923</span>-16383
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="redis-cluster-节点分配" tabindex="-1"><a class="header-anchor" href="#redis-cluster-节点分配" aria-hidden="true">#</a> redis cluster 节点分配</h3>
+<p>选项 <strong>--cluster-replicas 1</strong> 表示：希望为集群中的每个主节点创建一个从节点。</p>
+<p>分配原则尽量保证每个主数据库运行在不同的 IP 地址，每个从库和主库不在一个 IP 地址上。</p>
+<h2 id="slots" tabindex="-1"><a class="header-anchor" href="#slots" aria-hidden="true">#</a> slots</h2>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>OK<span class="token punctuation">]</span> All nodes agree about slots configuration.
+<span class="token operator">>></span><span class="token operator">></span> Check <span class="token keyword">for</span> <span class="token function">open</span> slots<span class="token punctuation">..</span>.
+<span class="token operator">>></span><span class="token operator">></span> Check slots coverage<span class="token punctuation">..</span>.
+<span class="token punctuation">[</span>OK<span class="token punctuation">]</span> All <span class="token number">16384</span> slots covered.
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><ol>
+<li>
+<p>一个 Redis 集群包含 16384 个插槽（hash slot）， 数据库中的每个键都属于这 16384 个插槽的其中一个。</p>
+</li>
+<li>
+<p>集群使用公式 CRC16(key) % 16384 来计算键 key 属于哪个槽，  CRC16(key) 语句用于计算键 key 的 CRC16 校验和</p>
+</li>
+<li>
+<p>集群中的每个节点负责处理一部分插槽。 如一个集群中：</p>
+<p>节点 A 负责处理 0 号至 5460 号插槽。</p>
+<p>节点 B 负责处理 5461 号至 10922 号插槽。</p>
+<p>节点 C 负责处理 10923 号至 16383 号插槽。</p>
+</li>
+</ol>
+<h2 id="集群中读写数据" tabindex="-1"><a class="header-anchor" href="#集群中读写数据" aria-hidden="true">#</a> 集群中读写数据</h2>
+<ul>
+<li>
+<p>在 redis-cli 每次录入、查询键值，redis 都会计算出该 key 应该送往的插槽，如果不是该客户端对应服务器的插槽，redis 会报错，并告知应前往的 redis 实例地址和端口。</p>
+</li>
+<li>
+<p>redis-cli 客户端提供了 –c 参数实现自动重定向。</p>
+<p>如 redis-cli -c –p 6379 登入后，再录入、查询键值对<strong>可以自动重定向</strong>。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-cli -c -p 6379</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> k1 v1
+-<span class="token operator">></span> Redirected to slot <span class="token punctuation">[</span><span class="token number">12706</span><span class="token punctuation">]</span> located at <span class="token number">192.168</span>.100.100:6381
+OK
+<span class="token number">192.168</span>.100.100:638<span class="token operator"><span class="token file-descriptor important">1</span>></span> get k1
+<span class="token string">"v1"</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment">#</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-cli -c -p 6379</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get k1
+-<span class="token operator">></span> Redirected to slot <span class="token punctuation">[</span><span class="token number">12706</span><span class="token punctuation">]</span> located at <span class="token number">192.168</span>.100.100:6381
+<span class="token string">"v1"</span>
+<span class="token number">192.168</span>.100.100:638<span class="token operator"><span class="token file-descriptor important">1</span>></span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p>不在一个 slot 下的键值，是不能使用 mget，mset 等多键操作，但可以通过 { } 来定义组的概念，从而使 key 中 { } 内相同内容的键值对放到一个 slot 中去，可以通过 keys * 查看当前主机的键值内容</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> mset k1 v1 k2 v2 k3 v3
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> CROSSSLOT Keys <span class="token keyword">in</span> request don't <span class="token builtin class-name">hash</span> to the same slot
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> mset k1<span class="token punctuation">{</span>cust<span class="token punctuation">}</span> v1 k2<span class="token punctuation">{</span>cust<span class="token punctuation">}</span> v2 k3<span class="token punctuation">{</span>cust<span class="token punctuation">}</span> v3
+OK
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> keys *
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"k2{cust}"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"k1{cust}"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"k3{cust}"</span>
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get k1<span class="token punctuation">{</span>cust<span class="token punctuation">}</span>
+<span class="token string">"v1"</span>
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get k2<span class="token punctuation">{</span>cust<span class="token punctuation">}</span>
+<span class="token string">"v2"</span>
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get k3<span class="token punctuation">{</span>cust<span class="token punctuation">}</span>
+<span class="token string">"v3"</span>
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> cluster keyslot k2<span class="token punctuation">{</span>cust<span class="token punctuation">}</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">4847</span>
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> cluster keyslot k1<span class="token punctuation">{</span>cust<span class="token punctuation">}</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">4847</span>
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> cluster keyslot k3<span class="token punctuation">{</span>cust<span class="token punctuation">}</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">4847</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p>常见命令</p>
+<ul>
+<li><code v-pre>cluster keyslot cust</code>       查看键 cust 所在的插槽</li>
+<li><code v-pre> cluster countKeysinslot &lt;slot&gt;</code>         返回插槽的键的个数</li>
+<li><code v-pre>CLUSTER GETKEYSINSLOT &lt;slot&gt;&lt;count&gt; 	返回 count 个 slot 槽中的键。</code></li>
+</ul>
+<p><strong>注意：各客户端只能看自己插槽范围内的值。</strong></p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> cluster keyslot k1
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">12706</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> CLUSTER COUNTKEYSINSLOT <span class="token number">12706</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> cluster keyslot cust
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">4847</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> cluster countKeysinslot <span class="token number">4847</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">3</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> CLUSTER GETKEYSINSLOT <span class="token number">4847</span> <span class="token number">5</span>
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"k1{cust}"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"k2{cust}"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"k3{cust}"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get k1<span class="token punctuation">{</span>cust<span class="token punctuation">}</span>
+<span class="token string">"v1"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get k1
+-<span class="token operator">></span> Redirected to slot <span class="token punctuation">[</span><span class="token number">12706</span><span class="token punctuation">]</span> located at <span class="token number">192.168</span>.100.100:6381
+<span class="token string">"v1"</span>
+<span class="token number">192.168</span>.100.100:638<span class="token operator"><span class="token file-descriptor important">1</span>></span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment">#</span>
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> CLUSTER COUNTKEYSINSLOT <span class="token number">12706</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">0</span>
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-cli -c -p 6381</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">1</span>></span> CLUSTER COUNTKEYSINSLOT <span class="token number">12706</span>
+<span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">1</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li>
+</ul>
+<h2 id="故障恢复-1" tabindex="-1"><a class="header-anchor" href="#故障恢复-1" aria-hidden="true">#</a> 故障恢复</h2>
+<p>如果主节点下线，从节点会升为主节点，主节点恢复后，主节点会变为从机。</p>
+<p>示例：关掉 6379，则 6389 成为主机，重启 6379 之后，6379 成为主机</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> cluster nodes
+d400f02a38d346b96d12d85ae2cf008a08caba38 <span class="token number">192.168</span>.100.100:6389@16389 slave c8679dad6e06520599fc4af76f0b26be70cb2df7 <span class="token number">0</span> <span class="token number">1692277887747</span> <span class="token number">1</span> connected
+fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">192.168</span>.100.100:6381@16381 master - <span class="token number">0</span> <span class="token number">1692277889000</span> <span class="token number">3</span> connected <span class="token number">10923</span>-16383
+c8679dad6e06520599fc4af76f0b26be70cb2df7 <span class="token number">192.168</span>.100.100:6379@16379 myself,master - <span class="token number">0</span> <span class="token number">1692277889000</span> <span class="token number">1</span> connected <span class="token number">0</span>-5460
+d58b3cbb999444e6f1d14ff77a8e285972b4255e <span class="token number">192.168</span>.100.100:6391@16391 slave fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">0</span> <span class="token number">1692277888000</span> <span class="token number">3</span> connected
+8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">192.168</span>.100.100:6380@16380 master - <span class="token number">0</span> <span class="token number">1692277889817</span> <span class="token number">2</span> connected <span class="token number">5461</span>-10922
+cb4627d4d0c15333131c60b59006a340625364fb <span class="token number">192.168</span>.100.100:6390@16390 slave 8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">0</span> <span class="token number">1692277888808</span> <span class="token number">2</span> connected
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token function">shutdown</span>
+not connected<span class="token operator">></span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-cli -c -p 6380</span>
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> cluster nodes
+8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">192.168</span>.100.100:6380@16380 myself,master - <span class="token number">0</span> <span class="token number">1692278026000</span> <span class="token number">2</span> connected <span class="token number">5461</span>-10922
+d58b3cbb999444e6f1d14ff77a8e285972b4255e <span class="token number">192.168</span>.100.100:6391@16391 slave fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">0</span> <span class="token number">1692278028814</span> <span class="token number">3</span> connected
+fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">192.168</span>.100.100:6381@16381 master - <span class="token number">0</span> <span class="token number">1692278028000</span> <span class="token number">3</span> connected <span class="token number">10923</span>-16383
+d400f02a38d346b96d12d85ae2cf008a08caba38 <span class="token number">192.168</span>.100.100:6389@16389 slave c8679dad6e06520599fc4af76f0b26be70cb2df7 <span class="token number">0</span> <span class="token number">1692278027000</span> <span class="token number">1</span> connected
+c8679dad6e06520599fc4af76f0b26be70cb2df7 <span class="token number">192.168</span>.100.100:6379@16379 master - <span class="token number">1692278014952</span> <span class="token number">1692278007377</span> <span class="token number">1</span> disconnected <span class="token number">0</span>-5460
+cb4627d4d0c15333131c60b59006a340625364fb <span class="token number">192.168</span>.100.100:6390@16390 slave 8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">0</span> <span class="token number">1692278027792</span> <span class="token number">2</span> connected
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span> cluster nodes
+8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">192.168</span>.100.100:6380@16380 myself,master - <span class="token number">0</span> <span class="token number">1692278116000</span> <span class="token number">2</span> connected <span class="token number">5461</span>-10922
+d58b3cbb999444e6f1d14ff77a8e285972b4255e <span class="token number">192.168</span>.100.100:6391@16391 slave fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">0</span> <span class="token number">1692278118000</span> <span class="token number">3</span> connected
+fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">192.168</span>.100.100:6381@16381 master - <span class="token number">0</span> <span class="token number">1692278117964</span> <span class="token number">3</span> connected <span class="token number">10923</span>-16383
+d400f02a38d346b96d12d85ae2cf008a08caba38 <span class="token number">192.168</span>.100.100:6389@16389 master - <span class="token number">0</span> <span class="token number">1692278117000</span> <span class="token number">7</span> connected <span class="token number">0</span>-5460
+c8679dad6e06520599fc4af76f0b26be70cb2df7 <span class="token number">192.168</span>.100.100:6379@16379 master,fail - <span class="token number">1692278014952</span> <span class="token number">1692278007377</span> <span class="token number">1</span> disconnected
+cb4627d4d0c15333131c60b59006a340625364fb <span class="token number">192.168</span>.100.100:6390@16390 slave 8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">0</span> <span class="token number">1692278118989</span> <span class="token number">2</span> connected
+<span class="token number">127.0</span>.0.1:638<span class="token operator"><span class="token file-descriptor important">0</span>></span>
+<span class="token comment"># 重启 redis6379</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-server /opt/redis/redisClusterConf/redis6379.conf</span>
+<span class="token punctuation">[</span>root@localhost redisClusterConf<span class="token punctuation">]</span><span class="token comment"># redis-cli -c -p 6379</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> cluster nodes
+d400f02a38d346b96d12d85ae2cf008a08caba38 <span class="token number">192.168</span>.100.100:6389@16389 master - <span class="token number">0</span> <span class="token number">1692278176000</span> <span class="token number">7</span> connected <span class="token number">0</span>-5460
+fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">192.168</span>.100.100:6381@16381 master - <span class="token number">0</span> <span class="token number">1692278174013</span> <span class="token number">3</span> connected <span class="token number">10923</span>-16383
+d58b3cbb999444e6f1d14ff77a8e285972b4255e <span class="token number">192.168</span>.100.100:6391@16391 slave fbfda518ed93656657965b5a7a8b36394c107641 <span class="token number">0</span> <span class="token number">1692278174000</span> <span class="token number">3</span> connected
+8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">192.168</span>.100.100:6380@16380 master - <span class="token number">0</span> <span class="token number">1692278174000</span> <span class="token number">2</span> connected <span class="token number">5461</span>-10922
+c8679dad6e06520599fc4af76f0b26be70cb2df7 <span class="token number">192.168</span>.100.100:6379@16379 myself,slave d400f02a38d346b96d12d85ae2cf008a08caba38 <span class="token number">0</span> <span class="token number">1692278173000</span> <span class="token number">7</span> connected
+cb4627d4d0c15333131c60b59006a340625364fb <span class="token number">192.168</span>.100.100:6390@16390 slave 8586a71a7496be626a2e0113db3f1248dfa6e856 <span class="token number">0</span> <span class="token number">1692278176141</span> <span class="token number">2</span> connected
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>如果所有某一段插槽的主从节点都宕掉，redis服务是否还能继续?</p>
+<p>如果某一段插槽的主从都挂掉，而 cluster-require-full-coverage 为 yes ，那么整个集群都挂掉</p>
+<p>如果某一段插槽的主从都挂掉，而 cluster-require-full-coverage 为 no ，那么该插槽数据全都不能使用，也无法存储。</p>
+<p><strong>redis.conf</strong> 中的参数 <strong>cluster-require-full-coverage</strong></p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token comment"># By default Redis Cluster nodes stop accepting queries if they detect there</span>
+<span class="token comment"># is at least a hash slot uncovered (no available node is serving it).</span>
+<span class="token comment"># This way if the cluster is partially down (for example a range of hash slots</span>
+<span class="token comment"># are no longer covered) all the cluster becomes, eventually, unavailable.</span>
+<span class="token comment"># It automatically returns available as soon as all the slots are covered again.</span>
+<span class="token comment">#</span>
+<span class="token comment"># However sometimes you want the subset of the cluster which is working,</span>
+<span class="token comment"># to continue to accept queries for the part of the key space that is still</span>
+<span class="token comment"># covered. In order to do so, just set the cluster-require-full-coverage</span>
+<span class="token comment"># option to no.</span>
+<span class="token comment">#</span>
+<span class="token comment"># cluster-require-full-coverage yes</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="集群的-jedis-开发" tabindex="-1"><a class="header-anchor" href="#集群的-jedis-开发" aria-hidden="true">#</a> 集群的 Jedis 开发</h2>
+<p>即使连接的不是主机，集群会自动切换主机存储。主机写，从机读。</p>
+<p>无中心化主从集群。无论从哪台主机写的数据，其他主机上都能读到数据。</p>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">HostAndPort</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">redis<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>jedis<span class="token punctuation">.</span></span><span class="token class-name">JedisCluster</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">HashSet</span></span><span class="token punctuation">;</span>
+
+<span class="token doc-comment comment">/**
+ * Redis 集群测试：关闭防火墙
+ * 即使连接的不是主机，集群会自动切换主机存储。主机写，从机读。
+ * 无中心化主从集群。无论从哪台主机写的数据，其他主机上都能读到数据。
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">JedisClusterTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">HostAndPort</span><span class="token punctuation">></span></span> set <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">HostAndPort</span><span class="token punctuation">(</span><span class="token string">"192.168.100.100"</span><span class="token punctuation">,</span><span class="token number">6379</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">JedisCluster</span> jedisCluster <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">JedisCluster</span><span class="token punctuation">(</span>set<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        jedisCluster<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"k"</span><span class="token punctuation">,</span><span class="token string">"v"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>jedisCluster<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"k"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="redis-集群优点" tabindex="-1"><a class="header-anchor" href="#redis-集群优点" aria-hidden="true">#</a> Redis 集群优点</h2>
+<ul>
+<li>实现扩容</li>
+<li>分摊压力</li>
+<li>无中心配置相对简单</li>
+</ul>
+<h2 id="redis-集群的不足" tabindex="-1"><a class="header-anchor" href="#redis-集群的不足" aria-hidden="true">#</a> Redis 集群的不足</h2>
+<ul>
+<li>多键操作是不被支持的</li>
+<li>多键的Redis事务是不被支持的。lua脚本不被支持</li>
+<li>由于集群方案出现较晚，很多公司已经采用了其他的集群方案，而代理或者客户端分片的方案想要迁移至redis cluster，需要整体迁移而不是逐步过渡，复杂度较大。</li>
+</ul>
+<h1 id="redis-应用问题" tabindex="-1"><a class="header-anchor" href="#redis-应用问题" aria-hidden="true">#</a> Redis 应用问题</h1>
+<h2 id="缓存穿透" tabindex="-1"><a class="header-anchor" href="#缓存穿透" aria-hidden="true">#</a> 缓存穿透</h2>
+<h3 id="问题描述" tabindex="-1"><a class="header-anchor" href="#问题描述" aria-hidden="true">#</a> 问题描述</h3>
+<p>​		key 对应的数据在数据源并不存在，每次针对此 key 的请求从缓存获取不到，请求都会压到数据源，从而可能压垮数据源。比如用一个不存在的用户 id 获取用户信息，不论缓存还是数据库都没有，若黑客利用此漏洞进行攻击可能压垮数据库。</p>
+<h3 id="解决方案" tabindex="-1"><a class="header-anchor" href="#解决方案" aria-hidden="true">#</a> 解决方案</h3>
+<p>​		一个一定不存在缓存及查询不到的数据，由于缓存是不命中时被动写的，并且出于容错考虑，如果从存储层查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到存储层去查询，失去了缓存的意义。</p>
+<p>解决方案：</p>
+<p>（1）  **对空值缓存：**如果一个查询返回的数据为空（不管是数据是否不存在），我们仍然把这个空结果（null）进行缓			存，设置空结果的过期时间会很短，最长不超过五分钟</p>
+<p>（2）  <strong>设置可访问的名单（白名单）：</strong></p>
+<p>​			使用 bitmaps 类型定义一个可以访问的名单，名单 id 作为 bitmaps 的偏移量，每次访问和 bitmap 里面的 id 进行			比较，如果访问 id 不在 bitmaps 里面，进行拦截，不允许访问。</p>
+<p>（3）  <strong>采用布隆过滤器</strong>：(布隆过滤器（Bloom Filter）是1970年由布隆提出的。它实际上是一个很长的二进制向量(位图)			和一系列随机映射函数（哈希函数）。</p>
+<p>​			布隆过滤器可以用于检索一个元素是否在一个集合中。它的优点是空间效率和查询时间都远远超过一般的算法，缺			点是有一定的误识别率和删除困难。)</p>
+<p>​			将所有可能存在的数据哈希到一个足够大的 bitmaps 中，一个一定不存在的数据会被这个 bitmaps 拦截掉，从而			避免了对底层存储系统的查询压力。</p>
+<p><strong>（4）</strong>  **进行实时监控：**当发现 Redis 的命中率开始急速降低，需要排查访问对象和访问的数据，和运维人员配合，可以设			置黑名单限制服务。</p>
+<h2 id="缓存击穿" tabindex="-1"><a class="header-anchor" href="#缓存击穿" aria-hidden="true">#</a> 缓存击穿</h2>
+<h3 id="问题描述-1" tabindex="-1"><a class="header-anchor" href="#问题描述-1" aria-hidden="true">#</a> 问题描述</h3>
+<p>​		key 对应的数据存在，但在 redis 中过期，此时若有大量并发请求过来，这些请求发现缓存过期一般都会从后端DB加载数据并回设到缓存，这个时候大并发的请求可能会瞬间把后端DB压垮。</p>
+<h3 id="解决方案-1" tabindex="-1"><a class="header-anchor" href="#解决方案-1" aria-hidden="true">#</a> 解决方案</h3>
+<p>​		key 可能会在某些时间点被超高并发地访问，是一种非常 “热点” 的数据。这个时候，需要考虑一个问题：缓存被 “击穿” 的问题。</p>
+<p>解决问题：</p>
+<p>（1）预先设置热门数据：在redis高峰访问之前，把一些热门数据提前存入到redis里面，加大这些热门数据key的时长</p>
+<p>（2）实时调整：现场监控哪些数据热门，实时调整 key 的过期时长</p>
+<p>（3）使用锁：</p>
+<ul>
+<li>就是在缓存失效的时候（判断拿出来的值为空），不是立即去load db。</li>
+<li>先使用缓存工具的某些带成功操作返回值的操作（比如 Redis 的 SETNX）去set一个mutex key</li>
+<li>当操作返回成功时，再进行load db的操作，并回设缓存，最后删除 mutex key；</li>
+<li>当操作返回失败，证明有线程在load db，当前线程睡眠一段时间再重试整个 get 缓存的方法。</li>
+</ul>
+<img src="@source/DataBase/Redis/image-20221008200000951.png" alt="image-20221008200000951" style="zoom:67%;" />
+<h2 id="缓存雪崩" tabindex="-1"><a class="header-anchor" href="#缓存雪崩" aria-hidden="true">#</a> 缓存雪崩</h2>
+<h3 id="问题描述-2" tabindex="-1"><a class="header-anchor" href="#问题描述-2" aria-hidden="true">#</a> 问题描述</h3>
+<p>​		key 对应的数据存在，但在 redis 中过期，此时若有大量并发请求过来，这些请求发现缓存过期一般都会从后端DB加载数据并回设到缓存，这个时候大并发的请求可能会瞬间把后端DB压垮。</p>
+<p><strong>缓存雪崩与缓存击穿的区别在于这里针对很多key缓存，前者则是某一个key。</strong></p>
+<h3 id="解决方案-2" tabindex="-1"><a class="header-anchor" href="#解决方案-2" aria-hidden="true">#</a> 解决方案</h3>
+<p>缓存失效时的雪崩效应对底层系统的冲击非常可怕！</p>
+<p>解决方案：</p>
+<p><strong>（1）</strong>  **构建多级缓存架构：**nginx缓存 + redis缓存 +其他缓存（ehcache等）</p>
+<p><strong>（2）</strong>  <strong>使用锁或队列：</strong></p>
+<p>​		用加锁或者队列的方式保证来保证不会有大量的线程对数据库一次性进行读写，从而避免失效时大量的并发请求落到		底层存储系统上。不适用高并发情况。</p>
+<p><strong>（3）</strong>  <strong>设置过期标志更新缓存：</strong></p>
+<p>​		记录缓存数据是否过期（设置提前量），如果过期会触发通知另外的线程在后台去更新实际key的缓存。</p>
+<p><strong>（4）</strong>  <strong>将缓存失效时间分散开：</strong></p>
+<p>​		比如我们可以在原有的失效时间基础上增加一个随机值，比如1-5分钟随机，这样每一个缓存的过期时间的重复率就会		降低，就很难引发集体失效的事件。</p>
+<h2 id="分布式锁" tabindex="-1"><a class="header-anchor" href="#分布式锁" aria-hidden="true">#</a> 分布式锁</h2>
+<p>​		随着业务发展的需要，原单体单机部署的系统被演化成分布式集群系统后，由于分布式系统多线程、多进程并且分布在不同机器上，这将使原单机部署情况下的并发控制锁策略失效，单纯的 Java API 并不能提供分布式锁的能力。为了解决这个问题就需要一种跨 JVM 的互斥机制来控制共享资源的访问，这就是分布式锁要解决的问题。</p>
+<p>分布式锁主流的实现方案：</p>
+<ol>
+<li>
+<p>基于数据库实现分布式锁</p>
+</li>
+<li>
+<p>基于缓存（Redis等）</p>
+</li>
+<li>
+<p>基于Zookeeper</p>
+</li>
+</ol>
+<p>每一种分布式锁解决方案都有各自的优缺点：</p>
+<ol>
+<li>
+<p>性能：redis最高</p>
+</li>
+<li>
+<p>可靠性：zookeeper最高</p>
+<p>这里，我们就基于 redis 实现分布式锁。</p>
+</li>
+</ol>
+<h3 id="redis实现分布式锁" tabindex="-1"><a class="header-anchor" href="#redis实现分布式锁" aria-hidden="true">#</a> Redis实现分布式锁</h3>
+<h3 id="设置锁的过期时间" tabindex="-1"><a class="header-anchor" href="#设置锁的过期时间" aria-hidden="true">#</a> 设置锁的过期时间</h3>
+<p>命令：set	k	v	nx	px	10000</p>
+<p>以上可以保证原子性，如果 Setnx 后在 expire，中间 Server 宕机不能保证原子性。</p>
+<p>EX second</p>
+<p>​		设置键的过期时间为 Second 秒。 SET key value EX second 效果等同于 SETEX key second value 。</p>
+<p>PX millisecond</p>
+<p>​		设置键的过期时间为 millisecond 毫秒。 SET key value PX millisecond 效果等同于 PSETEX key millisecond value</p>
+<p>NX		只在键不存在时，才对键进行设置操作。 SET key value NX 效果等同于 SETNX key value 。</p>
+<p>XX		只在键已经存在时，才对键进行设置操作。</p>
+<p>示例：</p>
+<ol>
+<li>
+<p>多个客户端同时获取锁（setnx）</p>
+</li>
+<li>
+<p>获取成功，执行业务逻辑{从db获取数据，放入缓存}，执行完成释放锁（del）</p>
+</li>
+<li>
+<p>其他客户端等待重试</p>
+</li>
+</ol>
+<p>代码示例：</p>
+<p>application.properties：注意集群版和单机版的区别</p>
+<div class="language-properties line-numbers-mode" data-ext="properties"><pre v-pre class="language-properties"><code><span class="token comment"># Redis: 单机配置</span>
+<span class="token comment">#spring.redis.host=192.168.100.100</span>
+<span class="token comment">##Redis服务器连接端口</span>
+<span class="token comment">#spring.redis.port=6379</span>
+
+<span class="token comment"># Redis集群配置</span>
+<span class="token key attr-name">spring.redis.cluster.nodes</span><span class="token punctuation">=</span><span class="token value attr-value">192.168.100.100:6379</span>
+
+<span class="token comment">#Redis数据库索引（默认为0）</span>
+<span class="token key attr-name">spring.redis.database</span><span class="token punctuation">=</span> <span class="token value attr-value">0</span>
+<span class="token comment">#连接超时时间（毫秒）</span>
+<span class="token key attr-name">spring.redis.timeout</span><span class="token punctuation">=</span><span class="token value attr-value">1800000</span>
+<span class="token comment">#连接池最大连接数（使用负值表示没有限制）</span>
+<span class="token key attr-name">spring.redis.lettuce.pool.max-active</span><span class="token punctuation">=</span><span class="token value attr-value">20</span>
+<span class="token comment">#最大阻塞等待时间(负数表示没限制)</span>
+<span class="token key attr-name">spring.redis.lettuce.pool.max-wait</span><span class="token punctuation">=</span><span class="token value attr-value">-1</span>
+<span class="token comment">#连接池中的最大空闲连接</span>
+<span class="token key attr-name">spring.redis.lettuce.pool.max-idle</span><span class="token punctuation">=</span><span class="token value attr-value">5</span>
+<span class="token comment">#连接池中的最小空闲连接</span>
+<span class="token key attr-name">spring.redis.lettuce.pool.min-idle</span><span class="token punctuation">=</span><span class="token value attr-value">0</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>controller：</p>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>core<span class="token punctuation">.</span></span><span class="token class-name">RedisTemplate</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">StringUtils</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">GetMapping</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RequestMapping</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RestController</span></span><span class="token punctuation">;</span>
+
+<span class="token doc-comment comment">/**
+ * 测试Redis分布式锁：
+ * 提前设置 num 值
+ */</span>
+<span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/test"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LockController</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> <span class="token class-name">RedisTemplate</span> redisTemplate<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/testLock"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 获取锁</span>
+        <span class="token class-name">Boolean</span> lock <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setIfAbsent</span><span class="token punctuation">(</span><span class="token string">"lock"</span><span class="token punctuation">,</span> <span class="token string">"001"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>lock<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"获得锁："</span><span class="token operator">+</span>lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">Object</span> value <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"num"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 判空</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment">// 业务逻辑</span>
+            <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"num"</span><span class="token punctuation">,</span> <span class="token operator">++</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 释放锁</span>
+            <span class="token class-name">Boolean</span> released <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token string">"lock"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"释放锁："</span><span class="token operator">+</span>released<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 获取锁失败，每隔0.1秒再试</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">testLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>测试：</p>
+<p>先设置 num 的值 set num 0</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">192.168</span>.100.100:639<span class="token operator"><span class="token file-descriptor important">1</span>></span> <span class="token builtin class-name">set</span> num <span class="token number">0</span>
+-<span class="token operator">></span> Redirected to slot <span class="token punctuation">[</span><span class="token number">2765</span><span class="token punctuation">]</span> located at <span class="token number">192.168</span>.100.100:6379
+OK
+<span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>使用 <a href="http://192.168.25.211:8080/test/testLock" target="_blank" rel="noopener noreferrer">http://192.168.25.211:8080/test/testLock<ExternalLinkIcon/></a> 测试。</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">192.168</span>.100.100:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get num
+<span class="token string">"1000"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div><p>问题：</p>
+<p>如果上锁之后出现异常，锁无法释放，锁应该设置一个过期时间。</p>
+<p>修改代码：</p>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token class-name">Boolean</span> lock <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setIfAbsent</span><span class="token punctuation">(</span><span class="token string">"lock"</span><span class="token punctuation">,</span> <span class="token string">"001"</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token class-name">TimeUnit</span><span class="token punctuation">.</span><span class="token constant">SECONDS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><h3 id="uuid防止误删" tabindex="-1"><a class="header-anchor" href="#uuid防止误删" aria-hidden="true">#</a> UUID防止误删</h3>
+<p>问题：每一个线程都应该有自己的一把锁</p>
+<img src="@source/DataBase/Redis/image-20221008220617532.png" alt="image-20221008220617532" style="zoom:50%;" />
+<p>代码修改：</p>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>core<span class="token punctuation">.</span></span><span class="token class-name">RedisTemplate</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">StringUtils</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">GetMapping</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RequestMapping</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RestController</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">UUID</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">TimeUnit</span></span><span class="token punctuation">;</span>
+
+<span class="token doc-comment comment">/**
+ * 测试Redis分布式锁：
+ * 提前设置 num 值
+ */</span>
+<span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/test"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LockController</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> <span class="token class-name">RedisTemplate</span> redisTemplate<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/testLock"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 获取锁</span>
+        <span class="token comment">// Boolean lock = redisTemplate.opsForValue().setIfAbsent("lock", "001",3, TimeUnit.SECONDS);</span>
+        <span class="token comment">// 使用 UUID 优化防止误删</span>
+        <span class="token class-name">String</span> uuid <span class="token operator">=</span> <span class="token constant">UUID</span><span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Boolean</span> lock <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setIfAbsent</span><span class="token punctuation">(</span><span class="token string">"lock"</span><span class="token punctuation">,</span> uuid<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token class-name">TimeUnit</span><span class="token punctuation">.</span><span class="token constant">SECONDS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>lock<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"获得锁："</span> <span class="token operator">+</span> lock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">Object</span> value <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"num"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 判空</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment">// 业务逻辑</span>
+            <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"num"</span><span class="token punctuation">,</span> <span class="token operator">++</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 释放锁: 判断UUID是否相同</span>
+            <span class="token class-name">Object</span> lockUuid <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"lock"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>uuid<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>lockUuid<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token class-name">Boolean</span> released <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token string">"lock"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"释放锁："</span> <span class="token operator">+</span> released<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 获取锁失败，每隔0.1秒再试</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">testLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="lua-脚本优化-原子性问题" tabindex="-1"><a class="header-anchor" href="#lua-脚本优化-原子性问题" aria-hidden="true">#</a> Lua 脚本优化：原子性问题</h3>
+<p>​		在判断UUID是否相同后，该锁对象过期时间结束，自动释放锁，此时其他线程拿到锁，之后当前线程再次通过手动释放锁，判断相等的过程已经结束，释放的是其他线程的锁，该过程应该是原子性的，使用Lua脚本确保原子性。</p>
+<img src="@source/DataBase/Redis/image-20221008224023193.png" alt="image-20221008224023193" style="zoom:50%;" />
+<p>代码修改：</p>
+<div class="language-java line-numbers-mode" data-ext="java"><pre v-pre class="language-java"><code>    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"testLockLua"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testLockLua</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 声明一个uuid ,将做为一个value 放入我们的key所对应的值中</span>
+        <span class="token class-name">String</span> uuid <span class="token operator">=</span> <span class="token constant">UUID</span><span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 定义一个锁：lua 脚本可以使用同一把锁，来实现删除！</span>
+        <span class="token class-name">String</span> skuId <span class="token operator">=</span> <span class="token string">"25"</span><span class="token punctuation">;</span> <span class="token comment">// 访问skuId 为25号的商品 100008348542</span>
+        <span class="token class-name">String</span> locKey <span class="token operator">=</span> <span class="token string">"lock:"</span> <span class="token operator">+</span> skuId<span class="token punctuation">;</span> <span class="token comment">// 锁住的是每个商品的数据</span>
+        <span class="token comment">// 获取锁</span>
+        <span class="token class-name">Boolean</span> lock <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setIfAbsent</span><span class="token punctuation">(</span>locKey<span class="token punctuation">,</span> uuid<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token class-name">TimeUnit</span><span class="token punctuation">.</span><span class="token constant">SECONDS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>lock<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 执行的业务逻辑开始</span>
+            <span class="token class-name">Object</span> value <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"num"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment">// 不是空 如果说在这出现了异常！ 那么delete 就删除失败！ 也就是说锁永远存在！</span>
+            <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>value <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 使num 每次+1 放入缓存</span>
+            redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"num"</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token operator">++</span>num<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">/*使用lua脚本来锁*/</span>
+            <span class="token comment">// 定义lua 脚本</span>
+            <span class="token class-name">String</span> script <span class="token operator">=</span> <span class="token string">"if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end"</span><span class="token punctuation">;</span>
+            <span class="token comment">// 使用redis执行lua执行</span>
+            <span class="token class-name">DefaultRedisScript</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Long</span><span class="token punctuation">></span></span> redisScript <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultRedisScript</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            redisScript<span class="token punctuation">.</span><span class="token function">setScriptText</span><span class="token punctuation">(</span>script<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 设置一下返回值类型为 Long</span>
+            <span class="token comment">// 因为删除判断的时候，返回的0, 给其封装为数据类型。</span>
+            <span class="token comment">// 如果不封装那么默认返回String 类型，那么返回字符串与 0 会有发生错误。</span>
+            redisScript<span class="token punctuation">.</span><span class="token function">setResultType</span><span class="token punctuation">(</span><span class="token class-name">Long</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 第一个要是script 脚本 ，第二个需要判断的key，第三个就是key所对应的值。</span>
+            redisTemplate<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>redisScript<span class="token punctuation">,</span> <span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span>locKey<span class="token punctuation">)</span><span class="token punctuation">,</span> uuid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">testLockLua</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="总结" tabindex="-1"><a class="header-anchor" href="#总结" aria-hidden="true">#</a> 总结</h3>
+<p>为了确保分布式锁可用，我们至少要确保锁的实现同时<strong>满足以下四个条件</strong>：</p>
+<ol>
+<li>互斥性。在任意时刻，只有一个客户端能持有锁。</li>
+<li>不会发生死锁。即使有一个客户端在持有锁的期间崩溃而没有主动解锁，也能保证后续其他客户端能加锁。</li>
+<li>解铃还须系铃人。加锁和解锁必须是同一个客户端，客户端自己不能把别人加的锁给解了。</li>
+<li>加锁和解锁必须具有原子性。</li>
+</ol>
+<h1 id="redis6-新功能" tabindex="-1"><a class="header-anchor" href="#redis6-新功能" aria-hidden="true">#</a> Redis6 新功能</h1>
+<h2 id="acl" tabindex="-1"><a class="header-anchor" href="#acl" aria-hidden="true">#</a> ACL</h2>
+<h3 id="简介-8" tabindex="-1"><a class="header-anchor" href="#简介-8" aria-hidden="true">#</a> 简介</h3>
+<p>​		Redis ACL是Access Control List（访问控制列表）的缩写，该功能允许根据可以执行的命令和可以访问的键来限制某些连接。在Redis 5版本之前，Redis 安全规则只有密码控制，还有通过 rename 来调整高危命令比如 flushdb ， KEYS* ， shutdown 等。Redis 6 则提供ACL的功能对用户进行更细粒度的权限控制 ：</p>
+<p>（1）接入权限：用户名和密码</p>
+<p>（2）可以执行的命令</p>
+<p>（3）可以操作的 KEY</p>
+<p>参考官网：<a href="https://redis.io/topics/acl" target="_blank" rel="noopener noreferrer">https://redis.io/topics/acl<ExternalLinkIcon/></a></p>
+<h3 id="命令-3" tabindex="-1"><a class="header-anchor" href="#命令-3" aria-hidden="true">#</a> 命令</h3>
+<ol>
+<li>使用 acl list 命令展现用户权限列表</li>
+</ol>
+<p>（1）数据说明</p>
+<p>​	user	用户名	是否启用	没有密码	可操作的Key	可执行的命令</p>
+<figure><img src="@source/DataBase/Redis/image-20221008234251310.png" alt="image-20221008234251310" tabindex="0" loading="lazy"><figcaption>image-20221008234251310</figcaption></figure>
+<ol start="2">
+<li>
+<p>使用 acl whoami 命令查看当前用户</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> ACL WHOAMI
+<span class="token string">"default"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div></li>
+<li>
+<p>使用 acl cat 命令</p>
+</li>
+</ol>
+<p>（1）查看添加权限指令类别</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">192.168</span>.100.100:639<span class="token operator"><span class="token file-descriptor important">1</span>></span> acl <span class="token function">cat</span>
+ <span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"keyspace"</span>
+ <span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"read"</span>
+ <span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"write"</span>
+ <span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"set"</span>
+ <span class="token number">5</span><span class="token punctuation">)</span> <span class="token string">"sortedset"</span>
+ <span class="token number">6</span><span class="token punctuation">)</span> <span class="token string">"list"</span>
+ <span class="token number">7</span><span class="token punctuation">)</span> <span class="token string">"hash"</span>
+ <span class="token number">8</span><span class="token punctuation">)</span> <span class="token string">"string"</span>
+ <span class="token number">9</span><span class="token punctuation">)</span> <span class="token string">"bitmap"</span>
+<span class="token number">10</span><span class="token punctuation">)</span> <span class="token string">"hyperloglog"</span>
+<span class="token number">11</span><span class="token punctuation">)</span> <span class="token string">"geo"</span>
+<span class="token number">12</span><span class="token punctuation">)</span> <span class="token string">"stream"</span>
+<span class="token number">13</span><span class="token punctuation">)</span> <span class="token string">"pubsub"</span>
+<span class="token number">14</span><span class="token punctuation">)</span> <span class="token string">"admin"</span>
+<span class="token number">15</span><span class="token punctuation">)</span> <span class="token string">"fast"</span>
+<span class="token number">16</span><span class="token punctuation">)</span> <span class="token string">"slow"</span>
+<span class="token number">17</span><span class="token punctuation">)</span> <span class="token string">"blocking"</span>
+<span class="token number">18</span><span class="token punctuation">)</span> <span class="token string">"dangerous"</span>
+<span class="token number">19</span><span class="token punctuation">)</span> <span class="token string">"connection"</span>
+<span class="token number">20</span><span class="token punctuation">)</span> <span class="token string">"transaction"</span>
+<span class="token number">21</span><span class="token punctuation">)</span> <span class="token string">"scripting"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>（2）加参数类型名可以查看类型下具体命令</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> acl <span class="token function">cat</span> string
+ <span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"msetnx"</span>
+ <span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"setrange"</span>
+ <span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"get"</span>
+ <span class="token number">4</span><span class="token punctuation">)</span> <span class="token string">"getrange"</span>
+ <span class="token number">5</span><span class="token punctuation">)</span> <span class="token string">"setnx"</span>
+ <span class="token number">6</span><span class="token punctuation">)</span> <span class="token string">"getset"</span>
+ <span class="token number">7</span><span class="token punctuation">)</span> <span class="token string">"decrby"</span>
+ <span class="token number">8</span><span class="token punctuation">)</span> <span class="token string">"getex"</span>
+ <span class="token number">9</span><span class="token punctuation">)</span> <span class="token string">"mset"</span>
+<span class="token number">10</span><span class="token punctuation">)</span> <span class="token string">"substr"</span>
+<span class="token number">11</span><span class="token punctuation">)</span> <span class="token string">"stralgo"</span>
+<span class="token number">12</span><span class="token punctuation">)</span> <span class="token string">"incr"</span>
+<span class="token number">13</span><span class="token punctuation">)</span> <span class="token string">"setex"</span>
+<span class="token number">14</span><span class="token punctuation">)</span> <span class="token string">"set"</span>
+<span class="token number">15</span><span class="token punctuation">)</span> <span class="token string">"incrby"</span>
+<span class="token number">16</span><span class="token punctuation">)</span> <span class="token string">"decr"</span>
+<span class="token number">17</span><span class="token punctuation">)</span> <span class="token string">"append"</span>
+<span class="token number">18</span><span class="token punctuation">)</span> <span class="token string">"incrbyfloat"</span>
+<span class="token number">19</span><span class="token punctuation">)</span> <span class="token string">"strlen"</span>
+<span class="token number">20</span><span class="token punctuation">)</span> <span class="token string">"mget"</span>
+<span class="token number">21</span><span class="token punctuation">)</span> <span class="token string">"psetex"</span>
+<span class="token number">22</span><span class="token punctuation">)</span> <span class="token string">"getdel"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><ol start="4">
+<li>使用  aclsetuser  命令创建和编辑用户ACL</li>
+</ol>
+<p>（1）ACL规则</p>
+<p>​		下面是有效ACL规则的列表。某些规则只是用于激活或删除标志，或对用户ACL执行给定更改的单个单词。其他规则是字符前缀，它们与命令或类别名称、键模式等连接在一起。</p>
+<table>
+<thead>
+<tr>
+<th>ACL规则</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类型</td>
+<td>参数</td>
+<td>说明</td>
+</tr>
+<tr>
+<td>启动和禁用用户</td>
+<td><strong>on</strong></td>
+<td>激活某用户账号</td>
+</tr>
+<tr>
+<td><strong>off</strong></td>
+<td>禁用某用户账号。注意，已验证的连接仍然可以工作。如果默认用户被标记为off，则新连接将在未进行身份验证的情况下启动，并要求用户使用AUTH选项发送AUTH或HELLO，以便以某种方式进行身份验证。</td>
+<td></td>
+</tr>
+<tr>
+<td>权限的添加删除</td>
+<td><code v-pre>+&lt;command&gt;</code></td>
+<td>将指令添加到用户可以调用的指令列表中</td>
+</tr>
+<tr>
+<td><code v-pre>-&lt;command&gt;</code></td>
+<td>从用户可执行指令列表移除指令</td>
+<td></td>
+</tr>
+<tr>
+<td><code v-pre>+@&lt;category&gt;</code></td>
+<td>添加该类别中用户要调用的所有指令，有效类别为@admin、@set、@sortedset…等，通过调用ACL CAT命令查看完整列表。特殊类别@all表示所有命令，包括当前存在于服务器中的命令，以及将来将通过模块加载的命令。</td>
+<td></td>
+</tr>
+<tr>
+<td><code v-pre>-@&lt;actegory&gt;</code></td>
+<td>从用户可调用指令中移除类别</td>
+<td></td>
+</tr>
+<tr>
+<td><code v-pre>allcommands</code></td>
+<td>+@all的别名</td>
+<td></td>
+</tr>
+<tr>
+<td><code v-pre>nocommand</code></td>
+<td>-@all的别名</td>
+<td></td>
+</tr>
+<tr>
+<td>可操作键的添加或删除</td>
+<td><code v-pre>~&lt;pattern&gt;</code></td>
+<td>添加可作为用户可操作的键的模式。例如~*允许所有的键</td>
+</tr>
+</tbody>
+</table>
+<p>（2）通过命令创建新用户默认权限</p>
+<p>​	acl setuser user1</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> acl setuser user01
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> acl list
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"user default on nopass ~* &amp;* +@all"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"user user01 off &amp;* -@all"</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​		上述示例中，如果用户不存在，这将使用 just created 的默认属性来创建用户。如果用户已经存在，则上面的命令将不执行任何操作。</p>
+<p>（3）设置有用户名、密码、ACL权限、并启用的用户</p>
+<p>​		acl setuser user02 on &gt;password ~cached:* +get</p>
+<p>​		<em><em>&gt;后接密码（password 即为密码)，~cached:</em>	以 cached 开头的键可以被操作	+get	只能使用 get 命令</em>*</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> acl setuser user02 on <span class="token operator">></span>password ~cached:* +get
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> acl list
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"user default on nopass ~* &amp;* +@all"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"user user01 off &amp;* -@all"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"user user02 on #5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8 ~cached:* &amp;* -@all +get"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>（4）切换用户，验证权限</p>
+<p>​	auth user02 password</p>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># redis-cli -c -p 6379</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> acl <span class="token function">whoami</span>
+<span class="token string">"default"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> acl list
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token string">"user default on nopass ~* &amp;* +@all"</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token string">"user user01 off &amp;* -@all"</span>
+<span class="token number">3</span><span class="token punctuation">)</span> <span class="token string">"user user02 on #5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8 ~cached:* &amp;* -@all +get"</span>
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> auth user02 password
+OK
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> <span class="token builtin class-name">set</span> k1 v1
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> NOPERM this user has no permissions to run the <span class="token string">'set'</span> <span class="token builtin class-name">command</span> or its subcommand
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get k1
+<span class="token punctuation">(</span>error<span class="token punctuation">)</span> NOPERM this user has no permissions to access one of the keys used as arguments
+<span class="token number">127.0</span>.0.1:637<span class="token operator"><span class="token file-descriptor important">9</span>></span> get cached:001
+-<span class="token operator">></span> Redirected to slot <span class="token punctuation">[</span><span class="token number">8807</span><span class="token punctuation">]</span> located at <span class="token number">192.168</span>.100.100:6391
+<span class="token punctuation">(</span>nil<span class="token punctuation">)</span>
+<span class="token number">192.168</span>.100.100:639<span class="token operator"><span class="token file-descriptor important">1</span>></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="io-多线程" tabindex="-1"><a class="header-anchor" href="#io-多线程" aria-hidden="true">#</a> <strong>IO</strong> 多线程</h2>
+<h3 id="简介-9" tabindex="-1"><a class="header-anchor" href="#简介-9" aria-hidden="true">#</a> <strong>简介</strong></h3>
+<p>Redis6终于支持多线程了，告别单线程了吗？</p>
+<p>IO多线程其实指 <strong>客户端交互部分</strong>的<strong>网络IO</strong> 交互处理模块<strong>多线程</strong>，而非<strong>执行命令多线程</strong>。Redis6执行命令依然是单线程。</p>
+<h3 id="原理架构" tabindex="-1"><a class="header-anchor" href="#原理架构" aria-hidden="true">#</a> <strong>原理架构</strong></h3>
+<p>​		Redis 6 加入多线程，但跟 Memcached 这种从 IO处理到数据访问多线程的实现模式有些差异。<strong>Redis 的多线程部分只是用来处理网络数据的读写和协议解析，执行命令仍然是单</strong>线程。之所以这么设计是不想因为多线程而变得复杂，需要去控制 key、lua、事务，LPUSH/LPOP 等等的并发问题。整体的设计大体如下：</p>
+<img src="@source/DataBase/Redis/image-20221008233535092.png" alt="image-20221008233535092" style="zoom:80%;" />
+<p>另外，多线程IO默认也是不开启的，需要再配置文件中配置</p>
+<ul>
+<li>​	io-threads 4</li>
+<li>​	io-threads-do-reads yes</li>
+</ul>
+<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code><span class="token number">1141</span> <span class="token comment"># So for instance if you have a four cores boxes, try to use 2 or 3 I/O</span>
+<span class="token number">1142</span> <span class="token comment"># threads, if you have a 8 cores, try to use 6 threads. In order to</span>
+<span class="token number">1143</span> <span class="token comment"># enable I/O threads use the following configuration directive:</span>
+<span class="token number">1144</span> <span class="token comment">#</span>
+<span class="token number">1145</span> <span class="token comment"># io-threads 4</span>
+<span class="token number">1146</span> <span class="token comment">#</span>
+<span class="token number">1147</span> <span class="token comment"># Setting io-threads to 1 will just use the main thread as usual.</span>
+<span class="token number">1148</span> <span class="token comment"># When I/O threads are enabled, we only use threads for writes, that is</span>
+<span class="token number">1149</span> <span class="token comment"># to thread the write(2) syscall and transfer the client buffers to the</span>
+<span class="token number">1150</span> <span class="token comment"># socket. However it is also possible to enable threading of reads and</span>
+<span class="token number">1151</span> <span class="token comment"># protocol parsing using the following configuration directive, by setting</span>
+<span class="token number">1152</span> <span class="token comment"># it to yes:</span>
+<span class="token number">1153</span> <span class="token comment">#</span>
+<span class="token number">1154</span> <span class="token comment"># io-threads-do-reads no</span>
+<span class="token number">1155</span> <span class="token comment">#</span>
+<span class="token number">1156</span> <span class="token comment"># Usually threading reads doesn't help much.</span>
+<span class="token number">1157</span> <span class="token comment">#</span>
+<span class="token number">1158</span> <span class="token comment"># NOTE 1: This configuration directive cannot be changed at runtime via</span>
+<span class="token number">1159</span> <span class="token comment"># CONFIG SET. Aso this feature currently does not work when SSL is</span>
+<span class="token number">1160</span> <span class="token comment"># enabled.</span>
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="工具支持-cluster" tabindex="-1"><a class="header-anchor" href="#工具支持-cluster" aria-hidden="true">#</a> <strong>工具支持</strong> <strong>Cluster</strong></h2>
+<p>之前老版 Redis 想要搭集群需要单独安装 ruby 环境，Redis 5 将 redis-trib.rb 的功能集成到 redis-cli 。另外官方 redis-benchmark 工具开始支持 cluster 模式了，通过多线程的方式对多个分片进行压测。</p>
+<h2 id="redis-新功能持续关注" tabindex="-1"><a class="header-anchor" href="#redis-新功能持续关注" aria-hidden="true">#</a> <strong>Redis</strong> 新功能持续关注</h2>
+<p>Redis6 新功能还有：</p>
+<ol>
+<li>
+<p>RESP3 新的 Redis 通信协议：优化服务端与客户端之间通信</p>
+</li>
+<li>
+<p>Client Side Caching 客户端缓存：基于 RESP3 协议实现的客户端缓存功能。为了进一步提升缓存的性能，将客户端经常访问的数据 Cache 到客户端，减少TCP网络交互。</p>
+</li>
+<li>
+<p>Proxy集群代理模式：Proxy 功能，让 Cluster 拥有像单实例一样的接入方式，降低大家使用 Cluster 的门槛。不过需要注意的是代理不改变 Cluster 的功能限制，不支持的命令还是不会支持，比如跨 Slot 的多Key操作。</p>
+</li>
+<li>
+<p>Modules API</p>
+<p>​	Redis 6 中模块API开发进展非常大，因为 Redis Labs 为了开发复杂的功能，从一开始就用上 Redis 模块。Redis可以变成一个框架，利用 Modules 来构建不同系统，而不需要从头开始写然后还要 BSD 许可。Redis一开始就是一个向编写各种系统开放的平台。</p>
+</li>
+</ol>
+<p>该文档存在的问题：</p>
+<ol>
+<li>gcc 安装问题，仅在一个会话中安装</li>
+</ol>
+</div></template>
+
+
